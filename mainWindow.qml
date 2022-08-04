@@ -14,6 +14,16 @@ ApplicationWindow {
     title: "Car repair shop"
     color: "#2c2c2c"
 
+    TextField {
+        id: nameFilter
+        height: 25
+        width: 200
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+        anchors.topMargin: 15
+        placeholderText: "Filter by name"
+    }
+
     QC1.TableView {
         width: 300
         height: 300
@@ -47,5 +57,7 @@ ApplicationWindow {
 
     Workshops {
         id: data
+
+        name: nameFilter.text
     }
 }
