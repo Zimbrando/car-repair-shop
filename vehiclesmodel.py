@@ -1,6 +1,6 @@
 
-from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot, Qt, QByteArray
-from PyQt5.QtSql import QSqlQueryModel
+from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
+from basemodel import BaseModel
 
 class Vehicles(QObject):
 
@@ -12,7 +12,6 @@ class Vehicles(QObject):
         self._model = VehiclesModel()
         self.brandChanged.connect(self.refresh)
         self._brand = -1
-        self._model.setQuery("SELECT * from tvehicles")
 
     @pyqtProperty(QObject, notify=modelChanged)
     def model(self):
@@ -37,38 +36,16 @@ class Vehicles(QObject):
             str(self._brand))
 
 
-class VehiclesModel(QSqlQueryModel):
+class VehiclesModel(BaseModel):
 
     def __init__(self, parent:QObject=None) -> None:
-        super(VehiclesModel, self).__init__()
-
-    def roleNames(self):
-        roles = {}
-        roles[Qt.UserRole + 1] = QByteArray("targa".encode())
-        return roles
-
-    def data(self, index, role):
-        if role < Qt.UserRole:
-            return super(VehiclesModel, self).data(index, role)
-
-        return super(VehiclesModel, self).data(self.index(index.row(), role - Qt.UserRole -1), Qt.DisplayRole)
+        super(VehiclesModel, self).__init__(["targa"])
+        super().setQuery("SELECT targa from tvehicles")
 
 
-class BrandsModel(QSqlQueryModel):
+class BrandsModel(BaseModel):
     
     def __init__(self, parent:QObject=None) -> None:
-        super(BrandsModel, self).__init__()
+        super(BrandsModel, self).__init__(["id", "nome"])
         super().setQuery("SELECT id, nome FROM tbrands")
-    
-    def roleNames(self):
-        roles = {}
-        roles[Qt.UserRole + 1] = QByteArray("id".encode())
-        roles[Qt.UserRole + 2] = QByteArray("nome".encode())
-        return roles
-
-    def data(self, index, role):
-        if role < Qt.UserRole:
-            return super(BrandsModel, self).data(index, role)
-
-        return super(BrandsModel, self).data(self.index(index.row(), role - Qt.UserRole -1), Qt.DisplayRole)
 

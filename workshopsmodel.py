@@ -1,6 +1,6 @@
 
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot, Qt, QByteArray
-from PyQt5.QtSql import QSqlQueryModel
+from basemodel import BaseModel
 
 class Workshops(QObject):
 
@@ -33,20 +33,8 @@ class Workshops(QObject):
             self._name + "%'")
 
 
-class WorkshopsModel(QSqlQueryModel):
+class WorkshopsModel(BaseModel):
 
     def __init__(self, parent:QObject=None) -> None:
-        super(WorkshopsModel, self).__init__()
-
-    def roleNames(self):
-        roles = {}
-        roles[Qt.UserRole + 1] = QByteArray("id".encode())
-        roles[Qt.UserRole + 2] = QByteArray("name".encode())
-        return roles
-
-    def data(self, index, role):
-        if role < Qt.UserRole:
-            return super(WorkshopsModel, self).data(index, role)
-
-        return super(WorkshopsModel, self).data(self.index(index.row(), role - Qt.UserRole -1), Qt.DisplayRole)
+        super(WorkshopsModel, self).__init__(["id", "name"])
 
