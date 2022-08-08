@@ -11,7 +11,7 @@ import logging
 
 
 def init_connection():
-    db = QSqlDatabase.addDatabase("QMARIADB")
+    db = QSqlDatabase.addDatabase("QPSQL")
     db.setHostName(Config["HOSTNAME"])
     db.setDatabaseName(Config["DATABASE_NAME"])
     db.setUserName(Config["USERNAME"])
@@ -49,7 +49,7 @@ if __name__ == '__main__':
 
     engine = QQmlApplicationEngine()
     engine.quit.connect(app.quit)
-    engine.load("mainWindow.qml")
+    engine.load("./gui/mainWindow.qml")
 
     if not engine.rootObjects():
         sys.exit(-1)

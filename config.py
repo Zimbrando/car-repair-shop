@@ -1,7 +1,7 @@
 
 Config = {
     "HOSTNAME" : "localhost",
-    "DATABASE_NAME" : "car_repair_shop",
-    "USERNAME" : "zimbro",
+    "DATABASE_NAME" : "postgres",
+    "USERNAME" : "postgres",
     "PASSWORD" : "nicecar"
 }
