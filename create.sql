@@ -3,7 +3,7 @@
 
 DROP TABLE IF EXISTS LAVORI CASCADE;
 CREATE TABLE LAVORI (
-     idDipendente SERIAL NOT NULL,
+     idDipendente INT NOT NULL,
      data_assunzione date NOT NULL,
      idOfficina INT NOT NULL,
      CONSTRAINT ID_Lavor_Dipen_ID PRIMARY KEY (idDipendente)
@@ -89,7 +89,7 @@ DROP TABLE IF EXISTS OFFICINE CASCADE;
 CREATE TABLE OFFICINE (
      idOfficina SERIAL NOT NULL,
      max_veicoli INT NOT NULL,
-     via VARCHAR(20) NOT NULL,
+     via VARCHAR(40) NOT NULL,
      citta VARCHAR(20) NOT NULL,
      cap VARCHAR(5) NOT NULL,
      civico INT NOT NULL,

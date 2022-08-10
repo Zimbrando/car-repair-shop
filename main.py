@@ -2,7 +2,7 @@ from PyQt5.QtGui import QGuiApplication
 from PyQt5.QtQml import QQmlApplicationEngine, qmlRegisterType
 from PyQt5.QtSql import QSqlDatabase
 
-from workshopsmodel import Workshops
+from workshopsmodel import WorkshopsModel
 from vehiclesmodel import Vehicles, BrandsModel
 from config import Config
 
@@ -43,7 +43,7 @@ if __name__ == '__main__':
     init_connection()
 
     #register types
-    qmlRegisterType(Workshops, 'Workshops', 1, 0, 'Workshops')
+    qmlRegisterType(WorkshopsModel, 'WorkshopsModel', 1, 0, 'WorkshopsModel')
     qmlRegisterType(Vehicles, 'Vehicles', 1, 0, 'Vehicles')
     qmlRegisterType(BrandsModel, 'Vehicles.BrandsModel', 1, 0, 'BrandsModel')
 

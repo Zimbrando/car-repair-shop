@@ -4,7 +4,7 @@ import QtQuick.Controls 1.4 as QC1
 import QtQuick.Layouts 1.15
 import QtQuick.Controls.Styles 1.4
 
-import Workshops 1.0
+import WorkshopsModel 1.0
 import Vehicles 1.0
 import Vehicles.BrandsModel 1.0
 
@@ -131,7 +131,7 @@ ApplicationWindow {
 
                 Repeater{
                     id: workShopsRepeater
-                    model: root.worskShopsModel
+                    model: WorkshopsModel { }
                     
                     delegate: Item {
                         id: workShopDelegate
@@ -163,9 +163,6 @@ ApplicationWindow {
                                     scale: 1.1
                                 }
                             }
-
-
-
                         ]
 
                         Behavior on scale {
@@ -187,7 +184,7 @@ ApplicationWindow {
                                 id: workShopName
                                 Layout.fillWidth: true
                                 Layout.fillHeight: true
-                                text: modelData.name
+                                text: model.via
                                 color: "white"
                                 horizontalAlignment: Qt.AlignHCenter
                                 verticalAlignment: Qt.AlignVCenter
@@ -200,7 +197,7 @@ ApplicationWindow {
                                 id: workShopAddress
                                 Layout.fillWidth: true
                                 Layout.fillHeight: true
-                                text: modelData.address
+                                text: model.citta
                                 color: "white"
                                 horizontalAlignment: Qt.AlignHCenter
                                 verticalAlignment: Qt.AlignTop
@@ -225,7 +222,6 @@ ApplicationWindow {
                             }
                             onClicked:{
                                     mainStack.push(workshopDetails)
-
                             }
 
                         }
@@ -375,11 +371,6 @@ ApplicationWindow {
                                     title: "name"
                                     role: "name"
                                 }
-                            }
-                            Workshops {
-                                id: data
-
-                                name: nameFilter.text
                             }
                         }
 
