@@ -4,6 +4,8 @@ import QtQuick.Controls 1.4 as QC1
 import QtQuick.Layouts 1.15
 import QtQuick.Controls.Styles 1.4
 
+import "./shared"
+
 import WorkshopsModel 1.0
 import Vehicles 1.0
 import Vehicles.BrandsModel 1.0
@@ -12,12 +14,20 @@ import Vehicles.BrandsModel 1.0
 ApplicationWindow {
     id: mainWindow
 
+    property alias appPalette: applicationPalette
+    
     visible: true
     
     height: 800
     width: 1200
 
     title: "CAR REPAIR SHOP"
+
+
+    GuiPalette{
+        id: applicationPalette
+    }
+
 
     Item{
 
@@ -60,7 +70,7 @@ ApplicationWindow {
             
             id: background
             anchors.fill: parent
-            color: "#1F1F1F"
+            color: appPalette.window
         }
 
 
@@ -82,8 +92,8 @@ ApplicationWindow {
                 XAnimator {
                     from: (mainStack.mirrored ? -1 : 1) * mainStack.width
                     to: 0
-                    duration: 150
-                    easing.type: Easing.InOutQuad
+                    duration: 100
+                    easing.type: Easing.InOutSin
                 }
             }
 
@@ -91,8 +101,8 @@ ApplicationWindow {
                 XAnimator {
                     from: 0
                     to: (mainStack.mirrored ? -1 : 1) * mainStack.width
-                    duration: 150
-                    easing.type: Easing.InOutQuad
+                    duration: 100
+                    easing.type: Easing.InOutSin
                 }
             }
 
@@ -103,7 +113,7 @@ ApplicationWindow {
         Component{
             id: mainPage 
             WorkshopsView{ 
-
+                appPalette: mainWindow.appPalette
             }
         }
         
@@ -113,6 +123,7 @@ ApplicationWindow {
             id: workshopDetails 
             WorkshopPage{ 
                 stackRef: mainStack
+                appPalette: mainWindow.appPalette
             }
         }
 

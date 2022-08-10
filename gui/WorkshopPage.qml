@@ -14,6 +14,7 @@ Item{
     id: root
 
     property var stackRef: undefined
+    property var appPalette: undefined
 
     Item {
         id: backAction
@@ -37,7 +38,7 @@ Item{
                     name: "unselected"
                     PropertyChanges {
                         target: backRectangle
-                        color: "#292929"
+                        color: appPalette.dark
                         scale: 1
                     }
                 },
@@ -45,7 +46,7 @@ Item{
                     name: "selected" 
                     PropertyChanges {
                         target: backRectangle
-                        color: "#2c2c2c"
+                        color: appPalette.midLight
                     }
                 }
             ]  
@@ -154,14 +155,14 @@ Item{
                 color: "transparent"
                 implicitWidth: view.width
                 implicitHeight: view.height
-                border.color: "#2c2c2c"
+                border.color: appPalette.midLight
                 radius: 10
             }
             tab: Rectangle{
                 id:tabBackground
-                color:  "#2e2e2e"
+                color: appPalette.light
                 border{
-                    color: styleData.selected ? "limegreen" : "#2c2c2c"
+                    color: styleData.selected ? appPalette.limeGreen : appPalette.midLight
                     width: 2
                 }
                 Layout.fillWidth: true
@@ -177,7 +178,7 @@ Item{
                         name: "unselected"
                         PropertyChanges {
                             target: tabBackground
-                            color: "#292929"
+                            color: appPalette.dark
                         }
                         PropertyChanges {
                             target: tabBackground
@@ -188,7 +189,7 @@ Item{
                         name: "selected" 
                         PropertyChanges {
                             target: tabBackground
-                            color: "#2c2c2c"
+                            color: appPalette.midLight
                         }
                         PropertyChanges {
                             target: tabBackground
@@ -199,7 +200,7 @@ Item{
 
                 Label {
                     id: textLabel
-                    color: styleData.selected ?  "limegreen" :  "white"
+                    color: styleData.selected ?  appPalette.limeGreen :  appPalette.text
                     anchors.centerIn: parent
                     text: styleData.title
                     minimumPointSize: 1

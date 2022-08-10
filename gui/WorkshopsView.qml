@@ -10,24 +10,45 @@ import WorkshopsModel 1.0
 
 Item{
     id: root
-    
-    /////////////////////////APPLICATION TITLE/////////////////////////
+    property var appPalette: undefined
 
+    //Rectangle{
+    //    id: titleBar
+    //    width: parent.width * 1.1
+    //    height: parent.height *.06
+    //    anchors{
+    //        top: parent.top
+    //        topMargin: -5
+    //        horizontalCenter: parent.horizontalCenter
+    //    }
+//
+    //    color: appPalette.light
+    //}
+
+
+    /////////////////////////APPLICATION TITLE/////////////////////////
     Label{
         id: mainTitle
-        width: contentWidth
-        height: parent.height *.05
+        width: root.width * .35
+        height: root.height *.05
         anchors{
-            top: parent.top
-            horizontalCenter: parent.horizontalCenter
+            verticalCenter: titleBar.verticalCenter
+            left: parent.left
         }
+        horizontalAlignment: Qt.AlignHCenter
+        verticalAlignment: Qt.AlignVCenter
         font{
             pointSize: 20
             bold: true
-            family: "Helvetica"
+            family: "Ubuntu"
         }
-        color: "#32951C"
+        color: root.appPalette.limeGreen
         text: "CAR WORKSHOP MANAGER"
+        background: Rectangle{
+            anchors.fill: parent
+            color: appPalette.dark
+            radius: 10
+        }
 
     }
 
@@ -41,7 +62,9 @@ Item{
 
         spacing: 10
         anchors{ 
-            centerIn: parent
+            top: mainTitle.bottom
+            topMargin: parent.height *.03
+            horizontalCenter: parent.horizontalCenter
         }
 
         Repeater{
@@ -60,7 +83,7 @@ Item{
                         name: "unselected"
                         PropertyChanges {
                             target: backGroundLabel
-                            color: "#292929"
+                            color: root.appPalette.dark
                         }
                         PropertyChanges {
                             target: workShopDelegate
@@ -71,7 +94,7 @@ Item{
                         name: "selected" 
                         PropertyChanges {
                             target: backGroundLabel
-                            color: "#2c2c2c"
+                            color: root.appPalette.midLight
                         }
                         PropertyChanges {
                             target: workShopDelegate
@@ -88,36 +111,54 @@ Item{
                     id: backGroundLabel
                     anchors.fill: parent
                     radius: 10
+                    border{
+                        color: root.appPalette.light
+
+                    }
                 }
 
                 ColumnLayout{
                     id: textAligner
+                    width: parent.width
+                    height: parent.height *.5
                     anchors{
-                        fill:parent 
+                        centerIn: parent
                     }
                     Label{
                         id: workShopName
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
+                        Layout.preferredWidth: contentWidth +10
+                        Layout.preferredHeight: contentHeight +10
+                        Layout.alignment: Qt.AlignCenter
                         text: model.via
-                        color: "white"
+                        color: appPalette.text
                         horizontalAlignment: Qt.AlignHCenter
                         verticalAlignment: Qt.AlignVCenter
                         font{
                             pointSize: 16
                         }
+                        background: Rectangle{
+                            anchors.fill: parent
+                            color: appPalette.light
+                            radius: 10
+                        }
                         
                     }
                     Label{
                         id: workShopAddress
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
+                        Layout.preferredWidth: contentWidth + 10
+                        Layout.preferredHeight: contentHeight + 10
+                        Layout.alignment: Qt.AlignCenter
                         text: model.citta
-                        color: "white"
+                        color: appPalette.text
                         horizontalAlignment: Qt.AlignHCenter
-                        verticalAlignment: Qt.AlignTop
+                        verticalAlignment: Qt.AlignVCenter
                         font{
                             pointSize: 12
+                        }
+                        background: Rectangle{
+                            anchors.fill: parent
+                            color: appPalette.light
+                            radius: 10
                         }
                     }
                 }
@@ -143,4 +184,6 @@ Item{
             }
         }
     }
+
+    
 }
