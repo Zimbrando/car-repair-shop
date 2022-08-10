@@ -61,9 +61,16 @@ VALUES('Rossi', 'Mario', 'ASD', '3124354234'),
     ('Federici', 'Federico', 'ASD', '3124354234'),
     ('Bianchi', 'Alice', 'ASD', '3124354234');
 
+-- Tipo servizi
+INSERT INTO public.tipo_servizi
+(tariffa, nome)
+VALUES (20, 'Tagliando'),
+    (35, 'Riparazione meccanica'),
+    (40, 'Riparazione elettronica');
+
 -- Servizi
 INSERT INTO public.servizi
-(tempo_stimato, descrizione, data_servizio, ora, idofficina, idcliente, tipo, idveicolo)
+(tempo_stimato, descrizione, data_servizio, ora, idofficina, idcliente, idtipo, idveicolo)
 VALUES(1, 'Kilometraggio corrente: 140.000km', '12/08/2022', '15:00', 1, 1, 1, 1),
     (2, 'Rumore strano alla partenza', '10/08/2022', '9:00', 2, 2, 2, 2);
 
@@ -86,24 +93,24 @@ VALUES('978020137962', 'Filtro Aria', 'Soft tech', 10.50),
 
 -- Componenti utilizzati
 INSERT INTO public.componenti
-(seriale, codiceean, idservizio)
-VALUES('1425332', '978020137962', 1),
-    ('1435672', '938022117962', 1),
-    ('1231232', '938022117962', 2);
+(seriale, codiceean, idservizio, idofficina)
+VALUES('1425332', '978020137962', 1, 1),
+    ('1435672', '938022117962', 1, 1),
+    ('1231232', '938022117962', 2, 2);
 
 -- Componenti in magazzino
 INSERT INTO public.componenti
-    (seriale, codiceean)
-VALUES('1425432', '978020137962'),
-    ('1425232', '978020137962'),
-    ('1435442', '975740137922'),
-    ('1425242', '973020137962'),
-    ('1725436', '973020137962'),
-    ('1435632', '918027187962'),
-    ('1325672', '918027187962'),
-    ('1225432', '978040155962'),
-    ('1416432', '978040155962'),
-    ('1423477', '938022117962');
+    (seriale, codiceean, idofficina)
+VALUES('1425432', '978020137962', 1),
+    ('1425232', '978020137962', 1),
+    ('1435442', '975740137922', 1),
+    ('1425242', '973020137962', 2),
+    ('1725436', '973020137962', 2),
+    ('1435632', '918027187962', 1),
+    ('1325672', '918027187962', 1),
+    ('1225432', '978040155962', 2),
+    ('1416432', '978040155962', 2),
+    ('1423477', '938022117962', 2);
 
 -- Lavori
 INSERT INTO public.lavori

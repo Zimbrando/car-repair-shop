@@ -20,6 +20,14 @@ CREATE TABLE DIPENDENTI (
      CONSTRAINT ID_Dipendente_ID PRIMARY KEY (idDipendente)
 );
 
+DROP TABLE IF EXISTS TIPO_SERVIZI CASCADE;
+CREATE TABLE TIPO_SERVIZI (
+     idTipo SERIAL NOT NULL,
+     tariffa NUMERIC(4,2) NOT NULL,
+     nome VARCHAR(30) NOT NULL,
+     CONSTRAINT ID_Tipo_servizio_ID PRIMARY KEY (idTipo),
+     CONSTRAINT SID_Tipo_servizio_ID UNIQUE (nome)
+);
 
 DROP TABLE IF EXISTS CLASSE_COMPONENTI CASCADE;
 CREATE TABLE CLASSE_COMPONENTI (
@@ -48,6 +56,7 @@ CREATE TABLE COMPONENTI (
      seriale VARCHAR(30) NOT NULL,
      codiceEAN VARCHAR(30) NOT NULL,
      idServizio INT,
+     idOfficina INT NOT NULL,
      CONSTRAINT ID_Componente_ID PRIMARY KEY (seriale),
      CONSTRAINT SID_Componente_ID UNIQUE (idComponente)
 );
@@ -59,7 +68,7 @@ CREATE TABLE ESITI (
      eseguito BOOLEAN NOT NULL,
      data_chiusura date NOT NULL,
      descrizione VARCHAR(256),
-     importo NUMERIC(10,2),
+     importo NUMERIC(6,2),
      CONSTRAINT ID_Esito_ID PRIMARY KEY (idEsito),
      CONSTRAINT SID_Esito_Servi_ID UNIQUE (idServizio)
 );
@@ -105,7 +114,7 @@ CREATE TABLE SERVIZI (
      ora TIME NOT NULL,
      idOfficina INT NOT NULL,
      idCliente INT NOT NULL,
-     tipo INT NOT NULL,
+     idTipo INT NOT NULL,
      idVeicolo INT NOT NULL,
      CONSTRAINT ID_Servizio_ID PRIMARY KEY (idServizio),
      CONSTRAINT SID_Servizio_ID UNIQUE (idCliente, idOfficina, data_servizio, ora)
@@ -137,6 +146,10 @@ ALTER TABLE COMPONENTI ADD CONSTRAINT REF_Compo_Servi_FK
      FOREIGN KEY (idServizio)
      REFERENCES SERVIZI;
 
+ALTER TABLE COMPONENTI ADD CONSTRAINT REF_Compo_Offic_FK
+     FOREIGN KEY (idOfficina)
+     REFERENCES OFFICINE;
+
 ALTER TABLE ESITI ADD CONSTRAINT SID_Esito_Servi_FK
      FOREIGN KEY (idServizio)
      REFERENCES SERVIZI;
@@ -164,6 +177,10 @@ ALTER TABLE SERVIZI ADD CONSTRAINT EQU_Servi_Clien
 ALTER TABLE VEICOLI ADD CONSTRAINT REF_Veico_March_FK
      FOREIGN KEY (idMarchio)
      REFERENCES MARCHI;
+
+ALTER TABLE SERVIZI ADD CONSTRAINT REF_Servi_Tipo__FK
+     FOREIGN KEY (idTipo)
+     REFERENCES TIPO_SERVIZI;
 
 
 -- INDEX Section
@@ -225,6 +242,9 @@ CREATE UNIQUE INDEX SID_Servizio_IND
 
 CREATE INDEX REF_Servi_Veico_IND
      on SERVIZI (idVeicolo);
+
+CREATE INDEX REF_Servi_Tipo__IND
+     on SERVIZI (idTipo);
 
 CREATE INDEX REF_Servi_Offic_IND
      on SERVIZI (idOfficina);
