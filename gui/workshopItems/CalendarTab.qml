@@ -83,6 +83,25 @@ Item{
                 width: 2
             }
             color: "transparent"
+
+            Label{
+                id: selectedDateLabel
+                width: parent.width
+                height: parent.height *.05
+                color: appPalette.text
+                font{
+                    pointSize: 16
+                }
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                text: reservationsCalendar.selectedDate.toLocaleDateString();
+                background: Rectangle{
+                            anchors.fill: parent
+                            color: appPalette.light
+                            radius: 10
+                }
+
+            }
         }
 
     }
