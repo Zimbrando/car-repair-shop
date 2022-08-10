@@ -1,6 +1,6 @@
 
 from PyQt5.QtCore import QObject
-from basemodel import BaseModel
+from .basemodel import BaseModel
 
 class WorkshopsModel(BaseModel):
 

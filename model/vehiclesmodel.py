@@ -1,6 +1,6 @@
 
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
-from basemodel import BaseModel
+from .basemodel import BaseModel
 
 class Vehicles(QObject):
 

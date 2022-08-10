@@ -1,7 +1,6 @@
 from PyQt5.QtCore import QObject, QByteArray, Qt
 from PyQt5.QtSql import QSqlQueryModel
 
-
 class BaseModel(QSqlQueryModel):
 
     def __init__(self, roles:list, parent:QObject=None) -> None:

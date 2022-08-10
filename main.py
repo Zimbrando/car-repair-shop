@@ -2,8 +2,9 @@ from PyQt5.QtGui import QGuiApplication
 from PyQt5.QtQml import QQmlApplicationEngine, qmlRegisterType
 from PyQt5.QtSql import QSqlDatabase
 
-from workshopsmodel import WorkshopsModel
-from vehiclesmodel import Vehicles, BrandsModel
+from model.workshopsmodel import WorkshopsModel
+from model.vehiclesmodel import Vehicles, BrandsModel
+from model.componentsmodel import Components
 from config import Config
 
 import sys
@@ -46,6 +47,7 @@ if __name__ == '__main__':
     qmlRegisterType(WorkshopsModel, 'WorkshopsModel', 1, 0, 'WorkshopsModel')
     qmlRegisterType(Vehicles, 'Vehicles', 1, 0, 'Vehicles')
     qmlRegisterType(BrandsModel, 'Vehicles.BrandsModel', 1, 0, 'BrandsModel')
+    qmlRegisterType(Components, 'Components', 1, 0, 'Components')
 
     engine = QQmlApplicationEngine()
     engine.quit.connect(app.quit)

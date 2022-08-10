@@ -136,7 +136,7 @@ Item{
                         workShopDelegate.state = "unselected"
                     }
                     onClicked:{
-                            mainStack.push(workshopDetails)
+                        mainStack.push(workshopDetails)
                     }
 
                 }
