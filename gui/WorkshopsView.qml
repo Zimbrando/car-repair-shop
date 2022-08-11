@@ -32,7 +32,7 @@ Item{
         width: root.width * .35
         height: root.height *.05
         anchors{
-            verticalCenter: titleBar.verticalCenter
+            top: parent.top
             left: parent.left
         }
         horizontalAlignment: Qt.AlignHCenter
@@ -75,6 +75,7 @@ Item{
                 id: workShopDelegate
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                property var aIndex: index
 
                 state: "unselected"
 
@@ -177,6 +178,7 @@ Item{
                         workShopDelegate.state = "unselected"
                     }
                     onClicked:{
+                        mainRoot.selectedWorkShop = workShopDelegate.aIndex + 1
                         mainStack.push(workshopDetails)
                     }
 

@@ -5,8 +5,13 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls.Styles 1.4
 
 import Employees 1.0
+import "../shared"
 
 Item{
+    id: root
+    property var appPalette: undefined
+    property int workShopIndex: undefined
+
     anchors.fill: parent
 
     TextField {
@@ -20,6 +25,7 @@ Item{
     }
 
     QC1.TableView {
+        id: employeesTable
         height: parent.height *.7
         width: parent.width * .8
         anchors{
@@ -30,39 +36,51 @@ Item{
         model: data.model
         backgroundVisible: false
         alternatingRowColors: false
+        frameVisible: false
+        sortIndicatorVisible: false
 
-        headerDelegate: Rectangle {
-            color: "transparent"
+        style: TableViewTheme{
+            tableRef: employeesTable
         }
-
-        rowDelegate: Rectangle{
-            color: "transparent"
-        }
+        
 
         QC1.TableViewColumn {
-            title: "Nome"
+            title: "Name"
             role: "nome"
+            movable: false
+            resizable: false
+            width: employeesTable.width / employeesTable.columnCount 
+
         }
 
         QC1.TableViewColumn {
-            title: "Cognome"
+            title: "Surname"
             role: "cognome"
+            movable: false
+            resizable: false
+            width: employeesTable.width / employeesTable.columnCount 
         }
         
         QC1.TableViewColumn {
-            title: "Codice fiscale"
+            title: "Tax Code"
             role: "codice_fiscale"
+            movable: false
+            resizable: false
+            width: employeesTable.width / employeesTable.columnCount
         }
         
         QC1.TableViewColumn {
             title: "Email"
             role: "email"
+            movable: false
+            resizable: false
+            width: employeesTable.width / employeesTable.columnCount
         }
     }
 
     Employees {
         id: data
-        workshop: 1
+        workshop: root.workShopIndex
         filter: nameFilter.text
     }
 }

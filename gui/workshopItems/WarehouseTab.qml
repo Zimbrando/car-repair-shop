@@ -6,6 +6,8 @@ import QtQuick.Controls.Styles 1.4
 
 import Components 1.0
 
+import "../shared"
+
 Item{
     anchors.fill: parent
 
@@ -22,6 +24,7 @@ Item{
     }
 
     QC1.TableView {
+        id: warehouseTable
         height: parent.height *.7
         width: parent.width * .8
         anchors{
@@ -32,33 +35,51 @@ Item{
         model: data.model
         backgroundVisible: false
         alternatingRowColors: false
+        frameVisible: false
+        sortIndicatorVisible: false
 
-        headerDelegate: Rectangle {
-            color: "transparent"
-        }
-
-        rowDelegate: Rectangle{
-            color: "transparent"
+        style: TableViewTheme{
+            tableRef: warehouseTable
         }
 
         QC1.TableViewColumn {
+            title: "Serial #"
             role: "seriale"
+            movable: false
+            resizable: false
+            width: warehouseTable.width / warehouseTable.columnCount 
         }
 
         QC1.TableViewColumn {
+            title: "Name"
             role: "nome"
+            movable: false
+            resizable: false
+            width: warehouseTable.width / warehouseTable.columnCount 
         }
 
         QC1.TableViewColumn {
+            title: "Brand"
             role: "marca"
+            movable: false
+            resizable: false
+            width: warehouseTable.width / warehouseTable.columnCount 
         }
 
         QC1.TableViewColumn {
+            title: "Price"
             role: "prezzo"
+            movable: false
+            resizable: false
+            width: warehouseTable.width / warehouseTable.columnCount 
         }
 
         QC1.TableViewColumn {
+            title: "Quantity"
             role: "quantita"
+            movable: false
+            resizable: false
+            width: warehouseTable.width / warehouseTable.columnCount 
         }
     }
 

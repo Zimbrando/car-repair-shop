@@ -7,6 +7,8 @@ import QtQuick.Controls.Styles 1.4
 import Vehicles 1.0
 import Vehicles.BrandsModel 1.0
 
+import "../shared"
+
 Item{
     anchors.fill: parent
 
@@ -21,6 +23,7 @@ Item{
     }
 
     QC1.TableView {
+        id: serviceTable
         height: parent.height *.7
         width: parent.width * .8
         anchors{
@@ -31,23 +34,27 @@ Item{
         model: data.model
         backgroundVisible: false
         alternatingRowColors: false
+        frameVisible: false
+        sortIndicatorVisible: false
 
-        headerDelegate: Rectangle {
-            color: "transparent"
-        }
-
-        rowDelegate: Rectangle{
-            color: "transparent"
+        style: TableViewTheme{
+            tableRef: serviceTable
         }
 
         QC1.TableViewColumn {
             title: "ID"
             role: "id"
+            movable: false
+            resizable: false
+            width: serviceTable.width / serviceTable.columnCount 
         }
 
         QC1.TableViewColumn {
-            title: "name"
+            title: "Name"
             role: "name"
+            movable: false
+            resizable: false
+            width: serviceTable.width / serviceTable.columnCount 
         }
     }
 }

@@ -15,6 +15,7 @@ Item{
 
     property var stackRef: undefined
     property var appPalette: undefined
+    property int workShopIndex: undefined
 
     Item {
         id: backAction
@@ -136,6 +137,8 @@ Item{
             title: "Employees"
             EmployeesTab{
                 anchors.fill: parent
+                appPalette: root.appPalette
+                workShopIndex: root.workShopIndex
             }
             
         }

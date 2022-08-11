@@ -18,8 +18,8 @@ ApplicationWindow {
     
     visible: true
     
-    height: 800
-    width: 1200
+    height: 1080
+    width: 1920
 
     title: "CAR REPAIR SHOP"
 
@@ -31,10 +31,10 @@ ApplicationWindow {
 
     Item{
 
-        id: root
+        id: mainRoot
 
         //TODO remove this
-
+        property int selectedWorkShop: -1
         property var worskShopsModel:[
             {
                 name: "Workshop 1",
@@ -93,7 +93,7 @@ ApplicationWindow {
                     from: (mainStack.mirrored ? -1 : 1) * mainStack.width
                     to: 0
                     duration: 100
-                    easing.type: Easing.InOutSin
+                    easing.type: Easing.InOutQuad
                 }
             }
 
@@ -102,7 +102,7 @@ ApplicationWindow {
                     from: 0
                     to: (mainStack.mirrored ? -1 : 1) * mainStack.width
                     duration: 100
-                    easing.type: Easing.InOutSin
+                    easing.type: Easing.InOutQuad
                 }
             }
 
@@ -122,6 +122,7 @@ ApplicationWindow {
         Component{
             id: workshopDetails 
             WorkshopPage{ 
+                workShopIndex: mainRoot.selectedWorkShop
                 stackRef: mainStack
                 appPalette: mainWindow.appPalette
             }
