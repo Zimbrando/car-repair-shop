@@ -4,8 +4,7 @@ import QtQuick.Controls 1.4 as QC1
 import QtQuick.Layouts 1.15
 import QtQuick.Controls.Styles 1.4
 
-import Vehicles 1.0
-import Vehicles.BrandsModel 1.0
+import Services 1.0
 
 Item{
     anchors.fill: parent
@@ -28,7 +27,7 @@ Item{
             topMargin: parent.height *.1
             horizontalCenter: parent.horizontalCenter
         }
-        model: data.model
+        model: dataServices.model
         backgroundVisible: false
         alternatingRowColors: false
 
@@ -41,13 +40,59 @@ Item{
         }
 
         QC1.TableViewColumn {
-            title: "ID"
-            role: "id"
+            title: "Completato"
+            role: "completato"
+            width: 40
         }
 
         QC1.TableViewColumn {
-            title: "name"
-            role: "name"
+            title: "Ora"
+            role: "data_servizio"
+            delegate: Text{
+                text: model.data_servizio ? model.data_servizio.toLocaleDateString() : ""
+                color: "white"
+            }
+            width: 150
         }
+
+        QC1.TableViewColumn {
+            title: "Marca"
+            role: "marca"
+            width: 60
+        }
+
+        QC1.TableViewColumn {
+            title: "Anno"
+            role: "anno"
+            width: 40
+        }
+
+        QC1.TableViewColumn {
+            title: "Modello"
+            role: "modello"
+            width: 50
+        }
+
+        QC1.TableViewColumn {
+            title: "Nome"
+            role: "nome_cliente"
+            width: 80
+        }
+
+        QC1.TableViewColumn {
+            title: "Cognome"
+            role: "cognome"
+            width: 80
+        }
+
+        QC1.TableViewColumn {
+            title: "Descrizione"
+            role: "descrizione"
+        }
+    }
+
+    Services {
+        id: dataServices
+        workshop: 1
     }
 }
