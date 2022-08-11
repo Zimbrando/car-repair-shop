@@ -16,21 +16,31 @@ Item{
 
     TextField {
         id: nameFilter
-        height: parent.height *.1
-        width: parent.width * .8
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
-        anchors.topMargin: 15
+        height: parent.height *.05
+        width: parent.width * .5
+        anchors{
+            top: parent.top
+            left: parent.left
+            topMargin: parent.height *.05
+            leftMargin: anchors.topMargin
+        }
         placeholderText: "Find employee"
+        Rectangle{
+            color: "transparent"
+            border.width: 2
+            border.color: "red" 
+            anchors.fill: parent
+        }
+        //style: TextFieldTheme{}
     }
 
     QC1.TableView {
         id: employeesTable
-        height: parent.height *.7
-        width: parent.width * .8
+        height: parent.height *.8
+        width: parent.width * .95
         anchors{
             top: nameFilter.bottom
-            topMargin: parent.height *.1
+            topMargin: parent.height *.05
             horizontalCenter: parent.horizontalCenter
         }
         model: data.model
@@ -43,6 +53,12 @@ Item{
             tableRef: employeesTable
         }
         
+        Rectangle{
+            color: "transparent"
+            border.width: 2
+            border.color: "red" 
+            anchors.fill: parent
+        }
 
         QC1.TableViewColumn {
             title: "Name"

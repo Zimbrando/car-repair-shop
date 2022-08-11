@@ -34,7 +34,7 @@ TableViewStyle {
 
     frame: Rectangle{
 
-        anchors.fill: tableRef
+        //anchors.fill: tableRef
         color: "transparent"
         border{ 
             color: appPalette.dark

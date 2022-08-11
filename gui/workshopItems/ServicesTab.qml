@@ -5,14 +5,14 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls.Styles 1.4
 
 import Services 1.0
-
 import "../shared"
 
 Item{
     id: root
-    anchors.fill: parent
     property var appPalette: undefined
     property int workShopIndex: undefined
+
+    anchors.fill: parent
 
     TextField {
         id: nameFilter
@@ -25,7 +25,7 @@ Item{
     }
 
     QC1.TableView {
-        id: serviceTable
+        id: servicesTable
         height: parent.height *.7
         width: parent.width * .8
         anchors{
@@ -40,15 +40,7 @@ Item{
         sortIndicatorVisible: false
 
         style: TableViewTheme{
-            tableRef: serviceTable
-        }
-
-        QC1.TableViewColumn {
-            title: "ID"
-            role: "id"
-            movable: false
-            resizable: false
-            width: serviceTable.width / serviceTable.columnCount 
+            tableRef: servicesTable
         }
 
         QC1.TableViewColumn {
@@ -56,7 +48,7 @@ Item{
             role: "completato"
             movable: false
             resizable: false
-            width: serviceTable.width / serviceTable.columnCount     
+            width: servicesTable.width / servicesTable.columnCount 
         }
 
         QC1.TableViewColumn {
@@ -68,7 +60,7 @@ Item{
             }
             movable: false
             resizable: false
-            width: serviceTable.width / serviceTable.columnCount  
+            width: servicesTable.width / servicesTable.columnCount 
         }
 
         QC1.TableViewColumn {
@@ -76,25 +68,23 @@ Item{
             role: "marca"
             movable: false
             resizable: false
-            width: serviceTable.width / serviceTable.columnCount  
+            width: servicesTable.width / servicesTable.columnCount 
         }
 
         QC1.TableViewColumn {
             title: "Year"
             role: "anno"
-            width: 40
             movable: false
             resizable: false
-            width: serviceTable.width / serviceTable.columnCount  
+            width: servicesTable.width / servicesTable.columnCount 
         }
 
         QC1.TableViewColumn {
             title: "Model"
             role: "modello"
-            width: 50
             movable: false
             resizable: false
-            width: serviceTable.width / serviceTable.columnCount  
+            width: servicesTable.width / servicesTable.columnCount 
         }
 
         QC1.TableViewColumn {
@@ -102,7 +92,7 @@ Item{
             role: "nome_cliente"
             movable: false
             resizable: false
-            width: serviceTable.width / serviceTable.columnCount  
+            width: servicesTable.width / servicesTable.columnCount 
         }
 
         QC1.TableViewColumn {
@@ -110,7 +100,7 @@ Item{
             role: "cognome"
             movable: false
             resizable: false
-            width: serviceTable.width / serviceTable.columnCount  
+            width: servicesTable.width / servicesTable.columnCount 
         }
 
         QC1.TableViewColumn {
@@ -118,7 +108,7 @@ Item{
             role: "descrizione"
             movable: false
             resizable: false
-            width: serviceTable.width / serviceTable.columnCount  
+            width: servicesTable.width / servicesTable.columnCount 
         }
     }
 
