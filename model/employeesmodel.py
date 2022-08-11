@@ -40,6 +40,12 @@ class Employees(QObject):
 
     @pyqtSlot()
     def refresh(self):
+        if self._workshop == -1:
+            self._model.setQuery("""SELECT D.iddipendente, D.cognome, D.nome, D.codice_fiscale, D.telefono, D.email
+                                    FROM public.dipendenti as D
+                                    WHERE (LOWER(D.cognome) like '""" + self._filter + """%' OR LOWER(D.nome) like '""" + self._filter + """%') 
+                                """)
+            return
         self._model.setQuery("""SELECT D.iddipendente, D.cognome, D.nome, D.codice_fiscale, D.telefono, D.email
                         FROM public.dipendenti as D
                         JOIN public.lavori as L on D.iddipendente = L.iddipendente  

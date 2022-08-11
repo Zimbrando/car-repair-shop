@@ -119,6 +119,8 @@ Item{
             title: "Warehouse"
             WarehouseTab{
                 anchors.fill: parent
+                appPalette: root.appPalette
+                workShopIndex: root.workShopIndex
             }
             
         }
@@ -128,6 +130,8 @@ Item{
             title: "Services"
             ServicesTab{
                 anchors.fill: parent
+                appPalette: root.appPalette
+                workShopIndex: root.workShopIndex
             }
             
         }

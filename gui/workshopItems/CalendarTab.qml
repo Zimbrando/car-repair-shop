@@ -4,6 +4,8 @@ import QtQuick.Controls 1.4 as QC1
 import QtQuick.Layouts 1.15
 import QtQuick.Controls.Styles 1.4
 
+import Services 1.0
+
 Item{
     id: root
 
@@ -102,10 +104,84 @@ Item{
                 }
 
             }
+
+            QC1.TableView {
+                height: parent.height *.7
+                width: parent.width * .8
+                anchors{
+                    top: selectedDateLabel.bottom
+                    topMargin: selectedDateLabel.height *.1
+                    horizontalCenter: parent.horizontalCenter
+                }
+                model: data.model
+                backgroundVisible: true
+                alternatingRowColors: true
+
+            //    //headerDelegate: Rectangle {
+            //    //    color: "transparent"
+            //    //}
+
+            //    //rowDelegate: Rectangle{
+            //    //    color: "transparent"
+            //    //}
+
+                QC1.TableViewColumn {
+                    title: "Completato"
+                    role: "completato"
+                    width: 40
+                }
+
+                QC1.TableViewColumn {
+                    title: "Ora"
+                    role: "ora"
+                    delegate: Text{
+                        text: model.ora ? model.ora.toLocaleTimeString() : ""
+                    }
+                    width: 70
+                }
+
+                QC1.TableViewColumn {
+                    title: "Marca"
+                    role: "marca"
+                    width: 60
+                }
+
+                QC1.TableViewColumn {
+                    title: "Anno"
+                    role: "anno"
+                    width: 40
+                }
+
+                QC1.TableViewColumn {
+                    title: "Modello"
+                    role: "modello"
+                    width: 50
+                }
+
+                QC1.TableViewColumn {
+                    title: "Nome"
+                    role: "nome_cliente"
+                    width: 80
+                }
+
+                QC1.TableViewColumn {
+                    title: "Cognome"
+                    role: "cognome"
+                    width: 80
+                }
+
+                QC1.TableViewColumn {
+                    title: "Descrizione"
+                    role: "descrizione"
+                }
+            }
         }
 
     }
 
-     
-
+    Services {
+        id: data
+        date: reservationsCalendar.selectedDate
+        workshop: 1
+    }
 }

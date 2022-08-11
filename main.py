@@ -6,6 +6,7 @@ from model.workshopsmodel import WorkshopsModel
 from model.vehiclesmodel import Vehicles, BrandsModel
 from model.componentsmodel import Components, ClassesModel
 from model.employeesmodel import Employees
+from model.servicesmodel import Services
 from config import Config
 
 import sys
@@ -54,6 +55,8 @@ if __name__ == '__main__':
     qmlRegisterType(ClassesModel, 'Components.ClassesModel', 1, 0, 'ClassesModel')
     #Employees
     qmlRegisterType(Employees, 'Employees', 1, 0, 'Employees')
+    #Services
+    qmlRegisterType(Services, 'Services', 1, 0, 'Services')
     
     engine = QQmlApplicationEngine()
     engine.quit.connect(app.quit)

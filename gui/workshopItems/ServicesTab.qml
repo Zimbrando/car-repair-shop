@@ -4,13 +4,15 @@ import QtQuick.Controls 1.4 as QC1
 import QtQuick.Layouts 1.15
 import QtQuick.Controls.Styles 1.4
 
-import Vehicles 1.0
-import Vehicles.BrandsModel 1.0
+import Services 1.0
 
 import "../shared"
 
 Item{
+    id: root
     anchors.fill: parent
+    property var appPalette: undefined
+    property int workShopIndex: undefined
 
     TextField {
         id: nameFilter
@@ -31,7 +33,7 @@ Item{
             topMargin: parent.height *.1
             horizontalCenter: parent.horizontalCenter
         }
-        model: data.model
+        model: dataServices.model
         backgroundVisible: false
         alternatingRowColors: false
         frameVisible: false
@@ -50,11 +52,78 @@ Item{
         }
 
         QC1.TableViewColumn {
-            title: "Name"
-            role: "name"
+            title: "Completed"
+            role: "completato"
             movable: false
             resizable: false
-            width: serviceTable.width / serviceTable.columnCount 
+            width: serviceTable.width / serviceTable.columnCount     
         }
+
+        QC1.TableViewColumn {
+            title: "Time"
+            role: "data_servizio"
+            delegate: Text{
+                text: model.data_servizio ? model.data_servizio.toLocaleDateString() : ""
+                color: "white"
+            }
+            movable: false
+            resizable: false
+            width: serviceTable.width / serviceTable.columnCount  
+        }
+
+        QC1.TableViewColumn {
+            title: "Brand"
+            role: "marca"
+            movable: false
+            resizable: false
+            width: serviceTable.width / serviceTable.columnCount  
+        }
+
+        QC1.TableViewColumn {
+            title: "Year"
+            role: "anno"
+            width: 40
+            movable: false
+            resizable: false
+            width: serviceTable.width / serviceTable.columnCount  
+        }
+
+        QC1.TableViewColumn {
+            title: "Model"
+            role: "modello"
+            width: 50
+            movable: false
+            resizable: false
+            width: serviceTable.width / serviceTable.columnCount  
+        }
+
+        QC1.TableViewColumn {
+            title: "Name"
+            role: "nome_cliente"
+            movable: false
+            resizable: false
+            width: serviceTable.width / serviceTable.columnCount  
+        }
+
+        QC1.TableViewColumn {
+            title: "Surname"
+            role: "cognome"
+            movable: false
+            resizable: false
+            width: serviceTable.width / serviceTable.columnCount  
+        }
+
+        QC1.TableViewColumn {
+            title: "Description"
+            role: "descrizione"
+            movable: false
+            resizable: false
+            width: serviceTable.width / serviceTable.columnCount  
+        }
+    }
+
+    Services {
+        id: dataServices
+        workshop: root.workShopIndex
     }
 }

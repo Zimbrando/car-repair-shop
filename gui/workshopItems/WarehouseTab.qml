@@ -9,9 +9,10 @@ import Components 1.0
 import "../shared"
 
 Item{
+    id: root
     anchors.fill: parent
-
-    property int workshopId: 1
+    property var appPalette: undefined
+    property int workShopIndex: undefined
 
     TextField {
         id: nameFilter
@@ -85,7 +86,7 @@ Item{
 
     Components {
         id: data
-        workshop: workshopId
+        workshop: root.workShopIndex
         group: true
     }
 }
