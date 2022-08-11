@@ -14,23 +14,27 @@ Item{
 
     anchors.fill: parent
 
-    TextField {
+    QC1.TextField {
         id: nameFilter
-        height: parent.height *.1
-        width: parent.width * .8
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
-        anchors.topMargin: 15
+        height: parent.height *.05
+        width: parent.width * .5
+        anchors{
+            top: parent.top
+            left: parent.left
+            topMargin: parent.height *.05
+            leftMargin: anchors.topMargin
+        }
         placeholderText: "Find service"
+        style: TextFieldTheme{}
     }
 
     QC1.TableView {
         id: servicesTable
-        height: parent.height *.7
-        width: parent.width * .8
+        height: parent.height *.8
+        width: parent.width * .95
         anchors{
             top: nameFilter.bottom
-            topMargin: parent.height *.1
+            topMargin: parent.height *.05
             horizontalCenter: parent.horizontalCenter
         }
         model: dataServices.model
@@ -44,23 +48,72 @@ Item{
         }
 
         QC1.TableViewColumn {
-            title: "Completed"
+            title: "Status"
             role: "completato"
             movable: false
             resizable: false
-            width: servicesTable.width / servicesTable.columnCount 
+            width: (servicesTable.width / servicesTable.columnCount ) / 2
+            delegate: 
+            Item {
+                width: parent.width
+                height: parent.height
+
+                 Rectangle{
+                    id: completedStatus
+                    width: height
+                    height: parent.height *.5
+                    anchors{
+                        centerIn: parent
+                    }
+                    radius: width/2
+                    color:{
+                        if(!model.data_servizio){
+                            return appPalette.errorStatus
+                        }else
+                            return appPalette.okStatus
+                    }
+                    border.color: appPalette.light
+                }
+            }
         }
 
         QC1.TableViewColumn {
             title: "Time"
             role: "data_servizio"
-            delegate: Text{
-                text: model.data_servizio ? model.data_servizio.toLocaleDateString() : ""
-                color: "white"
+            delegate: 
+            Item {
+                width: parent.width
+                height: parent.height
+                Label {
+                    width: parent.width *.96
+                    height: parent.height *.8
+
+                    anchors{
+                        centerIn: parent
+                    }
+
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    color: !model.data_servizio ?  "red" : appPalette.text
+                    elide: Text.ElideRight
+                    text: model.data_servizio ? model.data_servizio.toLocaleDateString() : ""
+                    font.pointSize: 15
+                    background:Rectangle{
+                        width: parent.width 
+                        height: parent.height *.95
+                        radius: 10
+                        
+                        color: appPalette.light
+                        anchors{
+                            centerIn: parent
+                        }
+                    }
+                }
             }
+            
             movable: false
             resizable: false
-            width: servicesTable.width / servicesTable.columnCount 
+            width: (servicesTable.width / servicesTable.columnCount) * 1.5
         }
 
         QC1.TableViewColumn {
@@ -76,7 +129,7 @@ Item{
             role: "anno"
             movable: false
             resizable: false
-            width: servicesTable.width / servicesTable.columnCount 
+            width: (servicesTable.width / servicesTable.columnCount) /2
         }
 
         QC1.TableViewColumn {
@@ -84,7 +137,7 @@ Item{
             role: "modello"
             movable: false
             resizable: false
-            width: servicesTable.width / servicesTable.columnCount 
+            width: (servicesTable.width / servicesTable.columnCount ) / 2
         }
 
         QC1.TableViewColumn {
@@ -108,7 +161,7 @@ Item{
             role: "descrizione"
             movable: false
             resizable: false
-            width: servicesTable.width / servicesTable.columnCount 
+            width: (servicesTable.width / servicesTable.columnCount) * 2
         }
     }
 

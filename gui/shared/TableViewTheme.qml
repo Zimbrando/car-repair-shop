@@ -273,6 +273,43 @@ TableViewStyle {
                     centerIn: parent
                 }
             }
+
+            MouseArea{
+                id: toolTipTrigger
+                anchors.fill: parent
+                hoverEnabled: true
+            }
+
+
+            ToolTip {
+                id: control
+
+                x: toolTipTrigger.mouseX
+                y: toolTipTrigger.mouseY
+
+                implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
+                                        contentWidth + leftPadding + rightPadding)
+                implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
+                                        contentHeight + topPadding + bottomPadding)
+                margins: 6
+                padding: 6
+
+                closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent | Popup.CloseOnReleaseOutsideParent
+                text: styleData.value ? styleData.value : "Not available"
+                delay: 1000
+                visible: toolTipTrigger.containsMouse
+                contentItem: Text {
+                    text: control.text
+                    font: control.font
+                    color: "white"
+                }
+                background: Rectangle{
+                    anchors.fill: parent
+                    color: "#222222"
+                    border.color: "#80000000"
+                    border.width: 2
+                }
+            }
         }
     }
 

@@ -8,7 +8,7 @@ import QtQuick.Shapes 1.15
 TextFieldStyle {
     id: root
     textColor: appPalette.text
-    placeholderTextColor : appPalette.light
+    placeholderTextColor : appPalette.placeHolderText
     selectedTextColor: appPalette.limeGreen
     background:  Rectangle {
         implicitWidth: 100
@@ -20,7 +20,7 @@ TextFieldStyle {
         radius: 4
         smooth: true
         gradient: Gradient{
-            GradientStop { position: 1 ; color: appPalette.midlight}
+            GradientStop { position: 1 ; color: appPalette.midLight}
             GradientStop { position: 0 ; color: appPalette.window }
         }
         MouseArea {

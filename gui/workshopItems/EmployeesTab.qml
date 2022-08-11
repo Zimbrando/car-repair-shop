@@ -14,7 +14,7 @@ Item{
 
     anchors.fill: parent
 
-    TextField {
+    QC1.TextField {
         id: nameFilter
         height: parent.height *.05
         width: parent.width * .5
@@ -25,13 +25,7 @@ Item{
             leftMargin: anchors.topMargin
         }
         placeholderText: "Find employee"
-        Rectangle{
-            color: "transparent"
-            border.width: 2
-            border.color: "red" 
-            anchors.fill: parent
-        }
-        //style: TextFieldTheme{}
+        style: TextFieldTheme{}
     }
 
     QC1.TableView {
@@ -51,13 +45,6 @@ Item{
 
         style: TableViewTheme{
             tableRef: employeesTable
-        }
-        
-        Rectangle{
-            color: "transparent"
-            border.width: 2
-            border.color: "red" 
-            anchors.fill: parent
         }
 
         QC1.TableViewColumn {

@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls.Styles 1.4
 
 import "./workshopItems"
+import "./shared"
 
 import Vehicles 1.0
 import Vehicles.BrandsModel 1.0
@@ -17,78 +18,22 @@ Item{
     property var appPalette: undefined
     property int workShopIndex: undefined
 
-    Item {
+    ThemedButton{
         id: backAction
-        width: parent.width *.05
-        height: width
+        width: height
+        height: view.height *.07
         anchors{
 
             top: parent.top
             left: parent.left
-            topMargin: parent.height *.01
+            topMargin: 2
             leftMargin: anchors.topMargin
         }  
-
-        Rectangle{
-            id: backRectangle
-            anchors.fill: parent
-            radius: 10
-            state: "unselected"
-            states:[
-                State{
-                    name: "unselected"
-                    PropertyChanges {
-                        target: backRectangle
-                        color: appPalette.dark
-                        scale: 1
-                    }
-                },
-                State{
-                    name: "selected" 
-                    PropertyChanges {
-                        target: backRectangle
-                        color: appPalette.midLight
-                    }
-                }
-            ]  
-        }  
-
-        Label{
-            id: backIndicator
-                anchors{
-
-                fill: parent
-            }
-            text: "←"
-            color: "gray"
-            horizontalAlignment: Qt.AlignHCenter
-            verticalAlignment: Qt.AlignVCenter
-            font{
-                pointSize: 20
-            }
-
-            
-        }
-        
-        MouseArea{
-            id: backHandler
-            cursorShape: Qt.PointingHandCursor
-            hoverEnabled: true
-            anchors{
-
-                fill: parent
-            }
-            onEntered:{
-                backRectangle.state = "selected"
-            }
-            onExited:{
-                backRectangle.state = "unselected"
-            }
+        buttonText: "←"
+        actionHandler{
             onClicked:{
-                    stackRef.pop()
-
+                stackRef.pop()
             }
-
         }
     }
 

@@ -8,5 +8,8 @@ QtObject {
     property color midLight : "#2C2C2C"
     property color light : "#3D3D3D"
     property color text : "#FFFFF5"
+    property color placeHolderText : "#858585"
     property color limeGreen : "#3E8E41"
+    property color okStatus: "#3AAB3E"
+    property color errorStatus: "#EA2634"
 }

@@ -35,30 +35,6 @@ ApplicationWindow {
 
         //TODO remove this
         property int selectedWorkShop: -1
-        property var worskShopsModel:[
-            {
-                name: "Workshop 1",
-                address: "Via Travaglini 25"
-            },
-            {
-                name: "Workshop 2",
-                address: "Via Brombeis 69"
-            },
-            {
-                name: "Workshop 3",
-                address: "Via Zara 42"
-            },
-            {
-                name: "Workshop 4",
-                address: "Via Filippo Re 15A"
-            },
-            {
-                name: "Workshop 5",
-                address: "Via Giovanni Storti 73"
-            }
-
-            
-        ]
 
         anchors{
             fill: parent
