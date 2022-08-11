@@ -29,23 +29,23 @@ class Vehicles(QObject):
     @pyqtSlot()
     def refresh(self):
         if self._brand == -1:
-            self._model.setQuery("SELECT targa from tvehicles")
+            self._model.setQuery("SELECT targa, anno, modello, tipo from public.veicoli")
             return
             
-        self._model.setQuery("SELECT targa from tvehicles WHERE kmarca=" +
+        self._model.setQuery("SELECT targa, anno, modello, tipo from public.veicoli WHERE idmarchio=" +
             str(self._brand))
 
 
 class VehiclesModel(BaseModel):
 
     def __init__(self, parent:QObject=None) -> None:
-        super(VehiclesModel, self).__init__(["targa"])
-        super().setQuery("SELECT targa from tvehicles")
+        super(VehiclesModel, self).__init__(["targa", "anno", "modello", "tipo"])
+        super().setQuery("SELECT targa, anno, modello, tipo from public.veicoli")
 
 
 class BrandsModel(BaseModel):
     
     def __init__(self, parent:QObject=None) -> None:
-        super(BrandsModel, self).__init__(["id", "nome"])
-        super().setQuery("SELECT id, nome FROM tbrands")
+        super(BrandsModel, self).__init__(["idmarchio", "nome"])
+        super().setQuery("SELECT idmarchio, nome FROM public.marchi")
 

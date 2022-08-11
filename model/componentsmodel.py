@@ -3,7 +3,6 @@ from PyQt5.QtSql import QSqlQuery
 from .basemodel import BaseModel
 
 
-
 class Components(QObject):
 
     modelChanged = pyqtSignal(QObject)
@@ -40,6 +39,19 @@ class Components(QObject):
     def group(self, group: bool):
         self._group = group
         self.groupChanged.emit(group)
+
+    @pyqtSlot(str, str, int)    
+    def addComponent(self, seriale: str, codiceean :str, idofficina :int):
+        query = QSqlQuery()
+        query.prepare("""INSERT INTO public.componenti
+                                (seriale, codiceean, idofficina)
+                        VALUES  (:serial, :eancode, :idworkshop)""")
+        query.bindValue(":serial", seriale)
+        query.bindValue(":eancode", codiceean)
+        query.bindValue(":idworkshop", idofficina)
+        query.exec()
+
+        self.refresh()
 
     @pyqtSlot()
     def refresh(self):
@@ -80,6 +92,11 @@ class Components(QObject):
             
 
 class ComponentsModel(BaseModel):
-
     def __init__(self, parent:QObject=None) -> None:
         super(ComponentsModel, self).__init__(["seriale", "nome", "marca", "prezzo", "quantita"])
+
+
+class ClassesModel(BaseModel):
+    def __init__(self, parent:QObject=None) -> None:
+        super(ComponentsModel, self).__init__(["codiceean", "nome", "marca"])
+        super().setQuery("SELECT codiceean, nome, marca FROM public.classe_componenti")

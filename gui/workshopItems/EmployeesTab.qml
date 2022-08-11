@@ -4,6 +4,8 @@ import QtQuick.Controls 1.4 as QC1
 import QtQuick.Layouts 1.15
 import QtQuick.Controls.Styles 1.4
 
+import Employees 1.0
+
 Item{
     anchors.fill: parent
 
@@ -38,13 +40,29 @@ Item{
         }
 
         QC1.TableViewColumn {
-            title: "ID"
-            role: "id"
+            title: "Nome"
+            role: "nome"
         }
 
         QC1.TableViewColumn {
-            title: "name"
-            role: "name"
+            title: "Cognome"
+            role: "cognome"
         }
+        
+        QC1.TableViewColumn {
+            title: "Codice fiscale"
+            role: "codice_fiscale"
+        }
+        
+        QC1.TableViewColumn {
+            title: "Email"
+            role: "email"
+        }
+    }
+
+    Employees {
+        id: data
+        workshop: 1
+        filter: nameFilter.text
     }
 }
