@@ -12,4 +12,5 @@ QtObject {
     property color limeGreen : "#3E8E41"
     property color okStatus: "#3AAB3E"
     property color errorStatus: "#EA2634"
+    property color openStatus: "#E89B15"
 }

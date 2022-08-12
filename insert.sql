@@ -72,14 +72,16 @@ VALUES (20, 'Tagliando'),
 INSERT INTO public.servizi
 (tempo_stimato, descrizione, data_servizio, ora, idofficina, idcliente, idtipo, idveicolo)
 VALUES(1, 'Kilometraggio corrente: 140.000km', '12/08/2022', '15:00', 1, 1, 1, 1),
-    (2, 'Rumore strano alla partenza', '10/08/2022', '9:00', 2, 2, 2, 2);
+    (2, 'Rumore strano alla partenza', '10/08/2022', '9:00', 2, 2, 2, 2),
+    (1, 'Sostituzione radiatore', '11/08/2022', '8:00', 1, 4, 1, 4);
 
 -- Assegnazioni
 INSERT INTO public.assegnazioni
 (iddipendente, idservizio)
 VALUES(1, 1),
     (2, 1),
-    (4, 2);
+    (4, 2),
+    (2, 3);
 
 -- Classe Componenti
 INSERT INTO public.classe_componenti
@@ -131,5 +133,9 @@ VALUES(1, '23/02/2020', 1),
 INSERT INTO public.esiti
 (idservizio, eseguito, data_chiusura, descrizione, importo)
 VALUES(2, true, '11/08/2022', 'Rabbocco di olio', 40.00);
+
+INSERT INTO public.esiti
+(idservizio, eseguito, data_chiusura, descrizione)
+VALUES(3, false, '12/08/22', 'Ricambio rifiutato dal cliente');
 
 

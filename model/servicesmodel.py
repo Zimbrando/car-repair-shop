@@ -56,7 +56,7 @@ class Services(QObject):
         query = QSqlQuery()
         if self._date.isValid():
             query.prepare("""SELECT S.idservizio, S.tempo_stimato, S.descrizione, S.data_servizio, S.ora, TS.nome as tipo_servizio, V.modello, M.nome as marca,
-                                    V.anno, C.cognome, C.nome as nome_cliente, coalesce (E.idesito is not null, False) as completato
+                                    V.anno, C.cognome, C.nome as nome_cliente, coalesce (E.idesito is not null, False) as completato, E.eseguito
                             FROM public.servizi as S
                             JOIN tipo_servizi TS on S.idtipo = TS.idtipo 
                             JOIN veicoli V on S.idveicolo = V.idveicolo 
@@ -69,7 +69,7 @@ class Services(QObject):
             query.bindValue(":date", self._date)
         else:
             query.prepare("""SELECT S.idservizio, S.tempo_stimato, S.descrizione, S.data_servizio, S.ora, TS.nome as tipo_servizio, V.modello, M.nome as marca,
-                                    V.anno, C.cognome, C.nome as nome_cliente, coalesce (E.idesito is not null, False) as completato
+                                    V.anno, C.cognome, C.nome as nome_cliente, coalesce (E.idesito is not null, False) as completato, E.eseguito
                             FROM public.servizi as S
                             JOIN tipo_servizi TS on S.idtipo = TS.idtipo 
                             JOIN veicoli V on S.idveicolo = V.idveicolo 
@@ -86,9 +86,9 @@ class ServicesModel(BaseModel):
 
     def __init__(self, parent:QObject=None) -> None:
         super(ServicesModel, self).__init__(["idservizio", "tempo_stimato", "descrizione", "data_servizio", "ora", "tipo_servizio",
-                                            "modello", "marca", "anno", "cognome", "nome_cliente", "completato"])
+                                            "modello", "marca", "anno", "cognome", "nome_cliente", "completato", "eseguito"])
         super().setQuery("""SELECT S.idservizio, S.tempo_stimato, S.descrizione, S.data_servizio, S.ora, TS.nome as tipo_servizio, V.modello, M.nome as marca,
-                                V.anno, C.cognome, C.nome as nome_cliente, coalesce (E.idesito is not null, False) as completato
+                                V.anno, C.cognome, C.nome as nome_cliente, coalesce (E.idesito is not null, False) as completato, E.eseguito
                             FROM public.servizi as S
                             JOIN tipo_servizi TS on S.idtipo = TS.idtipo 
                             JOIN veicoli V on S.idveicolo = V.idveicolo 

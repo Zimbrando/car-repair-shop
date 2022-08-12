@@ -54,6 +54,7 @@ Item{
 
             CalendarTab{
                 anchors.fill: parent
+                workShopIndex: root.workShopIndex
             }
 
             

@@ -9,8 +9,8 @@ import Services 1.0
 import "../shared"
 
 Item{
-
     id: root
+    property int workShopIndex: undefined
 
     RowLayout{
         id: itemsAligner
@@ -125,10 +125,15 @@ Item{
                             }
                             radius: width/2
                             color:{
-                                if(!model.data_servizio){
-                                    return appPalette.errorStatus
-                                }else
-                                    return appPalette.okStatus
+                                if(model.completato){
+                                    if (model.eseguito) {
+                                        return appPalette.okStatus
+                                    } else {
+                                        return appPalette.errorStatus
+                                    }
+                                }else {
+                                    return appPalette.openStatus
+                                }
                             }
                             border.color: appPalette.light
                         }
@@ -266,6 +271,6 @@ Item{
     Services {
         id: data
         date: reservationsCalendar.selectedDate
-        workshop: 1
+        workshop: workShopIndex
     }
 }

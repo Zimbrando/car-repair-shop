@@ -67,10 +67,15 @@ Item{
                     }
                     radius: width/2
                     color:{
-                        if(!model.data_servizio){
-                            return appPalette.errorStatus
-                        }else
-                            return appPalette.okStatus
+                        if(model.completato){
+                            if (model.eseguito) {
+                                return appPalette.okStatus
+                            } else {
+                                return appPalette.errorStatus
+                            }
+                        }else {
+                            return appPalette.openStatus
+                        }
                     }
                     border.color: appPalette.light
                 }
