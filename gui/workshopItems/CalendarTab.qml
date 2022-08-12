@@ -20,12 +20,12 @@ Item{
             centerIn: parent
         }
         Item{
-            Layout.preferredWidth: parent.width *.35
+            Layout.preferredWidth: parent.width *.30
             Layout.fillHeight: true
             QC1.Calendar {
                 id: reservationsCalendar
                 width: parent.width
-                height: parent.height *.7
+                height: parent.height *.6
                 anchors.centerIn: parent
                 minimumDate: new Date(2022, 5, 1)
                 maximumDate: new Date(2032, 5, 1)
@@ -48,7 +48,7 @@ Item{
                 textColor: appPalette.text
                 actionHandler{
                     onClicked:{
-
+                        stackRef.push(bookingPage)
                     }
                 }
             }
@@ -65,7 +65,7 @@ Item{
 
             Label{
                 id: selectedDateLabel
-                width: parent.width *.95
+                width: parent.width *.98
                 height: parent.height *.05
                 anchors{
                     top: parent.top
@@ -93,7 +93,7 @@ Item{
             QC1.TableView {
                 id: reservationsTable
                 height: parent.height - selectedDateLabel.height - parent.height *.05
-                width: parent.width *.95
+                width: parent.width *.98
                 anchors{
                     top: selectedDateLabel.bottom
                     topMargin: parent.height *.01
@@ -110,7 +110,7 @@ Item{
                 }
 
                 QC1.TableViewColumn {
-                    title: "Status"
+                    title: ""
                     role: "completato"
                     delegate:Item {
                         width: parent.width
@@ -140,11 +140,92 @@ Item{
                     }
                     movable: false
                     resizable: false
-                    width: reservationsTable.width / reservationsTable.columnCount 
+                    width: (reservationsTable.width / reservationsTable.columnCount ) / 2
                 }
 
                 QC1.TableViewColumn {
-                    title: "Ora"
+                    title: "Type"
+                    role: "tipo_servizio"
+                    movable: false
+                    resizable: false
+                    width: (reservationsTable.width / reservationsTable.columnCount ) * 1.5
+                }
+
+                QC1.TableViewColumn {
+                    title: "ETC"
+                    role: "tempo_stimato"
+                    delegate: Item {
+                        width: parent.width
+                        height: parent.height
+                        Label {
+                            width: parent.width *.96
+                            height: parent.height *.8
+
+                            anchors{
+                                centerIn: parent
+                            }
+
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            color: !model.ora ?  "red" : appPalette.text
+                            elide: Text.ElideRight
+                            text: model.tempo_stimato ? model.tempo_stimato + "h" : ""
+                            font.pointSize: 15
+                            background:Rectangle{
+                                width: parent.width 
+                                height: parent.height *.95
+                                radius: 10
+                                
+                                color: appPalette.light
+                                anchors{
+                                    centerIn: parent
+                                }
+                            }
+
+                            MouseArea{
+                                id: toolTipTrigger
+                                anchors.fill: parent
+                                hoverEnabled: true
+                            }
+
+                            ToolTip {
+                                id: control
+
+                                x: toolTipTrigger.mouseX
+                                y: toolTipTrigger.mouseY
+
+                                implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
+                                                        contentWidth + leftPadding + rightPadding)
+                                implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
+                                                        contentHeight + topPadding + bottomPadding)
+                                margins: 6
+                                padding: 6
+
+                                closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent | Popup.CloseOnReleaseOutsideParent
+                                text: model.ora ? model.ora.getHours()+":"+model.ora.getMinutes() : "Not available"
+                                delay: 1000
+                                visible: toolTipTrigger.containsMouse
+                                contentItem: Text {
+                                    text: control.text
+                                    font: control.font
+                                    color: "white"
+                                }
+                                background: Rectangle{
+                                    anchors.fill: parent
+                                    color: "#222222"
+                                    border.color: "#80000000"
+                                    border.width: 2
+                                }
+                            }
+                        }
+                    }
+                    movable: false
+                    resizable: false
+                    width: (reservationsTable.width / reservationsTable.columnCount ) / 2
+                }
+
+                QC1.TableViewColumn {
+                    title: "Time"
                     role: "ora"
                     delegate: Item {
                         width: parent.width
@@ -161,7 +242,7 @@ Item{
                             verticalAlignment: Text.AlignVCenter
                             color: !model.ora ?  "red" : appPalette.text
                             elide: Text.ElideRight
-                            text: model.ora ? model.ora.getHours()+":"+model.ora.getMinutes() : ""
+                            text: model.ora ? model.ora.getHours()+":"+(model.ora.getMinutes() === 0 ? "00" : model.ora.getMinutes()) : ""
                             font.pointSize: 15
                             background:Rectangle{
                                 width: parent.width 
@@ -217,7 +298,7 @@ Item{
                 }
 
                 QC1.TableViewColumn {
-                    title: "Marca"
+                    title: "Brand"
                     role: "marca"
                     movable: false
                     resizable: false
@@ -225,7 +306,7 @@ Item{
                 }
 
                 QC1.TableViewColumn {
-                    title: "Anno"
+                    title: "Year"
                     role: "anno"
                     movable: false
                     resizable: false
@@ -233,7 +314,7 @@ Item{
                 }
 
                 QC1.TableViewColumn {
-                    title: "Modello"
+                    title: "Model"
                     role: "modello"
                     movable: false
                     resizable: false
@@ -241,7 +322,7 @@ Item{
                 }
 
                 QC1.TableViewColumn {
-                    title: "Nome"
+                    title: "Name"
                     role: "nome_cliente"
                     movable: false
                     resizable: false
@@ -249,7 +330,7 @@ Item{
                 }
 
                 QC1.TableViewColumn {
-                    title: "Cognome"
+                    title: "Surname"
                     role: "cognome"
                     movable: false
                     resizable: false
@@ -257,16 +338,26 @@ Item{
                 }
 
                 QC1.TableViewColumn {
-                    title: "Descrizione"
+                    title: "Description"
                     role: "descrizione"
                     movable: false
                     resizable: false
-                    width: reservationsTable.width / reservationsTable.columnCount 
+                    width: (reservationsTable.width / reservationsTable.columnCount ) * 1.5
                 }
             }
         }
 
     }
+
+    Component{
+        id: bookingPage
+        BookingPage{
+            id: bookingPageContent
+            stackReference: stackRef
+        }
+
+    }
+
 
     Services {
         id: data

@@ -322,7 +322,7 @@ TableViewStyle {
             color: appPalette.dark
             anchors{
                 fill: parent
-                bottomMargin: 5
+                //bottomMargin: 5
             }
             //x: tableView.viewport.width / tableView.columnCount + modelData * tableView.viewport.width / tableView.columnCount
         }
