@@ -6,6 +6,7 @@ from .basemodel import BaseModel
 class Components(QObject):
 
     modelChanged = pyqtSignal(QObject)
+    filterChanged = pyqtSignal(str)
     workshopChanged = pyqtSignal(int)
     groupChanged = pyqtSignal(bool)
 
@@ -14,13 +15,24 @@ class Components(QObject):
         self._model = ComponentsModel()
         self.workshopChanged.connect(self.refresh)
         self.groupChanged.connect(self.refresh)
+        self.filterChanged.connect(self.refresh)
         self._workshop = -1
         self._group = False
+        self._filter = ""
         self.refresh()
 
     @pyqtProperty(QObject, notify=modelChanged)
     def model(self):
         return self._model
+
+    @pyqtProperty(str, notify=filterChanged)
+    def filter(self):
+        return self._filter
+
+    @filter.setter
+    def filter(self, filter: str):
+        self._filter = filter
+        self.filterChanged.emit(filter)
 
     @pyqtProperty(int, notify=workshopChanged)
     def workshop(self):
@@ -60,14 +72,14 @@ class Components(QObject):
                 self._model.setQuery("""SELECT CC.nome, CC.marca, CC.prezzo, COUNT(C.seriale) as quantita 
                                         FROM public.componenti AS C
                                         JOIN public.classe_componenti AS CC ON C.codiceean = CC.codiceean
-                                        WHERE idservizio IS NULL
+                                        WHERE idservizio IS NULL AND (LOWER(CC.marca) LIKE '""" + self._filter + """%' OR LOWER(CC.nome) LIKE '""" + self._filter + """%')
                                         GROUP BY CC.codiceean       
                                     """)
             else:
                 self._model.setQuery("""SELECT C.seriale, CC.nome, CC.marca, CC.prezzo 
                                         FROM public.componenti AS C
                                         JOIN public.classe_componenti AS CC ON C.codiceean = CC.codiceean
-                                        WHERE idservizio IS NULL
+                                        WHERE idservizio IS NULL AND (LOWER(CC.marca) LIKE '""" + self._filter + """%' OR LOWER(CC.nome) LIKE '""" + self._filter + """%')
                                     """)
             return
 
@@ -76,7 +88,7 @@ class Components(QObject):
             query.prepare("""SELECT CC.nome, CC.marca, CC.prezzo, COUNT(C.seriale) as quantita 
                             FROM public.componenti AS C
                             JOIN public.classe_componenti AS CC ON C.codiceean = CC.codiceean
-                            WHERE idservizio IS NULL AND idofficina = :workshop
+                            WHERE idservizio IS NULL AND idofficina = :workshop AND (LOWER(CC.marca) LIKE '""" + self._filter + """%' OR LOWER(CC.nome) LIKE '""" + self._filter + """%')
                             GROUP BY CC.codiceean       
                         """)
             query.bindValue(":workshop", self._workshop)
@@ -84,7 +96,7 @@ class Components(QObject):
             query.prepare("""SELECT C.seriale, CC.nome, CC.marca, CC.prezzo 
                             FROM public.componenti AS C
                             JOIN public.classe_componenti AS CC ON C.codiceean = CC.codiceean
-                            WHERE idservizio IS NULL AND idofficina = :workshop 
+                            WHERE idservizio IS NULL AND idofficina = :workshop AND (LOWER(CC.marca) LIKE '""" + self._filter + """%' OR LOWER(CC.nome) LIKE '""" + self._filter + """%')
                         """)  
             query.bindValue(":workshop", self._workshop)
         query.exec()

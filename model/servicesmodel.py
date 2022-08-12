@@ -63,7 +63,7 @@ class Services(QObject):
                             JOIN clienti C on S.idcliente = C.idcliente
                             JOIN marchi M on V.idmarchio = M.idmarchio
                             LEFT JOIN esiti E on S.idservizio = E.idservizio 
-                            WHERE idofficina = :workshop AND S.data_servizio = :date
+                            WHERE idofficina = :workshop AND S.data_servizio = :date AND LOWER(S.descrizione) LIKE '%""" + self._filter + """%'
                             """)
             query.bindValue(":workshop", self._workshop)
             query.bindValue(":date", self._date)
@@ -76,7 +76,7 @@ class Services(QObject):
                             JOIN clienti C on S.idcliente = C.idcliente
                             JOIN marchi M on V.idmarchio = M.idmarchio
                             LEFT JOIN esiti E on S.idservizio = E.idservizio 
-                            WHERE idofficina = :workshop
+                            WHERE idofficina = :workshop AND LOWER(S.descrizione) LIKE '%""" + self._filter + """%'
                             """)
             query.bindValue(":workshop", self._workshop)
         query.exec()

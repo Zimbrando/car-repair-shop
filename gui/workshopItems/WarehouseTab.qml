@@ -92,5 +92,6 @@ Item{
         id: data
         workshop: root.workShopIndex
         group: false
+        filter: nameFilter.text
     }
 }
