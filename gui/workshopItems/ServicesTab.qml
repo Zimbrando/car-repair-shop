@@ -173,5 +173,6 @@ Item{
     Services {
         id: dataServices
         workshop: root.workShopIndex
+        filter: nameFilter.text
     }
 }
