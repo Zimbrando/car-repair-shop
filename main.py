@@ -5,8 +5,9 @@ from PyQt5.QtSql import QSqlDatabase
 from model.workshopsmodel import WorkshopsModel
 from model.vehiclesmodel import Vehicles, BrandsModel
 from model.componentsmodel import Components, ClassesModel
-from model.employeesmodel import Employees
-from model.servicesmodel import Services
+from model.employeesmodel import Employees, EmployeesFree
+from model.servicesmodel import Services, ServicesTypeModel
+from model.clientsmodel import Clients
 from config import Config
 
 import sys
@@ -55,9 +56,13 @@ if __name__ == '__main__':
     qmlRegisterType(ClassesModel, 'Components.ClassesModel', 1, 0, 'ClassesModel')
     #Employees
     qmlRegisterType(Employees, 'Employees', 1, 0, 'Employees')
+    qmlRegisterType(EmployeesFree, 'EmployeesFree', 1, 0, 'EmployeesFree')
     #Services
     qmlRegisterType(Services, 'Services', 1, 0, 'Services')
-    
+    qmlRegisterType(ServicesTypeModel, 'Services.ServicesTypeModel', 1, 0, 'ServicesTypeModel')
+    #Clients
+    qmlRegisterType(Clients, 'Clients', 1, 0, 'Clients')
+
     engine = QQmlApplicationEngine()
     engine.quit.connect(app.quit)
     engine.load("./gui/mainWindow.qml")

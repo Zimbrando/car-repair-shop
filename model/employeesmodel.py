@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot, QDateTime, QTime
 from PyQt5.QtSql import QSqlQuery
 from .basemodel import BaseModel
 
@@ -58,4 +58,77 @@ class EmployeesModel(BaseModel):
     def __init__(self, parent:QObject=None) -> None:
         super(EmployeesModel, self).__init__(["iddipendente", "cognome", "nome", "codice_fiscale", "telefono", "email"])
         super().setQuery("SELECT iddipendente, cognome, nome, codice_fiscale, telefono, email FROM public.dipendenti")
+
+
+
+class EmployeesFree(QObject):
+    
+    modelChanged = pyqtSignal(QObject)
+    workshopChanged = pyqtSignal(int)
+    hourChanged = pyqtSignal(QTime)
+    dateChanged = pyqtSignal(QDateTime)
+
+    def __init__(self, parent: QObject=None) -> None:
+        super().__init__(parent)
+        self._model = EmployeesModel()
+        self._hour = QTime()
+        self._date = QDateTime()
+        self._workshop = -1
+        self.workshopChanged.connect(self.refresh)
+        self.hourChanged.connect(self.refresh)
+        self.dateChanged.connect(self.refresh)
+
+    @pyqtProperty(QObject, notify=modelChanged)
+    def model(self):
+        return self._model
+
+    @pyqtProperty(int, notify=workshopChanged)
+    def workshop(self):
+        return self._workshop
+
+    @workshop.setter
+    def workshop(self, workshop: int):
+        self._workshop = workshop
+        self.workshopChanged.emit(workshop)
+
+    @pyqtProperty(QTime, notify=hourChanged)
+    def hour(self):
+        return self._hour
+
+    @hour.setter
+    def filter(self, hour: QTime):
+        self._hour = hour
+        self.hourChanged.emit(hour)
+
+    @pyqtProperty(QDateTime, notify=dateChanged)
+    def date(self):
+        return self._date
+
+    @date.setter
+    def filter(self, date: QDateTime):
+        self._date = date
+        self.dateChanged.emit(date)
+
+    @pyqtSlot()
+    def refresh(self):
+        query = QSqlQuery()
+        query.prepare("""select D.iddipendente, nome, cognome, codice_fiscale
+                            from public.dipendenti D
+                            join public.lavori L on L.iddipendente = D.iddipendente 
+                            where L.idofficina = :idworkshop except (select D.iddipendente, D.nome, D.cognome, D.codice_fiscale
+                            						from public.dipendenti D 
+                            						left join public.assegnazioni A on D.iddipendente = A.iddipendente 
+                            						left join public.servizi S on A.idservizio = S.idservizio 
+                            						join public.lavori L on L.iddipendente = D.iddipendente 
+                            						where L.idofficina = :idworkshop and :data = S.data_servizio 
+                            							and (:ora + make_interval(hours => :tempo_stimato) > S.ora and  :ora + make_interval(hours => :tempo_stimato) <= S.ora + make_interval(hours => S.tempo_stimato)
+                            								or (:ora > S.ora and :ora < S.ora + make_interval(hours => S.tempo_stimato))
+                            								or (:ora < S.ora and :ora + make_interval(hours => :tempo_stimato) > S.ora + make_interval(hours => S.tempo_stimato))
+                            								)
+                            						group by D.iddipendente) """)
+        query.bindValue(":idworkshop", self._workshop)
+        query.bindValue(":data", self._date)
+        query.bindValue(":ora", self._hour)
+        query.exec()
+        self._model.setQuery(query)
 

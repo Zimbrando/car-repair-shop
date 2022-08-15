@@ -1,7 +1,6 @@
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot, QDateTime
 from PyQt5.QtSql import QSqlQuery
 from .basemodel import BaseModel
-from datetime import date
 
 class Services(QObject):
 
@@ -51,6 +50,41 @@ class Services(QObject):
         self._date = date
         self.dateChanged.emit(date)
 
+    @pyqtSlot(int, str, QDateTime, str, int, int, int, list)
+    def addService(self, tempo: int, descrizione: str, data :QDateTime, ora: str, idcliente: int, idtipo: int, idveicolo: int, dipendenti :list[int]):
+        query = QSqlQuery()
+        query.prepare("""INSERT INTO public.servizi
+                        (tempo_stimato, descrizione, data_servizio, ora, idofficina, idcliente, idtipo, idveicolo)
+                        VALUES(:time, :desc, :date, :hour, :idworkshop, :idclient, :idtype, :idvehicle)
+                        RETURNING idservizio
+                    """)
+        query.bindValue(":time", tempo)
+        query.bindValue(":desc", descrizione)
+        query.bindValue(":date", data)
+        query.bindValue(":hour", ora)
+        query.bindValue(":idworkshop", self._workshop)
+        query.bindValue(":idclient", idcliente)
+        query.bindValue(":idtype", idtipo)
+        query.bindValue(":idvehicle", idveicolo)
+
+        if query.exec():
+            query.next()
+            idservizio = query.value(0)
+            employeeQuery = QSqlQuery()
+            for iddipendente in dipendenti: 
+                employeeQuery.prepare("""INSERT INTO public.assegnazioni
+                                        (iddipendente, idservizio)
+                                    VALUES(:idemployee, :idservice);
+                                """)
+                employeeQuery.bindValue(":idservice", idservizio)
+                employeeQuery.bindValue(":idemployee", iddipendente)
+                if not employeeQuery.exec():
+                    return False
+        else:
+            return False
+                
+
+
     @pyqtSlot()
     def refresh(self):
         query = QSqlQuery()
@@ -95,6 +129,14 @@ class ServicesModel(BaseModel):
                             JOIN clienti C on S.idcliente = C.idcliente
                             JOIN marchi M on V.idmarchio = M.idmarchio
                             LEFT JOIN esiti E on S.idservizio = E.idservizio
+                        """)
+
+class ServicesTypeModel(BaseModel):
+
+    def __init__(self, parent:QObject=None) -> None:
+        super(ServicesModel, self).__init__(["idtipo", "nome"])
+        super().setQuery("""SELECT idtipo, nome
+                            FROM public.tipo_servizi
                         """)
 
                     

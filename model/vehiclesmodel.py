@@ -1,5 +1,6 @@
 
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
+from PyQt5.QtSql import QSqlQuery
 from .basemodel import BaseModel
 
 class Vehicles(QObject):
@@ -25,6 +26,21 @@ class Vehicles(QObject):
     def brand(self, brand: int):
         self._brand = brand
         self.brandChanged.emit(brand)
+
+    @pyqtSlot(str, int, str, int, int)
+    def addVehicle(self, targa :str, anno: int, modello: str, tipo: int, idmarchio: int):
+        query = QSqlQuery()
+        query.prepare("""INSERT INTO public.veicoli
+                                (targa, anno, modello, tipo, idmarchio)
+                        VALUES(:plate, :year, :model, :type, :idbrand)
+                    """)
+        query.bindValue(":plate", targa)
+        query.bindValue(":year", anno)
+        query.bindValue(":model", modello)
+        query.bindValue(":type", tipo)
+        query.bindValue(":idbrand", idmarchio)
+
+        return query.exec()
 
     @pyqtSlot()
     def refresh(self):
