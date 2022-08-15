@@ -51,7 +51,7 @@ class Services(QObject):
         self.dateChanged.emit(date)
 
     @pyqtSlot(int, str, QDateTime, str, int, int, int, list)
-    def addService(self, tempo: int, descrizione: str, data :QDateTime, ora: str, idcliente: int, idtipo: int, idveicolo: int, dipendenti :list[int]):
+    def addService(self, tempo: int, descrizione: str, data :QDateTime, ora: str, idcliente: int, idtipo: int, idveicolo: int, dipendenti :list):
         query = QSqlQuery()
         query.prepare("""INSERT INTO public.servizi
                         (tempo_stimato, descrizione, data_servizio, ora, idofficina, idcliente, idtipo, idveicolo)

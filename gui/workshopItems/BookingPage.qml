@@ -14,6 +14,7 @@ Item{
     id: root
 
     property var stackReference
+    property var preselectedDate: undefined
 
     ThemedButton{
         id: backAction
@@ -106,51 +107,59 @@ Item{
                             color: appPalette.text
                         }
 
-                        QC1.TextField {
+                        ComboBoxThemed{
                             id: nameSelector
                             Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            placeholderText: "Type a name"
-                            style: TextFieldTheme{}
-                            onActiveFocusChanged :{
-                                if(activeFocus){
-                                     names.visible = true
-                                    names.open()   
-                                }
-                            }
-                            font{
-                                pointSize: 16
-                            }
-                            // menu: names
-                            // Menu {
-                            //     id: names
-                            //     title: "Select name"
-                            //     x: 0
-                            //     y: (nameSelector.height)
-                            //     width: nameSelector.width 
-                            //     delegate: Label{
-                            //         height: 20
-                            //         text: itemDelegate.label 
-                            //         background:Rectangle{
-                            //             anchors.fill: parent
-                            //             color: appPalette.dark
-                            //         }
-                            //     }
-                            //     Instantiator {
-                            //         model: ["marco","tiziano","ciao"]
-                            //         MenuItem {
-                            //             text: modelData
-                            //             onTriggered: {
-                            //                 nameSelector.text = text
-                            //                 names.visible = false
-                            //             }
-                            //         }
-                            //         onObjectAdded: names.insertItem(index, object)
-                            //         onObjectRemoved: names.removeItem(object)
-                            //     }
+                            Layout.preferredHeight: parent.height *.4
 
-                            // }
+                            model: ["Sarco Mterini","Viziano Tuksan","Patrizia Sangiorgi","Paul YEBOAH"]
                         }
+
+                        // QC1.TextField {
+                        //    // id: nameSelector
+                        //     Layout.fillWidth: true
+                        //     Layout.fillHeight: true
+                        //     placeholderText: "Type a name"
+                        //     style: TextFieldTheme{}
+                        //     onActiveFocusChanged :{
+                        //         if(activeFocus){
+                        //              names.visible = true
+                        //             names.open()   
+                        //         }
+                        //     }
+                        //     font{
+                        //         pointSize: 16
+                        //     }
+                        //     // menu: names
+                        //     // Menu {
+                        //     //     id: names
+                        //     //     title: "Select name"
+                        //     //     x: 0
+                        //     //     y: (nameSelector.height)
+                        //     //     width: nameSelector.width 
+                        //     //     delegate: Label{
+                        //     //         height: 20
+                        //     //         text: itemDelegate.label 
+                        //     //         background:Rectangle{
+                        //     //             anchors.fill: parent
+                        //     //             color: appPalette.dark
+                        //     //         }
+                        //     //     }
+                        //     //     Instantiator {
+                        //     //         model: ["marco","tiziano","ciao"]
+                        //     //         MenuItem {
+                        //     //             text: modelData
+                        //     //             onTriggered: {
+                        //     //                 nameSelector.text = text
+                        //     //                 names.visible = false
+                        //     //             }
+                        //     //         }
+                        //     //         onObjectAdded: names.insertItem(index, object)
+                        //     //         onObjectRemoved: names.removeItem(object)
+                        //     //     }
+
+                        //     // }
+                        // }
                     }
                 }
 
@@ -159,78 +168,131 @@ Item{
                     id: datePicker
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    ColumnLayout{
+                    Row{
                         anchors.fill: parent
-                        spacing: 10
-                        Item{
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            Label{
-                                id: dateLabel
-                                anchors.fill: parent
-                                text: "Date"
-                                verticalAlignment: Qt.AlignBottom
-                                horizontalAlignment: Qt.AlignLeft
-                                font{
-                                    bold: true
-                                    pointSize: 20
-                                }
-                                color: appPalette.text
-                            }
-                        }
-                        Item{
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            QC1.TextField {
-                                id: textDate
-                                width: parent.width * .5
-                                height: parent.height *.8
-                                anchors{
-                                    verticalCenter: parent.verticalCenter
-                                    left: parent.left
-                                }
-                                placeholderText: "dd/mm/yy"
-                                horizontalAlignment: Qt.horizontalCenter
-                                text:Qt.formatDate(calendarItem.selectedDate, "dd-MM-yyyy")
-                                style: TextFieldTheme{}
-                                font{
-                                    pointSize: 16
+                        spacing: parent.width *.1
+                        ColumnLayout{
+                            width: parent.width/2
+                            height: parent.height
+                            spacing: 10
+                            Item{
+                                Layout.fillWidth: true
+                                Layout.fillHeight: true
+                                Label{
+                                    id: dateLabel
+                                    anchors.fill: parent
+                                    text: "Date"
+                                    verticalAlignment: Qt.AlignBottom
+                                    horizontalAlignment: Qt.AlignLeft
+                                    font{
+                                        bold: true
+                                        pointSize: 20
+                                    }
+                                    color: appPalette.text
                                 }
                             }
-                            ThemedButton {
-                                id: button
-                                width: parent.width * .10
-                                height: parent.height *.8
-                                anchors{
-                                    verticalCenter: parent.verticalCenter
-                                    left: textDate.right
-                                    leftMargin: parent.width *0.01
+                            Item{
+                                Layout.fillWidth: true
+                                Layout.fillHeight: true
+                                QC1.TextField {
+                                    id: textDate
+                                    width: parent.width *.8
+                                    height: parent.height *.8
+                                    anchors{
+                                        verticalCenter: parent.verticalCenter
+                                        left: parent.left
+                                    }
+                                    placeholderText: "dd/mm/yy"
+                                    horizontalAlignment: Qt.horizontalCenter
+                                    text: preselectedDate ? Qt.formatDate(preselectedDate, "dd-MM-yyyy") : Qt.formatDate(calendarItem.selectedDate, "dd-MM-yyyy")
+                                    style: TextFieldTheme{}
+                                    font{
+                                        pointSize: 16
+                                    }
                                 }
-                                buttonText: "▼"
-                                textPointSize: 20
-                                actionHandler{
-                                    onClicked:{
-                                        if(!calendarPicker.opened)
-                                            calendarPicker.open()
+                                ThemedButton {
+                                    id: button
+                                    width: parent.width * .20
+                                    height: parent.height *.8
+                                    anchors{
+                                        verticalCenter: parent.verticalCenter
+                                        left: textDate.right
+                                        leftMargin: parent.width *0.01
+                                    }
+                                    buttonText: "▼"
+                                    textPointSize: 20
+                                    actionHandler{
+                                        onClicked:{
+                                            if(!calendarPicker.opened)
+                                                calendarPicker.open()
+                                        }
                                     }
                                 }
                             }
-                         }
+                        }
+
+                        ColumnLayout{
+                            width: parent.width/2
+                            height: parent.height
+                            Layout.alignment: Qt.AlignCenter
+                            //anchors{
+                            //    horizontalCenter: parent.horizontalCenter
+                            //    right: parent.right
+                            //}
+                            spacing: 10
+                            Item{
+                                Layout.fillWidth: true
+                                Layout.fillHeight: true
+                                Label{
+                                    id: timeLabel
+                                    anchors.fill: parent
+                                    text: "Time"
+                                    verticalAlignment: Qt.AlignBottom
+                                    horizontalAlignment: Qt.AlignLeft
+                                    font{
+                                        bold: true
+                                        pointSize: 20
+                                    }
+                                    color: appPalette.text
+                                }
+                            }
+
+                            Item{
+
+                                Layout.preferredWidth: parent.width * .5
+                                Layout.fillHeight: true
+                                QC1.TextField {
+                                    id: timePicker
+                                    width: parent.width
+                                    height: parent.height *.8
+                                    anchors{
+                                       centerIn: parent
+                                    }
+                                    placeholderText: "hh:mm"
+                                    inputMask: "99:99"
+                                    horizontalAlignment: Qt.horizontalCenter
+                                    style: TextFieldTheme{}
+                                    font{
+                                        pointSize: 16
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
                 
                 Item{
-                    id: vehicletem
+                    id: employeeItem
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     ColumnLayout{
                         anchors.fill: parent
                         spacing: 10
                         Label{
-                            id: vehicleabel
+                            id: employeeLabel
                             Layout.fillWidth: true
                             Layout.fillHeight: true
-                            text: "Vehicle"
+                            text: "Employee"
                             verticalAlignment: Qt.AlignBottom
                             horizontalAlignment: Qt.AlignLeft
                             font{
@@ -239,15 +301,11 @@ Item{
                             }
                             color: appPalette.text
                         }
-                        QC1.TextField {
+                        ComboBoxThemed{
                             Layout.fillWidth: true
-                            Layout.fillHeight: true
+                            Layout.preferredHeight: parent.height *.4
 
-                            placeholderText: "Search a vehicle"
-                            style: TextFieldTheme{}
-                            font{
-                                pointSize: 16
-                            }
+                            model: ["test1","test2","test3"]
                         }
                     }
                 }
@@ -309,6 +367,7 @@ Item{
                         buttonText: "Register client"
                         actionHandler{
                             onClicked:{
+                                stackRef.push(newClientPage)
                             }
                         }
                     }
@@ -316,17 +375,17 @@ Item{
 
 
                 Item{
-                    id: timeItem
+                    id: vehicleItem
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     ColumnLayout{
                         anchors.fill: parent
                         spacing: 10
                         Label{
-                            id: timeLabel
+                            id: vehicleabel
                             Layout.fillWidth: true
                             Layout.fillHeight: true
-                            text: "Time"
+                            text: "Vehicle"
                             verticalAlignment: Qt.AlignBottom
                             horizontalAlignment: Qt.AlignLeft
                             font{
@@ -335,17 +394,23 @@ Item{
                             }
                             color: appPalette.text
                         }
-                        QC1.TextField {
-                            id: timePicker
-                            Layout.preferredWidth: parent.width * .25
-                            Layout.fillHeight: true
-                            placeholderText: "hh:mm"
-                            horizontalAlignment: Qt.horizontalCenter
-                            style: TextFieldTheme{}
-                            font{
-                                pointSize: 16
-                            }
+
+                        ComboBoxThemed {
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: parent.height *.4
+                            model: ["veicolo1","veicolo2","peugeot2005schifosacasseconbassicagosi"]
+
                         }
+                        // QC1.TextField {
+                        //     Layout.fillWidth: true
+                        //     Layout.fillHeight: true
+
+                        //     placeholderText: "Search a vehicle"
+                        //     style: TextFieldTheme{}
+                        //     font{
+                        //         pointSize: 16
+                        //     }
+                        // }
                     }
                 }
                 
@@ -369,15 +434,11 @@ Item{
                             }
                             color: appPalette.text
                         }
-                        QC1.TextField {
+                        ComboBoxThemed {
                             Layout.fillWidth: true
-                            Layout.fillHeight: true
+                            Layout.preferredHeight: parent.height *.4
+                            model: ["Tagliando","Riparazione","Sternando","Fernando","Alejandro","Sandro","Alessandro","Armando"]
 
-                            placeholderText: "Service type"
-                            style: TextFieldTheme{}
-                            font{
-                                pointSize: 16
-                            }
                         }
                     }
                 }
@@ -407,7 +468,8 @@ Item{
                             Layout.preferredWidth: parent.width * .30
                             Layout.fillHeight: true
 
-                            placeholderText: "Estimated time"
+                            placeholderText: "hh:mm"
+                            inputMask: "99:99"
                             style: TextFieldTheme{}
                             font{
                                 pointSize: 16

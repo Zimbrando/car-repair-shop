@@ -35,11 +35,11 @@ Item{
 
             ThemedButton{
                 id: bookButton
-                width: reservationsCalendar.width/2
+                width: reservationsCalendar.width/1.5
                 height: reservationsCalendar.height *.1
                 anchors{
                     top: reservationsCalendar.bottom
-                    topMargin: 5
+                    topMargin: parent.height *0.05
                     horizontalCenter: parent.horizontalCenter
                 }
                 buttonText: "Book"
@@ -354,6 +354,18 @@ Item{
         BookingPage{
             id: bookingPageContent
             stackReference: stackRef
+            preselectedDate: reservationsCalendar.selectedDate
+        }
+
+    }
+
+
+    Component{
+        id: newClientPage
+        ClientPage{
+            id: newClientPageContent
+            stackReference: stackRef
+            preselectedDate: reservationsCalendar.selectedDate
         }
 
     }

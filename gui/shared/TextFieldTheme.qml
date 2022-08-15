@@ -9,7 +9,8 @@ TextFieldStyle {
     id: root
     textColor: appPalette.text
     placeholderTextColor : appPalette.placeHolderText
-    selectedTextColor: appPalette.limeGreen
+    selectedTextColor: appPalette.text
+    selectionColor: appPalette.limeGreen
     background:  Rectangle {
         implicitWidth: 100
         implicitHeight: font.pointSize * 2

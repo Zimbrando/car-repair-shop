@@ -23,13 +23,13 @@ TableViewStyle {
         implicitWidth: 20
         implicitHeight: 20
         radius: 10
-        color: appPalette.midLight
+        color: appPalette.light
     }
     scrollBarBackground: Rectangle {
         implicitWidth: 20
         implicitHeight: 20
         opacity: 0.7
-        color: appPalette.light
+        color: appPalette.midLight
     }
 
     frame: Rectangle{
@@ -238,7 +238,7 @@ TableViewStyle {
     }
 
     itemDelegate: Item {
-        width: parent.width //tableView.viewport.width / tableView.columnCount
+        width: parent.width
         height: parent.height
         Label {
             width: parent.width *.96

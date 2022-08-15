@@ -21,6 +21,7 @@ ApplicationWindow {
     height: 1080
     width: 1920
 
+
     title: "CAR REPAIR SHOP"
 
 
