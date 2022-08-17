@@ -355,6 +355,7 @@ Item{
             id: bookingPageContent
             stackReference: stackRef
             preselectedDate: reservationsCalendar.selectedDate
+            workShopIndex: root.workShopIndex
         }
 
     }
