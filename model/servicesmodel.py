@@ -134,7 +134,7 @@ class ServicesModel(BaseModel):
 class ServicesTypeModel(BaseModel):
 
     def __init__(self, parent:QObject=None) -> None:
-        super(ServicesModel, self).__init__(["idtipo", "nome"])
+        super(ServicesTypeModel, self).__init__(["idtipo", "nome"])
         super().setQuery("""SELECT idtipo, nome
                             FROM public.tipo_servizi
                         """)

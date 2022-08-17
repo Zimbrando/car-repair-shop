@@ -5,6 +5,7 @@ from .basemodel import BaseModel
 
 class Clients(QObject):
     
+    modelChanged = pyqtSignal(QObject)
     filterChanged = pyqtSignal(str)
 
     def __init__(self, parent: QObject=None) -> None:
@@ -13,6 +14,9 @@ class Clients(QObject):
         self._filter = ""
         self.filterChanged.connect(self.refresh)
 
+    @pyqtProperty(QObject, notify=modelChanged)
+    def model(self):
+        return self._model
 
     @pyqtProperty(str, notify=filterChanged)
     def filter(self):
@@ -25,11 +29,46 @@ class Clients(QObject):
 
     @pyqtSlot()
     def refresh(self):
-        super().setQuery("""SELECT idcliente, nome, cognome, codice_fiscale 
+        self._model.setQuery("""SELECT idcliente, nome, cognome, codice_fiscale 
                             FROM public.clienti
                             WHERE LOWER(nome) LIKE '""" + self._filter + """%' OR LOWER(cognome) LIKE '""" + self._filter + """%'                       
                         """)
 
+    @pyqtSlot(str, str, str, str, str)
+    def addClient(self, name: str, surname: str, taxcode: str, cellnum: str, email: str):
+        query = QSqlQuery()
+        query.prepare("""INSERT INTO public.clienti
+                        (cognome, nome, codice_fiscale, telefono, email)
+                        VALUES(:surname, :name, :taxcode, :cellnum, :email)
+                    """)
+
+        query.bindValue(":surname", surname)
+        query.bindValue(":name", name)
+        query.bindValue(":taxcode", taxcode)
+        query.bindValue(":cellnum", cellnum)
+        query.bindValue(":email", email)
+
+        done = query.exec()
+        return done
+
+    @pyqtSlot(str, str, str, str, str, str)
+    def addClientComp(self, name: str, surname: str, taxcode: str, cellnum: str, email: str, companyName: str):
+        query = QSqlQuery()
+        query.prepare("""INSERT INTO public.clienti
+                        (cognome, nome, codice_fiscale, telefono, email, nome_azienda)
+                        VALUES(:surname, :name, :taxcode, :cellnum, :email, :company)
+                    """)
+                    
+        query.bindValue(":surname", surname)
+        query.bindValue(":name", name)
+        query.bindValue(":taxcode", taxcode)
+        query.bindValue(":cellnum", cellnum)
+        query.bindValue(":email", email)
+        query.bindValue(":company", companyName)
+
+        done = query.exec()
+        return done
+    
 
 class ClientsModel(BaseModel):
 

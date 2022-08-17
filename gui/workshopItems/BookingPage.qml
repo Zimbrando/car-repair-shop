@@ -6,6 +6,9 @@ import QtQuick.Controls.Styles 1.4
 import QtQml.Models 2.15
 
 import Services 1.0
+import Services.ServicesTypeModel 1.0
+import Vehicles 1.0
+import Clients 1.0
 
 import "../shared"
 
@@ -15,6 +18,7 @@ Item{
 
     property var stackReference
     property var preselectedDate: undefined
+    property int workShopIndex: undefined
 
     ThemedButton{
         id: backAction
@@ -112,7 +116,16 @@ Item{
                             Layout.fillWidth: true
                             Layout.preferredHeight: parent.height *.4
 
-                            model: ["Sarco Mterini","Viziano Tuksan","Patrizia Sangiorgi","Paul YEBOAH"]
+                            popup.onOpened: {
+                                console.log("OPEN")
+                                clientsData.refresh()
+                            }
+
+                            model: clientsData.model
+                            Clients{
+                                id: clientsData
+                            }
+                            textRole: "cognome"
                         }
 
                         // QC1.TextField {
@@ -398,8 +411,9 @@ Item{
                         ComboBoxThemed {
                             Layout.fillWidth: true
                             Layout.preferredHeight: parent.height *.4
-                            model: ["veicolo1","veicolo2","peugeot2005schifosacasseconbassicagosi"]
-
+                            model: vehiclesData.model
+                            Vehicles {id: vehiclesData}
+                            textRole: "targa"
                         }
                         // QC1.TextField {
                         //     Layout.fillWidth: true
@@ -437,8 +451,8 @@ Item{
                         ComboBoxThemed {
                             Layout.fillWidth: true
                             Layout.preferredHeight: parent.height *.4
-                            model: ["Tagliando","Riparazione","Sternando","Fernando","Alejandro","Sandro","Alessandro","Armando"]
-
+                            model: ServicesTypeModel {}
+                            textRole: "nome"
                         }
                     }
                 }
@@ -528,6 +542,7 @@ Item{
             selectedColor: appPalette.limeGreen
             actionHandler{
                 onClicked:{
+                    data.addService(1, descriptionField.text, textDate.text)
                     //stackRef.pop()
                 }
             }
@@ -543,5 +558,11 @@ Item{
             }
             radius: 10 
         }
+    }
+
+    Services {
+        id: data
+
+        workshop: workShopIndex 
     }
 }

@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls.Styles 1.4
 import QtQml.Models 2.15
 
-import Services 1.0
+import Clients 1.0
 
 import "../shared"
 
@@ -15,6 +15,7 @@ Item{
 
     property var stackReference
     property var preselectedDate: undefined
+    property var clientsReference
 
     ThemedButton{
         id: backAction
@@ -316,7 +317,8 @@ Item{
             selectedColor: appPalette.limeGreen
             actionHandler{
                 onClicked:{
-                    //stackRef.pop()
+                    data.addClient(nameField.text, surnameField.text, taxCodeField.text, phoneNumberField.text, emailField.text)
+                    stackRef.pop()
                 }
             }
         }
@@ -331,5 +333,9 @@ Item{
             }
             radius: 10 
         }
+    }
+
+    Clients {
+        id: data
     }
 }
