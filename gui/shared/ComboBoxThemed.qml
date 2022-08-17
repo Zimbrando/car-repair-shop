@@ -30,7 +30,7 @@ T.ComboBox {
 
     delegate: ItemDelegate {
         id:delegateItem
-        width: parent.width
+        width: control.width
         height: control.height * 0.8
         highlighted: control.highlighedIndex === index
         contentItem: Rectangle{
