@@ -15,6 +15,8 @@ Item{
 
     property var stackReference
     property var preselectedDate: undefined
+    property var employeesSelected:[]
+    property var employeesSelectedLabels:[]
 
     ThemedButton{
         id: backAction
@@ -112,7 +114,7 @@ Item{
                             Layout.fillWidth: true
                             Layout.preferredHeight: parent.height *.4
 
-                            model: ["Sarco Mterini","Viziano Tuksan","Patrizia Sangiorgi","Paul YEBOAH"]
+                            model: ["Sarco Mterini","Viziano Tuksan","Patrizia Sangiorgi","Paul YEBOAH","fdshfuids","dgsuifghids","dfsghfgsdh"]
                         }
 
                         // QC1.TextField {
@@ -285,14 +287,21 @@ Item{
                     id: employeeItem
                     Layout.fillWidth: true
                     Layout.fillHeight: true
+                    
                     ColumnLayout{
-                        anchors.fill: parent
+                        id: employeeColumn
+                        width: parent.width *.7
+                        height: parent.height
+                        anchors{
+                            left: parent.left
+                        }
                         spacing: 10
+                        
                         Label{
                             id: employeeLabel
                             Layout.fillWidth: true
                             Layout.fillHeight: true
-                            text: "Employee"
+                            text: "Employees list"
                             verticalAlignment: Qt.AlignBottom
                             horizontalAlignment: Qt.AlignLeft
                             font{
@@ -301,13 +310,50 @@ Item{
                             }
                             color: appPalette.text
                         }
-                        ComboBoxThemed{
+                        Label {
+                            id: employeeField
                             Layout.fillWidth: true
                             Layout.preferredHeight: parent.height *.4
-
-                            model: ["test1","test2","test3"]
+                            horizontalAlignment: Qt.horizontalCenter
+                            text: employeesSelectedLabels.toString()
+                            wrapMode : Text.Wrap 
+                            color: appPalette.text
+                            font{
+                                pointSize: 14
+                            }
+                            padding: 10
+                            background: Rectangle{
+                                anchors.fill: parent
+                                border{
+                                    color: appPalette.midLight
+                                    width: 1
+                                }
+                                color: appPalette.dark
+                                radius: 10
+                            }
+                        }
+                        
+                    }
+                    ThemedButton {
+                        id: chooseEmployees
+                        width: parent.width *.2
+                        height: employeeField.height * 0.8
+                        anchors{
+                            left: employeeColumn.right
+                            bottom: employeeColumn.bottom
+                            leftMargin: parent.width *.05
+                        }
+                        selectedColor: appPalette.limeGreen
+                        textColor: appPalette.text
+                        buttonText: "Choose"
+                        actionHandler{
+                            onClicked:{
+                                employeesPicker.open()
+                            }
                         }
                     }
+
+                    
                 }
 
                 Item{
@@ -514,6 +560,124 @@ Item{
             }
         }
 
+        Popup {
+            id: employeesPicker
+            width: parent.width * .3
+            height: parent.height *.75
+            x: (parent.width - width)/2
+            y: (parent.height - height)/2
+            padding: 0
+            closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+            enter: Transition {
+                NumberAnimation { property: "opacity"; from: 0.0; to: 1.0; duration: 100}
+                NumberAnimation { property: "scale"; from: 0.7; to: 1.0; duration: 100}
+            }
+
+            exit: Transition {
+                NumberAnimation { property: "opacity"; from: 1.0; to: 0.0; duration: 100}
+                NumberAnimation { property: "scale"; from: 1.0; to: 0.7; duration: 100}
+            }
+            contentItem: Item{
+                anchors.fill: parent
+                Rectangle{
+                    anchors.fill: parent
+                    color: appPalette.dark
+                }
+                clip: true
+                ListView{
+                    id: employeesView
+                    anchors.fill: parent
+                    model: ["Sarco Mterini","Viziano Tuksan","Patrizia Sangiorgi","Paul YEBOAH","fdshfuids","dgsuifghids","dfsghfgsdh"]
+                    ScrollBar.vertical: ScrollBar {
+                        active: true
+                        policy: ScrollBar.AsNeeded
+                    }
+                    delegate: Item {
+                        id: employeesDelegate
+                        width: employeesView.width 
+                        height: employeesView.height *.1 
+                        property var aIndex: index
+                        property var checked: employeeCheckBox.checked
+                        onCheckedChanged:{
+                            if(checked){
+                                if( root.employeesSelected.includes(aIndex))
+                                    return
+                                root.employeesSelected.push(aIndex)
+                                root.employeesSelectedLabels.push(modelData)
+                            }else{
+                                if(root.employeesSelected.includes(aIndex)){
+                                    for(var i = 0; i < root.employeesSelected.length; i++){ 
+                                        if (root.employeesSelected[i] === aIndex) { 
+                                            root.employeesSelected.splice(i, 1); 
+                                            break
+                                        }
+                                    }
+                                    for(var i = 0; i < root.employeesSelectedLabels.length; i++){ 
+                                        if (root.employeesSelectedLabels[i] === modelData) { 
+                                            root.employeesSelectedLabels.splice(i, 1); 
+                                            break
+                                        }
+                                    }
+                                } 
+                            }
+                            employeesSelected = employeesSelected
+                            employeesSelectedLabels = employeesSelectedLabels
+
+                        }
+
+                        Rectangle{
+                            id: backGroundLabel
+                            anchors{
+                                fill: parent
+                                margins: 10
+                            }
+                            radius: 10
+                            color: appPalette.light
+                        }
+
+                        
+                        CheckBox {
+                            id: employeeCheckBox
+                            checked: false
+                            width: parent.width *.15
+                            height: parent.height *.5
+                            anchors{
+                                left: parent.left
+                                leftMargin: 20
+                                verticalCenter: parent.verticalCenter
+                            }
+                        }
+                        Label{
+                            id: workShopName
+                            width: parent.width *.75
+                            height: parent.height
+                            anchors{
+                                left: employeeCheckBox.right
+                                leftMargin: 20
+                                verticalCenter: parent.verticalCenter
+                            }
+                            Layout.alignment: Qt.AlignCenter
+                            text: modelData
+                            color: appPalette.text
+                            horizontalAlignment: Qt.AlignLeft
+                            verticalAlignment: Qt.AlignVCenter
+                            font{
+                                pointSize: 16
+                            }
+                            background: Rectangle{
+                                anchors.fill: parent
+                                color: "transparent"//appPalette.light
+                                radius: 10
+                            }
+                            
+                        }
+                        
+                    }
+                }
+            }
+
+        }
+
         ThemedButton{
             id: confirmBooking
             width: parent.width * .2
@@ -535,7 +699,7 @@ Item{
 
         Rectangle{
             id: pageFrame
-            color: calendarPicker.opened ? appPalette.window : "transparent"
+            color: calendarPicker.opened || employeesPicker.opened ? appPalette.window : "transparent"
             opacity: 0.7
             anchors.fill: parent
             border{

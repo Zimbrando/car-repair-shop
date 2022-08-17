@@ -250,7 +250,7 @@ TableViewStyle {
 
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            color: text === "N/A" ?  "red" : appPalette.text
+            color: text === "N/A" ? appPalette.errorStatus : appPalette.text
             elide: Text.ElideRight
             text: {
                 if(!styleData) return "N/A"
