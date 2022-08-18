@@ -318,15 +318,11 @@ TableViewStyle {
         height: 60
         color: "transparent"
         Rectangle {
-
+            id: rowBackground
             color: appPalette.dark
             anchors{
                 fill: parent
-                //bottomMargin: 5
             }
-            //x: tableView.viewport.width / tableView.columnCount + modelData * tableView.viewport.width / tableView.columnCount
         }
-
-
     }
 }

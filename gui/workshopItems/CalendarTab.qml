@@ -92,6 +92,8 @@ Item{
 
             QC1.TableView {
                 id: reservationsTable
+                property int selectedRowId: -1
+                //property int selectedRowIndex: undefined
                 height: parent.height - selectedDateLabel.height - parent.height *.05
                 width: parent.width *.98
                 anchors{
@@ -104,6 +106,53 @@ Item{
                 alternatingRowColors: false
                 frameVisible: false
                 sortIndicatorVisible: false
+
+                onDoubleClicked:{
+                        //console.log(row)
+                        //if(rowPressed){
+                           //TODO rowindex is available
+                           //bind selectedRowId property with serviceId - something like this:
+                           //reservationsTable.selectedRowId = model[rowIndex]
+                           stackRef.push(serviceOutcomePage)
+                        //}else{
+
+                       // }
+                }
+
+
+                rowDelegate: Rectangle{
+                    id: rowgradient
+                    property var rowPressed: styleData.pressed 
+                    height: 60
+                    color: "transparent"
+
+                    Rectangle {
+                        id: rowBackground
+                        color: appPalette.dark
+                        anchors{
+                            fill: parent
+                        }
+
+                        state: rowPressed ? "selected" : "unselected"
+
+                        states:[
+                            State{
+                                name: "unselected"
+                                PropertyChanges {
+                                    target: rowBackground
+                                    color: appPalette.dark
+                                }
+                            },
+                            State{
+                                name: "selected" 
+                                PropertyChanges {
+                                    target: rowBackground
+                                    color: appPalette.light
+                                }
+                            }
+                        ]
+                    }
+                }
 
                 style: TableViewTheme{
                     tableRef: reservationsTable
@@ -292,6 +341,7 @@ Item{
                             }
                         }
                     }
+                    
                     movable: false
                     resizable: false
                     width: reservationsTable.width / reservationsTable.columnCount 
@@ -370,6 +420,15 @@ Item{
 
     }
 
+    Component{
+        id: serviceOutcomePage
+        ServiceOutcomePage{
+            id: serviceOutcomeContent
+            stackReference: stackRef
+            selectedServiceId: reservationsTable.selectedRowId
+        }
+
+    }
 
     Services {
         id: data

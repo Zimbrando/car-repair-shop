@@ -283,7 +283,7 @@ Item{
                                        centerIn: parent
                                     }
                                     placeholderText: "hh:mm"
-                                    inputMask: "99:99"
+                                    inputMask: "99:99;0"
                                     horizontalAlignment: Qt.horizontalCenter
                                     style: TextFieldTheme{}
                                     font{
@@ -528,7 +528,7 @@ Item{
                             Layout.fillHeight: true
 
                             placeholderText: "hh:mm"
-                            inputMask: "99:99"
+                            inputMask: "99:99;0"
                             style: TextFieldTheme{}
                             font{
                                 pointSize: 16
