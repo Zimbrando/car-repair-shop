@@ -103,7 +103,7 @@ Item{
                             id: nameLabel
                             Layout.fillWidth: true
                             Layout.fillHeight: true
-                            text: "Name of the client"
+                            text: "Client"
                             verticalAlignment: Qt.AlignBottom
                             horizontalAlignment: Qt.AlignLeft
                             font{
@@ -120,6 +120,13 @@ Item{
 
                             popup.onOpened: {
                                 clientsData.refresh()
+                            }
+                            
+                            property int idClient: {
+                                if (currentIndex < 0 || currentIndex > nameSelector.count) 
+                                    return -1
+                                
+                                return delegateModel.items.get(currentIndex).model.idcliente
                             }
 
                             model: clientsData.model
@@ -454,11 +461,19 @@ Item{
                         }
 
                         ComboBoxThemed {
+                            id: vehiclesSelector
                             Layout.fillWidth: true
                             Layout.preferredHeight: parent.height *.4
                             model: vehiclesData.model
                             Vehicles {id: vehiclesData}
                             textRole: "targa"
+
+                            property int idVehicle: {
+                                if (currentIndex < 0 || currentIndex > vehiclesSelector.count) 
+                                    return -1
+                                
+                                return delegateModel.items.get(currentIndex).model.idveicolo
+                            }
                         }
                         // QC1.TextField {
                         //     Layout.fillWidth: true
@@ -494,10 +509,18 @@ Item{
                             color: appPalette.text
                         }
                         ComboBoxThemed {
+                            id: typeSelector
                             Layout.fillWidth: true
                             Layout.preferredHeight: parent.height *.4
                             model: ServicesTypeModel {}
                             textRole: "nome"
+
+                            property int idType: {
+                                if (currentIndex < 0 || currentIndex > typeSelector.count) 
+                                        return -1
+                                    
+                                    return delegateModel.items.get(currentIndex).model.idtipo
+                                }
                         }
                     }
                 }
@@ -526,7 +549,6 @@ Item{
                             id: estimatedTIme
                             Layout.preferredWidth: parent.width * .30
                             Layout.fillHeight: true
-                            onTextChanged: console.log(text)
                             placeholderText: "hh"
                             style: TextFieldTheme{}
                             font{
@@ -686,7 +708,6 @@ Item{
                     }
                 }
             }
-
         }
 
         ThemedButton{
@@ -703,8 +724,9 @@ Item{
             selectedColor: appPalette.limeGreen
             actionHandler{
                 onClicked:{
-                    data.addService(1, descriptionField.text, textDate.text)
-                    //stackRef.pop()
+                    if (data.addService(parseInt(estimatedTIme.text), descriptionField.text, Date.fromLocaleString(Qt.locale(), textDate.text, "dd-MM-yyyy"), 
+                        Date.fromLocaleTimeString(Qt.locale(), timePicker.text, "hh:mm"), nameSelector.idClient, typeSelector.idType, vehiclesSelector.idVehicle, employeesSelected))
+                        stackRef.pop()
                 }
             }
         }
@@ -732,6 +754,6 @@ Item{
         workshop: workShopIndex
         hour: Date.fromLocaleTimeString(Qt.locale(), timePicker.text, "hh:mm")
         date: Date.fromLocaleString(Qt.locale(), textDate.text, "dd-MM-yyyy")
-        estimated_time: parseInt(estimatedTIme.text) //Replace me
+        estimated_time: parseInt(estimatedTIme.text)
     }
 }

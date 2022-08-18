@@ -50,9 +50,12 @@ class Services(QObject):
         self._date = date
         self.dateChanged.emit(date)
 
-    @pyqtSlot(int, str, QDateTime, str, int, int, int, list)
-    def addService(self, tempo: int, descrizione: str, data :QDateTime, ora: str, idcliente: int, idtipo: int, idveicolo: int, dipendenti :list):
+    @pyqtSlot(int, str, QDateTime, QDateTime, int, int, int, list, result=bool)
+    def addService(self, tempo: int, descrizione: str, data :QDateTime, ora: QDateTime, idcliente: int, idtipo: int, idveicolo: int, dipendenti :list):
         query = QSqlQuery()
+        if not dipendenti: 
+            return False
+
         query.prepare("""INSERT INTO public.servizi
                         (tempo_stimato, descrizione, data_servizio, ora, idofficina, idcliente, idtipo, idveicolo)
                         VALUES(:time, :desc, :date, :hour, :idworkshop, :idclient, :idtype, :idvehicle)
@@ -60,8 +63,8 @@ class Services(QObject):
                     """)
         query.bindValue(":time", tempo)
         query.bindValue(":desc", descrizione)
-        query.bindValue(":date", data)
-        query.bindValue(":hour", ora)
+        query.bindValue(":date", data.toString("yyyy-MM-dd"))
+        query.bindValue(":hour", ora.time().toString("hh:mm"))
         query.bindValue(":idworkshop", self._workshop)
         query.bindValue(":idclient", idcliente)
         query.bindValue(":idtype", idtipo)
@@ -82,6 +85,7 @@ class Services(QObject):
                     return False
         else:
             return False
+        return True
                 
 
 

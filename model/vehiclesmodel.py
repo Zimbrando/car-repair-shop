@@ -45,18 +45,18 @@ class Vehicles(QObject):
     @pyqtSlot()
     def refresh(self):
         if self._brand == -1:
-            self._model.setQuery("SELECT targa, anno, modello, tipo from public.veicoli")
+            self._model.setQuery("SELECT idveicolo, targa, anno, modello, tipo from public.veicoli")
             return
             
-        self._model.setQuery("SELECT targa, anno, modello, tipo from public.veicoli WHERE idmarchio=" +
+        self._model.setQuery("SELECT idveicolo, targa, anno, modello, tipo from public.veicoli WHERE idmarchio=" +
             str(self._brand))
 
 
 class VehiclesModel(BaseModel):
 
     def __init__(self, parent:QObject=None) -> None:
-        super(VehiclesModel, self).__init__(["targa", "anno", "modello", "tipo"])
-        super().setQuery("SELECT targa, anno, modello, tipo from public.veicoli")
+        super(VehiclesModel, self).__init__(["idveicolo", "targa", "anno", "modello", "tipo"])
+        super().setQuery("SELECT idveicolo, targa, anno, modello, tipo from public.veicoli")
 
 
 class BrandsModel(BaseModel):
