@@ -9,6 +9,7 @@ import Services 1.0
 import Services.ServicesTypeModel 1.0
 import Vehicles 1.0
 import Clients 1.0
+import EmployeesFree 1.0
 
 import "../shared"
 
@@ -118,7 +119,6 @@ Item{
                             Layout.preferredHeight: parent.height *.4
 
                             popup.onOpened: {
-                                console.log("OPEN")
                                 clientsData.refresh()
                             }
 
@@ -283,7 +283,7 @@ Item{
                                        centerIn: parent
                                     }
                                     placeholderText: "hh:mm"
-                                    inputMask: "99:99;0"
+                                    inputMask: "99:99;-"
                                     horizontalAlignment: Qt.horizontalCenter
                                     style: TextFieldTheme{}
                                     font{
@@ -526,9 +526,8 @@ Item{
                             id: estimatedTIme
                             Layout.preferredWidth: parent.width * .30
                             Layout.fillHeight: true
-
-                            placeholderText: "hh:mm"
-                            inputMask: "99:99;0"
+                            onTextChanged: console.log(text)
+                            placeholderText: "hh"
                             style: TextFieldTheme{}
                             font{
                                 pointSize: 16
@@ -600,7 +599,7 @@ Item{
                 ListView{
                     id: employeesView
                     anchors.fill: parent
-                    model: ["Sarco Mterini","Viziano Tuksan","Patrizia Sangiorgi","Paul YEBOAH","fdshfuids","dgsuifghids","dfsghfgsdh"]
+                    model: employeesData.model
                     ScrollBar.vertical: ScrollBar {
                         active: true
                         policy: ScrollBar.AsNeeded
@@ -609,14 +608,14 @@ Item{
                         id: employeesDelegate
                         width: employeesView.width 
                         height: employeesView.height *.1 
-                        property var aIndex: index
+                        property var aIndex: model.iddipendente
                         property var checked: employeeCheckBox.checked
                         onCheckedChanged:{
                             if(checked){
                                 if( root.employeesSelected.includes(aIndex))
                                     return
                                 root.employeesSelected.push(aIndex)
-                                root.employeesSelectedLabels.push(modelData)
+                                root.employeesSelectedLabels.push(model.nome + " " + model.cognome)
                             }else{
                                 if(root.employeesSelected.includes(aIndex)){
                                     for(var i = 0; i < root.employeesSelected.length; i++){ 
@@ -626,7 +625,7 @@ Item{
                                         }
                                     }
                                     for(var i = 0; i < root.employeesSelectedLabels.length; i++){ 
-                                        if (root.employeesSelectedLabels[i] === modelData) { 
+                                        if (root.employeesSelectedLabels[i] === model.nome + " " + model.cognome) { 
                                             root.employeesSelectedLabels.splice(i, 1); 
                                             break
                                         }
@@ -635,7 +634,6 @@ Item{
                             }
                             employeesSelected = employeesSelected
                             employeesSelectedLabels = employeesSelectedLabels
-
                         }
 
                         Rectangle{
@@ -670,7 +668,7 @@ Item{
                                 verticalCenter: parent.verticalCenter
                             }
                             Layout.alignment: Qt.AlignCenter
-                            text: modelData
+                            text: model.nome + " " + model.cognome + " - " + model.codice_fiscale
                             color: appPalette.text
                             horizontalAlignment: Qt.AlignLeft
                             verticalAlignment: Qt.AlignVCenter
@@ -727,5 +725,13 @@ Item{
         id: data
 
         workshop: workShopIndex 
+    }
+
+    EmployeesFree {
+        id: employeesData
+        workshop: workShopIndex
+        hour: Date.fromLocaleTimeString(Qt.locale(), timePicker.text, "hh:mm")
+        date: Date.fromLocaleString(Qt.locale(), textDate.text, "dd-MM-yyyy")
+        estimated_time: parseInt(estimatedTIme.text) //Replace me
     }
 }

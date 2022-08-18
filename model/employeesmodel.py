@@ -65,18 +65,21 @@ class EmployeesFree(QObject):
     
     modelChanged = pyqtSignal(QObject)
     workshopChanged = pyqtSignal(int)
-    hourChanged = pyqtSignal(QTime)
+    hourChanged = pyqtSignal(QDateTime)
     dateChanged = pyqtSignal(QDateTime)
+    estimatedTimeChanged = pyqtSignal(int)
 
     def __init__(self, parent: QObject=None) -> None:
         super().__init__(parent)
         self._model = EmployeesModel()
-        self._hour = QTime()
+        self._hour = QDateTime()
         self._date = QDateTime()
+        self._estimated_time = -1
         self._workshop = -1
         self.workshopChanged.connect(self.refresh)
         self.hourChanged.connect(self.refresh)
         self.dateChanged.connect(self.refresh)
+        self.estimatedTimeChanged.connect(self.refresh)
 
     @pyqtProperty(QObject, notify=modelChanged)
     def model(self):
@@ -91,12 +94,12 @@ class EmployeesFree(QObject):
         self._workshop = workshop
         self.workshopChanged.emit(workshop)
 
-    @pyqtProperty(QTime, notify=hourChanged)
+    @pyqtProperty(QDateTime, notify=hourChanged)
     def hour(self):
         return self._hour
 
     @hour.setter
-    def filter(self, hour: QTime):
+    def hour(self, hour: QDateTime):
         self._hour = hour
         self.hourChanged.emit(hour)
 
@@ -105,9 +108,18 @@ class EmployeesFree(QObject):
         return self._date
 
     @date.setter
-    def filter(self, date: QDateTime):
+    def date(self, date: QDateTime):
         self._date = date
         self.dateChanged.emit(date)
+
+    @pyqtProperty(int, notify=estimatedTimeChanged)
+    def estimated_time(self):
+        return self._estimated_time
+
+    @estimated_time.setter
+    def estimated_time(self, estimated_time: int):
+        self._estimated_time = estimated_time
+        self.estimatedTimeChanged.emit(estimated_time)
 
     @pyqtSlot()
     def refresh(self):
@@ -127,8 +139,9 @@ class EmployeesFree(QObject):
                             								)
                             						group by D.iddipendente) """)
         query.bindValue(":idworkshop", self._workshop)
-        query.bindValue(":data", self._date)
-        query.bindValue(":ora", self._hour)
+        query.bindValue(":data", self._date.toString("yyyy-MM-dd"))
+        query.bindValue(":ora", self._hour.time().toString("hh:mm"))
+        query.bindValue(":tempo_stimato", self._estimated_time)
         query.exec()
         self._model.setQuery(query)
 
