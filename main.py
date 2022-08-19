@@ -6,7 +6,7 @@ from model.workshopsmodel import WorkshopsModel
 from model.vehiclesmodel import Vehicles, BrandsModel
 from model.componentsmodel import Components, ClassesModel
 from model.employeesmodel import Employees, EmployeesFree
-from model.servicesmodel import Services, ServicesTypeModel
+from model.servicesmodel import Services, ServicesTypeModel, ServicesSlot
 from model.clientsmodel import Clients
 from config import Config
 
@@ -60,6 +60,7 @@ if __name__ == '__main__':
     #Services
     qmlRegisterType(Services, 'Services', 1, 0, 'Services')
     qmlRegisterType(ServicesTypeModel, 'Services.ServicesTypeModel', 1, 0, 'ServicesTypeModel')
+    qmlRegisterType(ServicesSlot, 'ServicesSlot', 1, 0, 'ServicesSlot')
     #Clients
     qmlRegisterType(Clients, 'Clients', 1, 0, 'Clients')
 

@@ -9,12 +9,14 @@ class Services(QObject):
     dateChanged = pyqtSignal(QDateTime)
     workshopChanged = pyqtSignal(int)
 
+
     def __init__(self, parent: QObject=None) -> None:
         super().__init__(parent)
         self._model = ServicesModel()
         self._filter = ""
         self._workshop = -1
         self._date = QDateTime()
+        self._full = False
         self.dateChanged.connect(self.refresh)
         self.filterChanged.connect(self.refresh)
         self.workshopChanged.connect(self.refresh)
@@ -85,9 +87,8 @@ class Services(QObject):
                     return False
         else:
             return False
+        self.refresh()
         return True
-                
-
 
     @pyqtSlot()
     def refresh(self):
@@ -119,6 +120,97 @@ class Services(QObject):
             query.bindValue(":workshop", self._workshop)
         query.exec()
         self._model.setQuery(query)
+
+class ServicesSlot(QObject):
+
+    workshopChanged = pyqtSignal(int)
+    hourChanged = pyqtSignal(QDateTime)
+    dateChanged = pyqtSignal(QDateTime)
+    estimatedTimeChanged = pyqtSignal(int)
+    fullChanged = pyqtSignal(bool)
+
+    def __init__(self, parent: QObject=None) -> None:
+        super().__init__(parent)
+        self._workshop = -1
+        self._date = QDateTime()
+        self._hour = QDateTime()
+        self.estimated_time = -1
+        self._full = False
+        self.dateChanged.connect(self.refresh)
+        self.hourChanged.connect(self.refresh)
+        self.estimatedTimeChanged.connect(self.refresh)
+        self.workshopChanged.connect(self.refresh)
+
+    @pyqtProperty(int, notify=workshopChanged)
+    def workshop(self):
+        return self._workshop
+
+    @workshop.setter
+    def workshop(self, workshop: int):
+        self._workshop = workshop
+        self.workshopChanged.emit(workshop)
+
+    @pyqtProperty(QDateTime, notify=hourChanged)
+    def hour(self):
+        return self._hour
+
+    @hour.setter
+    def hour(self, hour: QDateTime):
+        self._hour = hour
+        self.hourChanged.emit(hour)
+
+    @pyqtProperty(QDateTime, notify=dateChanged)
+    def date(self):
+        return self._date
+
+    @date.setter
+    def date(self, date: QDateTime):
+        self._date = date
+        self.dateChanged.emit(date)
+
+    @pyqtProperty(int, notify=estimatedTimeChanged)
+    def estimated_time(self):
+        return self._estimated_time
+
+    @estimated_time.setter
+    def estimated_time(self, estimated_time: int):
+        self._estimated_time = estimated_time
+        self.estimatedTimeChanged.emit(estimated_time)
+
+    @pyqtProperty(bool, notify=fullChanged)
+    def full(self):
+        return self._full
+
+    @pyqtSlot()
+    def refresh(self):
+        if not self._date.isValid() or not self._hour.isValid() or self._estimated_time == -1:
+            return
+        query = QSqlQuery()
+        query.prepare(""" select count(S.idservizio) < O.max_veicoli as num_veicoli, O.max_veicoli 
+                        from public.servizi as S
+                        join officine as O on S.idofficina = O.idofficina 
+                        where O.idofficina = :idworkshop and S.data_servizio = :data
+                            and (:ora + make_interval(hours => :tempo_stimato) > S.ora and :ora + make_interval(hours => :tempo_stimato) <= S.ora + make_interval(hours => S.tempo_stimato)
+                                or (:ora > S.ora and :ora < S.ora + make_interval(hours => S.tempo_stimato))
+                                or (:ora < S.ora and :ora + make_interval(hours => :tempo_stimato) > S.ora + make_interval(hours => S.tempo_stimato))
+                                )
+                        group by O.idofficina  
+                    """)
+        query.bindValue(":idworkshop", self._workshop)
+        query.bindValue(":data", self._date.toString("yyyy-MM-dd"))
+        query.bindValue(":ora", self._hour.time().toString("hh:mm"))
+        query.bindValue(":tempo_stimato", self._estimated_time)
+        
+        query.exec()
+        query.next()
+
+        if query.isValid():
+            self._full = not query.value(0)
+            self.fullChanged.emit(self._full)
+        else:
+            self._full = False
+            self.fullChanged.emit(self._full)
+
 
 class ServicesModel(BaseModel):
 

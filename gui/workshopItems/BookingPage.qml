@@ -7,6 +7,7 @@ import QtQml.Models 2.15
 
 import Services 1.0
 import Services.ServicesTypeModel 1.0
+import ServicesSlot 1.0
 import Vehicles 1.0
 import Clients 1.0
 import EmployeesFree 1.0
@@ -719,11 +720,13 @@ Item{
                 topMargin: parent.height * .05
                 right: itemAligner.right
             }  
-            buttonText: "Book service →"
+            buttonText: slotData.full ? "Not available" : "Book service →"
             textColor: appPalette.text
-            selectedColor: appPalette.limeGreen
+            selectedColor: slotData.full ? appPalette.errorStatus : appPalette.limeGreen
             actionHandler{
-                onClicked:{
+                onClicked: {
+                    if (slotData.full)
+                        return
                     if (data.addService(parseInt(estimatedTIme.text), descriptionField.text, Date.fromLocaleString(Qt.locale(), textDate.text, "dd-MM-yyyy"), 
                         Date.fromLocaleTimeString(Qt.locale(), timePicker.text, "hh:mm"), nameSelector.idClient, typeSelector.idType, vehiclesSelector.idVehicle, employeesSelected))
                         stackRef.pop()
@@ -747,6 +750,15 @@ Item{
         id: data
 
         workshop: workShopIndex 
+    }
+
+    ServicesSlot {
+        id: slotData
+        workshop: workShopIndex
+        hour: Date.fromLocaleTimeString(Qt.locale(), timePicker.text, "hh:mm")
+        date: Date.fromLocaleString(Qt.locale(), textDate.text, "dd-MM-yyyy")
+        estimated_time: parseInt(estimatedTIme.text)
+    
     }
 
     EmployeesFree {
