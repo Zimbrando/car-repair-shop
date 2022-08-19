@@ -43,7 +43,7 @@ Item{
             family: "Ubuntu"
         }
         color: root.appPalette.limeGreen
-        text: "CAR WORKSHOP MANAGER"
+        text: "Car Workshop Manager"
         background: Rectangle{
             anchors.fill: parent
             color: appPalette.dark
@@ -75,7 +75,7 @@ Item{
                 id: workShopDelegate
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                property var aIndex: index
+                property var aIndex: model.idofficina
 
                 state: "unselected"
 
@@ -178,7 +178,7 @@ Item{
                         workShopDelegate.state = "unselected"
                     }
                     onClicked:{
-                        mainRoot.selectedWorkShop = workShopDelegate.aIndex + 1
+                        mainRoot.selectedWorkShop = workShopDelegate.aIndex
                         mainStack.push(workshopDetails)
                     }
 
