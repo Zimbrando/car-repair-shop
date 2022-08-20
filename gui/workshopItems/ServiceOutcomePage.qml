@@ -270,7 +270,7 @@ Item{
             selectedColor: appPalette.limeGreen
             actionHandler{
                 onClicked:{
-                    data.addClient(nameField.text, surnameField.text, taxCodeField.text, outComeStatusField.text, emailField.text)
+                    //data.addClient(nameField.text, surnameField.text, taxCodeField.text, outComeStatusField.text, emailField.text)
                     stackRef.pop()
                 }
             }
@@ -299,13 +299,14 @@ Item{
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
         enter: Transition {
             NumberAnimation { property: "opacity"; from: 0.0; to: 1.0; duration: 100}
-            NumberAnimation { property: "scale"; from: 0.0; to: 1.0; duration: 100}
+            NumberAnimation { property: "scale"; from: 0.9; to: 1.0; duration: 150}
         }
 
         exit: Transition {
             NumberAnimation { property: "opacity"; from: 1.0; to: 0.0; duration: 100}
-            NumberAnimation { property: "scale"; from: 1.0; to: 0.0; duration: 100}
+            NumberAnimation { property: "scale"; from: 1.0; to: 0.9; duration: 150}
         }
+        
         QC1.Calendar{
             id:calendarItem
             anchors.fill: parent

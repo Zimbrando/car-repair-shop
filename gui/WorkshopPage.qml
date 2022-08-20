@@ -17,6 +17,7 @@ Item{
     property var stackRef: undefined
     property var appPalette: undefined
     property int workShopIndex: undefined
+    property string workShopAddress: ""
 
     ThemedButton{
         id: backAction
@@ -97,8 +98,8 @@ Item{
             id: statsPage
             title: "Statistics"
             StatsTab{
-
-
+                workShopAddress: root.workShopAddress
+                workShopIndex: root.workShopIndex
             }
         }
 

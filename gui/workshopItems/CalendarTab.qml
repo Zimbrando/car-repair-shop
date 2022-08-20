@@ -19,6 +19,7 @@ Item{
         anchors{
             centerIn: parent
         }
+
         Item{
             Layout.preferredWidth: parent.width *.30
             Layout.fillHeight: true
@@ -53,6 +54,7 @@ Item{
                 }
             }
         }
+
         Rectangle{
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -113,7 +115,7 @@ Item{
                            //TODO rowindex is available
                            //bind selectedRowId property with serviceId - something like this:
                            //reservationsTable.selectedRowId = model[rowIndex]
-                           stackRef.push(serviceOutcomePage)
+                           serviceOptions.open()
                         //}else{
 
                        // }
@@ -147,7 +149,7 @@ Item{
                                 name: "selected" 
                                 PropertyChanges {
                                     target: rowBackground
-                                    color: appPalette.light
+                                    color: appPalette.limeGreen
                                 }
                             }
                         ]
@@ -399,6 +401,91 @@ Item{
 
     }
 
+    Rectangle{
+        id: pageFrame
+        color: serviceOptions.opened ? appPalette.window : "transparent"
+        opacity: 0.7
+        anchors.fill: parent
+        border{
+            color: appPalette.midLight
+        }
+        radius: 10 
+    }
+
+    Popup {
+        id: serviceOptions
+        width: parent.width * .3
+        height: parent.height *.3
+        x: (parent.width - width)/2
+        y: (parent.height - height)/2
+        padding: 0
+        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+
+        background: Rectangle{
+            anchors.fill: parent
+            color: appPalette.dark
+            border{
+                width: 2
+                color: appPalette.light
+            }
+            radius: 10
+        }
+
+        enter: Transition {
+            NumberAnimation { property: "opacity"; from: 0.0; to: 1.0; duration: 100}
+            NumberAnimation { property: "scale"; from: 0.9; to: 1.0; duration: 150}
+        }
+
+        exit: Transition {
+            NumberAnimation { property: "opacity"; from: 1.0; to: 0.0; duration: 100}
+            NumberAnimation { property: "scale"; from: 1.0; to: 0.9; duration: 150}
+        }
+
+        contentItem: Item{
+            anchors.fill: parent
+            clip: true
+            RowLayout{
+                id: buttonsAligner
+                width: parent.width *.8
+                height: parent.height *.4
+                anchors{
+                    centerIn: parent
+                }
+                spacing: 10
+                ThemedButton{
+                    id: registerOutcome
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    buttonText: "Outcome"
+                    textColor: appPalette.text
+                    selectedColor: appPalette.limeGreen
+                    unselectedColor: appPalette.midLight
+                    actionHandler{
+                        onClicked:{
+                            stackRef.push(serviceOutcomePage)
+                            serviceOptions.close()
+                        }
+                    }
+                }
+                ThemedButton{
+                    id: registerComponents
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    buttonText: "Components"
+                    textColor: appPalette.text
+                    selectedColor: appPalette.limeGreen
+                    unselectedColor: appPalette.midLight
+                    actionHandler{
+                        onClicked:{
+                            stackRef.push(carPartsPage)
+                            serviceOptions.close()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     Component{
         id: bookingPage
         BookingPage{
@@ -424,6 +511,16 @@ Item{
         id: serviceOutcomePage
         ServiceOutcomePage{
             id: serviceOutcomeContent
+            stackReference: stackRef
+            selectedServiceId: reservationsTable.selectedRowId
+        }
+
+    }
+
+    Component{
+        id: carPartsPage
+        CarPartsPage{
+            id: carPartsPageCojntent
             stackReference: stackRef
             selectedServiceId: reservationsTable.selectedRowId
         }

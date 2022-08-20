@@ -21,8 +21,7 @@ Item{
     //        topMargin: -5
     //        horizontalCenter: parent.horizontalCenter
     //    }
-//
-    //    color: appPalette.light
+//selectedWSAddress
     //}
 
 
@@ -179,6 +178,7 @@ Item{
                     }
                     onClicked:{
                         mainRoot.selectedWorkShop = workShopDelegate.aIndex
+                        mainRoot.selectedWSAddress = model.citta+", "+model.via
                         mainStack.push(workshopDetails)
                     }
 

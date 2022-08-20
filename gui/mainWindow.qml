@@ -36,6 +36,7 @@ ApplicationWindow {
 
         //TODO remove this
         property int selectedWorkShop: -1
+        property string selectedWSAddress: ""
 
         anchors{
             fill: parent
@@ -100,6 +101,7 @@ ApplicationWindow {
             id: workshopDetails 
             WorkshopPage{ 
                 workShopIndex: mainRoot.selectedWorkShop
+                workShopAddress: mainRoot.selectedWSAddress
                 stackRef: mainStack
                 appPalette: mainWindow.appPalette
             }

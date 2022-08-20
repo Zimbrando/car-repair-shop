@@ -561,6 +561,7 @@ Item{
 
             }
         }
+
         Popup {
             id: calendarPicker
             width: parent.width * .5
@@ -571,12 +572,12 @@ Item{
             closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
             enter: Transition {
                 NumberAnimation { property: "opacity"; from: 0.0; to: 1.0; duration: 100}
-                NumberAnimation { property: "scale"; from: 0.0; to: 1.0; duration: 100}
+                NumberAnimation { property: "scale"; from: 0.9; to: 1.0; duration: 150}
             }
 
             exit: Transition {
                 NumberAnimation { property: "opacity"; from: 1.0; to: 0.0; duration: 100}
-                NumberAnimation { property: "scale"; from: 1.0; to: 0.0; duration: 100}
+                NumberAnimation { property: "scale"; from: 1.0; to: 0.9; duration: 150}
             }
             QC1.Calendar{
                 id:calendarItem
@@ -603,21 +604,33 @@ Item{
             y: (parent.height - height)/2
             padding: 0
             closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+
+            background: Rectangle{
+                anchors.fill: parent
+                color: appPalette.dark
+                border{
+                    width: 2
+                    color: appPalette.light
+                }
+                radius: 10
+            }
+            
             enter: Transition {
-                NumberAnimation { property: "opacity"; from: 0.0; to: 1.0; duration: 100}
-                NumberAnimation { property: "scale"; from: 0.7; to: 1.0; duration: 100}
+            NumberAnimation { property: "opacity"; from: 0.0; to: 1.0; duration: 100}
+            NumberAnimation { property: "scale"; from: 0.9; to: 1.0; duration: 150}
             }
 
             exit: Transition {
                 NumberAnimation { property: "opacity"; from: 1.0; to: 0.0; duration: 100}
-                NumberAnimation { property: "scale"; from: 1.0; to: 0.7; duration: 100}
+                NumberAnimation { property: "scale"; from: 1.0; to: 0.9; duration: 150}
             }
+
             contentItem: Item{
                 anchors.fill: parent
-                Rectangle{
-                    anchors.fill: parent
-                    color: appPalette.dark
-                }
+                // Rectangle{
+                    // anchors.fill: parent
+                    // color: appPalette.dark
+                // }
                 clip: true
                 ListView{
                     id: employeesView
