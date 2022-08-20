@@ -24,8 +24,34 @@ Item{
             topMargin: parent.height *.05
             leftMargin: anchors.topMargin
         }
+        font{   
+            pointSize: 16
+        }
         placeholderText: "Find service"
         style: TextFieldTheme{}
+    }
+
+    Rectangle{
+        id: emtpyList
+        color: appPalette.dark
+        visible: servicesTable.rowCount === 0
+        anchors.fill: servicesTable
+        radius: 10 
+        Label{
+            id: emtpyListLabel
+            width: contentWidth
+            height: contentHeight
+            text: "No services"
+            verticalAlignment: Qt.AlignVCenter
+            horizontalAlignment: Qt.AlignHCenter
+            anchors{
+                centerIn: parent
+            }
+            font{
+                pointSize: 20
+            }
+            color: appPalette.placeHolderText
+        }
     }
 
     QC1.TableView {

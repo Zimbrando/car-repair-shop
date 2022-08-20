@@ -92,6 +92,29 @@ Item{
 
             }
 
+             Rectangle{
+                id: emtpyList
+                color: appPalette.dark
+                visible: reservationsTable.rowCount === 0
+                anchors.fill: reservationsTable
+                radius: 10 
+                Label{
+                    id: emtpyListLabel
+                    width: contentWidth
+                    height: contentHeight
+                    text: "No bookings"
+                    verticalAlignment: Qt.AlignVCenter
+                    horizontalAlignment: Qt.AlignHCenter
+                    anchors{
+                        centerIn: parent
+                    }
+                    font{
+                        pointSize: 20
+                    }
+                    color: appPalette.placeHolderText
+                }
+            }
+
             QC1.TableView {
                 id: reservationsTable
                 property int selectedRowId: -1

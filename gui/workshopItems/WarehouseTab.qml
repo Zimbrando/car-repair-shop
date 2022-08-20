@@ -24,9 +24,36 @@ Item{
             topMargin: parent.height *.05
             leftMargin: anchors.topMargin
         }
+        font{   
+            pointSize: 16
+        }
         placeholderText: "Find component"
         style: TextFieldTheme{}
     }
+
+    Rectangle{
+        id: emtpyList
+        color: appPalette.dark
+        visible: warehouseTable.rowCount === 0
+        anchors.fill: warehouseTable
+        radius: 10 
+        Label{
+            id: emtpyListLabel
+            width: contentWidth
+            height: contentHeight
+            text: "No components"
+            verticalAlignment: Qt.AlignVCenter
+            horizontalAlignment: Qt.AlignHCenter
+            anchors{
+                centerIn: parent
+            }
+            font{
+                pointSize: 20
+            }
+            color: appPalette.placeHolderText
+        }
+    }
+
 
     QC1.TableView {
         id: warehouseTable
