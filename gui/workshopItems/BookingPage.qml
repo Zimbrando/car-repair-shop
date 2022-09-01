@@ -136,52 +136,6 @@ Item{
                             }
                             textRole: "cognome"
                         }
-
-                        // QC1.TextField {
-                        //    // id: nameSelector
-                        //     Layout.fillWidth: true
-                        //     Layout.fillHeight: true
-                        //     placeholderText: "Type a name"
-                        //     style: TextFieldTheme{}
-                        //     onActiveFocusChanged :{
-                        //         if(activeFocus){
-                        //              names.visible = true
-                        //             names.open()   
-                        //         }
-                        //     }
-                        //     font{
-                        //         pointSize: 16
-                        //     }
-                        //     // menu: names
-                        //     // Menu {
-                        //     //     id: names
-                        //     //     title: "Select name"
-                        //     //     x: 0
-                        //     //     y: (nameSelector.height)
-                        //     //     width: nameSelector.width 
-                        //     //     delegate: Label{
-                        //     //         height: 20
-                        //     //         text: itemDelegate.label 
-                        //     //         background:Rectangle{
-                        //     //             anchors.fill: parent
-                        //     //             color: appPalette.dark
-                        //     //         }
-                        //     //     }
-                        //     //     Instantiator {
-                        //     //         model: ["marco","tiziano","ciao"]
-                        //     //         MenuItem {
-                        //     //             text: modelData
-                        //     //             onTriggered: {
-                        //     //                 nameSelector.text = text
-                        //     //                 names.visible = false
-                        //     //             }
-                        //     //         }
-                        //     //         onObjectAdded: names.insertItem(index, object)
-                        //     //         onObjectRemoved: names.removeItem(object)
-                        //     //     }
-
-                        //     // }
-                        // }
                     }
                 }
 
@@ -304,24 +258,17 @@ Item{
                 }
                 
                 Item{
-                    id: employeeItem
+                    id: estimatedTimeItem
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    
                     ColumnLayout{
-                        id: employeeColumn
-                        width: parent.width *.7
-                        height: parent.height
-                        anchors{
-                            left: parent.left
-                        }
+                        anchors.fill: parent
                         spacing: 10
-                        
                         Label{
-                            id: employeeLabel
+                            id: estimatedTimeLabel
                             Layout.fillWidth: true
                             Layout.fillHeight: true
-                            text: "Employees list"
+                            text: "Estimated time"
                             verticalAlignment: Qt.AlignBottom
                             horizontalAlignment: Qt.AlignLeft
                             font{
@@ -330,50 +277,17 @@ Item{
                             }
                             color: appPalette.text
                         }
-                        Label {
-                            id: employeeField
-                            Layout.fillWidth: true
-                            Layout.preferredHeight: parent.height *.4
-                            horizontalAlignment: Qt.horizontalCenter
-                            text: employeesSelectedLabels.toString()
-                            wrapMode : Text.Wrap 
-                            color: appPalette.text
+                        QC1.TextField {
+                            id: estimatedTIme
+                            Layout.preferredWidth: parent.width * .30
+                            Layout.fillHeight: true
+                            placeholderText: "hh"
+                            style: TextFieldTheme{}
                             font{
-                                pointSize: 14
-                            }
-                            padding: 10
-                            background: Rectangle{
-                                anchors.fill: parent
-                                border{
-                                    color: appPalette.midLight
-                                    width: 1
-                                }
-                                color: appPalette.dark
-                                radius: 10
-                            }
-                        }
-                        
-                    }
-                    ThemedButton {
-                        id: chooseEmployees
-                        width: parent.width *.2
-                        height: employeeField.height * 0.8
-                        anchors{
-                            left: employeeColumn.right
-                            bottom: employeeColumn.bottom
-                            leftMargin: parent.width *.05
-                        }
-                        selectedColor: appPalette.limeGreen
-                        textColor: appPalette.text
-                        buttonText: "Choose"
-                        actionHandler{
-                            onClicked:{
-                                employeesPicker.open()
+                                pointSize: 16
                             }
                         }
                     }
-
-                    
                 }
 
                 Item{
@@ -526,18 +440,27 @@ Item{
                     }
                 }
 
+                
+
                 Item{
-                    id: estimatedTimeItem
+                    id: employeeItem
                     Layout.fillWidth: true
                     Layout.fillHeight: true
+                    
                     ColumnLayout{
-                        anchors.fill: parent
+                        id: employeeColumn
+                        width: parent.width *.7
+                        height: parent.height
+                        anchors{
+                            left: parent.left
+                        }
                         spacing: 10
+                        
                         Label{
-                            id: estimatedTimeLabel
+                            id: employeeLabel
                             Layout.fillWidth: true
                             Layout.fillHeight: true
-                            text: "Estimated time"
+                            text: "Employees list"
                             verticalAlignment: Qt.AlignBottom
                             horizontalAlignment: Qt.AlignLeft
                             font{
@@ -546,18 +469,52 @@ Item{
                             }
                             color: appPalette.text
                         }
-                        QC1.TextField {
-                            id: estimatedTIme
-                            Layout.preferredWidth: parent.width * .30
-                            Layout.fillHeight: true
-                            placeholderText: "hh"
-                            style: TextFieldTheme{}
+                        Label {
+                            id: employeeField
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: parent.height *.4
+                            horizontalAlignment: Qt.horizontalCenter
+                            text: employeesSelectedLabels.toString()
+                            wrapMode : Text.Wrap 
+                            color: appPalette.text
                             font{
-                                pointSize: 16
+                                pointSize: 14
+                            }
+                            padding: 10
+                            background: Rectangle{
+                                anchors.fill: parent
+                                border{
+                                    color: appPalette.midLight
+                                    width: 1
+                                }
+                                color: appPalette.dark
+                                radius: 10
+                            }
+                        }
+                        
+                    }
+                    ThemedButton {
+                        id: chooseEmployees
+                        width: parent.width *.2
+                        height: employeeField.height * 0.8
+                        anchors{
+                            left: employeeColumn.right
+                            bottom: employeeColumn.bottom
+                            leftMargin: parent.width *.05
+                        }
+                        selectedColor: appPalette.limeGreen
+                        textColor: appPalette.text
+                        buttonText: "Choose"
+                        actionHandler{
+                            onClicked:{
+                                employeesPicker.open()
                             }
                         }
                     }
+
+                    
                 }
+
 
             }
         }

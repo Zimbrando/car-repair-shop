@@ -27,7 +27,7 @@ Item{
         font{   
             pointSize: 16
         }
-        placeholderText: "Find employee"
+        placeholderText: "Find employee by name or surname"
         style: TextFieldTheme{}
     }
 

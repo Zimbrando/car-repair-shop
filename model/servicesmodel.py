@@ -52,6 +52,16 @@ class Services(QObject):
         self._date = date
         self.dateChanged.emit(date)
 
+    @pyqtSlot(int,result=int)
+    def getIdByIndex(self, index: int):
+        self.model.query().seek(index)
+        return self.model.query().value("idServizio")
+
+    @pyqtSlot(int,result=bool)
+    def getStatusByIndex(self, index: int):
+        self.model.query().seek(index)
+        return self.model.query().value("completato")
+
     @pyqtSlot(int, str, QDateTime, QDateTime, int, str, str, list, result=bool)
     def addService(self, tempo: int, descrizione: str, data :QDateTime, ora: QDateTime, idcliente: int, nomeTipo: str, targa: str, dipendenti :list):
         query = QSqlQuery()

@@ -27,7 +27,7 @@ Item{
         font{   
             pointSize: 16
         }
-        placeholderText: "Find service"
+        placeholderText: "Find service by description"
         style: TextFieldTheme{}
     }
 

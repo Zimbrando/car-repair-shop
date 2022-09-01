@@ -118,7 +118,6 @@ Item{
             QC1.TableView {
                 id: reservationsTable
                 property int selectedRowId: -1
-                //property int selectedRowIndex: undefined
                 height: parent.height - selectedDateLabel.height - parent.height *.05
                 width: parent.width *.98
                 anchors{
@@ -133,15 +132,9 @@ Item{
                 sortIndicatorVisible: false
 
                 onDoubleClicked:{
-                        //console.log(row)
-                        //if(rowPressed){
-                           //TODO rowindex is available
-                           //bind selectedRowId property with serviceId - something like this:
-                           //reservationsTable.selectedRowId = model[rowIndex]
-                           serviceOptions.open()
-                        //}else{
-
-                       // }
+                    selectedRowId = data.getIdByIndex(row)
+                    if(!data.getStatusByIndex(row))
+                        serviceOptions.open()
                 }
 
 

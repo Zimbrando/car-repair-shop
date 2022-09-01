@@ -27,7 +27,7 @@ Item{
         font{   
             pointSize: 16
         }
-        placeholderText: "Find component"
+        placeholderText: "Find component by name or brand"
         style: TextFieldTheme{}
     }
 
