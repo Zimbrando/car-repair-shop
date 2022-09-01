@@ -22,11 +22,9 @@ CREATE TABLE DIPENDENTI (
 
 DROP TABLE IF EXISTS TIPO_SERVIZI CASCADE;
 CREATE TABLE TIPO_SERVIZI (
-     idTipo SERIAL NOT NULL,
      tariffa NUMERIC(4,2) NOT NULL,
-     nome VARCHAR(30) NOT NULL,
-     CONSTRAINT ID_Tipo_servizio_ID PRIMARY KEY (idTipo),
-     CONSTRAINT SID_Tipo_servizio_ID UNIQUE (nome)
+     nomeTipo VARCHAR(30) NOT NULL,
+     CONSTRAINT SID_Tipo_servizio_ID PRIMARY KEY (nomeTipo)
 );
 
 DROP TABLE IF EXISTS CLASSE_COMPONENTI CASCADE;
@@ -57,8 +55,8 @@ CREATE TABLE COMPONENTI (
      codiceEAN VARCHAR(30) NOT NULL,
      idServizio INT,
      idOfficina INT NOT NULL,
-     CONSTRAINT ID_Componente_ID PRIMARY KEY (seriale),
-     CONSTRAINT SID_Componente_ID UNIQUE (idComponente)
+     CONSTRAINT ID_Componente_ID PRIMARY KEY (idComponente),
+     CONSTRAINT SID_Componente_ID UNIQUE (seriale, codiceEAN)
 );
 
 DROP TABLE IF EXISTS ESITI CASCADE;
@@ -75,22 +73,18 @@ CREATE TABLE ESITI (
 
 DROP TABLE IF EXISTS VEICOLI CASCADE;
 CREATE TABLE VEICOLI (
-     idVeicolo SERIAL NOT NULL,
      targa VARCHAR(7) NOT NULL,
      anno INT NOT NULL,
      modello VARCHAR(20) NOT NULL,
      tipo INT NOT NULL,
-     idMarchio INT NOT NULL,
-     CONSTRAINT SID_Veicolo_ID UNIQUE (targa),
-     CONSTRAINT ID_Veicolo_ID PRIMARY KEY (idVeicolo)
+     nomeMarchio VARCHAR(30) NOT NULL,
+     CONSTRAINT ID_Veicolo_ID PRIMARY KEY (targa)
 );
 
 DROP TABLE IF EXISTS MARCHI CASCADE;
 CREATE TABLE MARCHI (
-     idMarchio SERIAL NOT NULL,
-     nome VARCHAR(20) NOT NULL,
-     CONSTRAINT SID_Marchio_ID UNIQUE (nome),
-     CONSTRAINT ID_Marchio_ID PRIMARY KEY (idMarchio)
+     nomeMarchio VARCHAR(20) NOT NULL,
+     CONSTRAINT ID_Marchio_ID PRIMARY KEY (nomeMarchio)
 );
 
 
@@ -114,10 +108,10 @@ CREATE TABLE SERVIZI (
      ora TIME NOT NULL,
      idOfficina INT NOT NULL,
      idCliente INT NOT NULL,
-     idTipo INT NOT NULL,
-     idVeicolo INT NOT NULL,
+     nomeTipo VARCHAR(30) NOT NULL,
+     targa VARCHAR(7) NOT NULL,
      CONSTRAINT ID_Servizio_ID PRIMARY KEY (idServizio),
-     CONSTRAINT SID_Servizio_ID UNIQUE (idCliente, idOfficina, data_servizio, ora)
+     CONSTRAINT SID_Servizio_ID UNIQUE (idCliente, data_servizio, ora)
 );
 
 DROP TABLE IF EXISTS ASSEGNAZIONI CASCADE;
@@ -163,7 +157,7 @@ ALTER TABLE LAVORI ADD CONSTRAINT ID_Lavor_Dipen_FK
      REFERENCES DIPENDENTI;
 
 ALTER TABLE SERVIZI ADD CONSTRAINT REF_Servi_Veico_FK
-     FOREIGN KEY (idVeicolo)
+     FOREIGN KEY (targa)
      REFERENCES VEICOLI;
 
 ALTER TABLE SERVIZI ADD CONSTRAINT REF_Servi_Offic_FK
@@ -175,11 +169,11 @@ ALTER TABLE SERVIZI ADD CONSTRAINT EQU_Servi_Clien
      REFERENCES CLIENTI;
 
 ALTER TABLE VEICOLI ADD CONSTRAINT REF_Veico_March_FK
-     FOREIGN KEY (idMarchio)
+     FOREIGN KEY (nomeMarchio)
      REFERENCES MARCHI;
 
 ALTER TABLE SERVIZI ADD CONSTRAINT REF_Servi_Tipo__FK
-     FOREIGN KEY (idTipo)
+     FOREIGN KEY (nomeTipo)
      REFERENCES TIPO_SERVIZI;
 
 
@@ -199,7 +193,7 @@ CREATE UNIQUE INDEX ID_Cliente_IND
      on CLIENTI (idCliente);
 
 CREATE UNIQUE INDEX ID_Componente_IND
-     on COMPONENTI (seriale);
+     on COMPONENTI (seriale, codiceEAN);
 
 CREATE UNIQUE INDEX SID_Componente_IND
      on COMPONENTI (idComponente);
@@ -220,10 +214,7 @@ CREATE UNIQUE INDEX SID_Esito_Servi_IND
      on ESITI (idServizio);
 
 CREATE UNIQUE INDEX SID_Marchio_IND
-     on MARCHI (nome);
-
-CREATE UNIQUE INDEX ID_Marchio_IND
-     on MARCHI (idMarchio);
+     on MARCHI (nomeMarchio);
 
 CREATE INDEX REF_Lavor_Offic_IND
      on LAVORI (idOfficina);
@@ -238,24 +229,21 @@ CREATE UNIQUE INDEX ID_Servizio_IND
      on SERVIZI (idServizio);
 
 CREATE UNIQUE INDEX SID_Servizio_IND
-     on SERVIZI (idCliente, idOfficina, data_servizio, ora);
-
-CREATE INDEX REF_Servi_Veico_IND
-     on SERVIZI (idVeicolo);
+     on SERVIZI (idCliente, data_servizio, ora);
 
 CREATE INDEX REF_Servi_Tipo__IND
-     on SERVIZI (idTipo);
+     on SERVIZI (nomeTipo);
 
 CREATE INDEX REF_Servi_Offic_IND
      on SERVIZI (idOfficina);
 
-CREATE UNIQUE INDEX SID_Veicolo_IND
-     on VEICOLI (targa);
+CREATE UNIQUE INDEX ID_Tipo_servizio_IND
+     on TIPO_SERVIZI (nomeTipo);
 
 CREATE UNIQUE INDEX ID_Veicolo_IND
-     on VEICOLI (idVeicolo);
+     on VEICOLI (targa);
 
 CREATE INDEX REF_Veico_March_IND
-     on VEICOLI (idMarchio);
+     on VEICOLI (nomeMarchio);
 
 

@@ -469,11 +469,11 @@ Item{
                             Vehicles {id: vehiclesData}
                             textRole: "targa"
 
-                            property int idVehicle: {
+                            property string plate: {
                                 if (currentIndex < 0 || currentIndex > vehiclesSelector.count) 
                                     return -1
                                 
-                                return delegateModel.items.get(currentIndex).model.idveicolo
+                                return delegateModel.items.get(currentIndex).model.targa
                             }
                         }
                         // QC1.TextField {
@@ -514,13 +514,13 @@ Item{
                             Layout.fillWidth: true
                             Layout.preferredHeight: parent.height *.4
                             model: ServicesTypeModel {}
-                            textRole: "nome"
+                            textRole: "nomeTipo"
 
-                            property int idType: {
+                            property string typeName: {
                                 if (currentIndex < 0 || currentIndex > typeSelector.count) 
                                         return -1
                                     
-                                    return delegateModel.items.get(currentIndex).model.idtipo
+                                    return delegateModel.items.get(currentIndex).model.nomeTipo
                                 }
                         }
                     }
@@ -741,7 +741,7 @@ Item{
                     if (slotData.full)
                         return
                     if (data.addService(parseInt(estimatedTIme.text), descriptionField.text, Date.fromLocaleString(Qt.locale(), textDate.text, "dd-MM-yyyy"), 
-                        Date.fromLocaleTimeString(Qt.locale(), timePicker.text, "hh:mm"), nameSelector.idClient, typeSelector.idType, vehiclesSelector.idVehicle, employeesSelected))
+                        Date.fromLocaleTimeString(Qt.locale(), timePicker.text, "hh:mm"), nameSelector.idClient, typeSelector.typeName, vehiclesSelector.plate, employeesSelected))
                         stackRef.pop()
                 }
             }
@@ -761,7 +761,6 @@ Item{
 
     Services {
         id: data
-
         workshop: workShopIndex 
     }
 

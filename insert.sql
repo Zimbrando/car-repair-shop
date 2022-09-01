@@ -9,7 +9,7 @@ VALUES(5, 'Via Garavini', 'Russi', '48026', 102),
 
 -- Marchi
 INSERT INTO public.marchi
-(nome)
+(nomeMarchio)
 VALUES('Mercedes'),
     ('Audi'),
     ('Volkswagen'),
@@ -29,32 +29,32 @@ VALUES('Mercedes'),
 -- Veicoli
 -- 1 Auto 2 Moto 3 Autocarro
 INSERT INTO public.veicoli
-(targa, anno, modello, tipo, idmarchio)
-VALUES('BR243CD', 2001, '206', 1, 5),
-    ('GD243DW', 2020, 'A3', 1, 2),
-    ('GH222AB', 2021, 'XC60', 1, 6),
-    ('DC223AD', 2007, 'I20', 1, 7),
-    ('ER142GT', 2012, '208 GTI', 1, 5),
-    ('FC231GR', 2017, '500X', 1, 4),
-    ('FP126BV', 2018, '308', 1, 5),
-    ('EN89756', 2015, 'R1', 2, 15),
-    ('GE872PS', 2020, '208', 1, 5),
-    ('DE789KE', 2010, 'Puma', 1, 13),
-    ('CF004SA', 2007, 'I10', 1, 7),
-    ('GE872FK', 2003, 'Kuga', 1, 13),
-    ('GE872OP', 2005, 'Golf', 1, 3),
-    ('GE872UR', 2014, '500', 1, 4),
-    ('GE872SL', 2013, 'Grande Punto', 1, 4),
-    ('GE872CC', 2014, 'Tracer 7', 2, 15),
-    ('GE872FU', 2010, 'R7', 2, 15),
-    ('GE872TR', 2019, 'Panda', 1, 4),
-    ('GE872GZ', 2018, 'Scala', 1, 12),
-    ('GE872CX', 2016, 'A4', 1, 2),
-    ('GE872BN', 2016, 'Focus', 1, 13),
-    ('GE872MN', 2013, 'Xsara', 1, 9),
-    ('GE872FF', 2020, 'Octavia', 1, 12),
-    ('GE872SM', 2021, 'Mustang', 1, 13),
-    ('GE872TV', 2001, 'Santa Fe', 1, 6);
+(targa, anno, modello, tipo, nomeMarchio)
+VALUES('BR243CD', 2001, '206', 1, 'Peugeot'),
+    ('GD243DW', 2020, 'A3', 1, 'Audi'),
+    ('GH222AB', 2021, 'XC60', 1, 'Volvo'),
+    ('DC223AD', 2007, 'I20', 1, 'Hyundai'),
+    ('ER142GT', 2012, '208 GTI', 1, 'Peugeot'),
+    ('FC231GR', 2017, '500X', 1,'Fiat'),
+    ('FP126BV', 2018, '308', 1, 'Peugeot'),
+    ('EN89756', 2015, 'R1', 2, 'Yamaha'),
+    ('GE872PS', 2020, '208', 1, 'Peugeot'),
+    ('DE789KE', 2010, 'Puma', 1, 'Ford'),
+    ('CF004SA', 2007, 'I10', 1, 'Hyundai'),
+    ('GE872FK', 2003, 'Kuga', 1, 'Ford'),
+    ('GE872OP', 2005, 'Golf', 1, 'Volkswagen'),
+    ('GE872UR', 2014, '500', 1, 'Fiat'),
+    ('GE872SL', 2013, 'Grande Punto', 1, 'Fiat'),
+    ('GE872CC', 2014, 'Tracer 7', 2, 'Yamaha'),
+    ('GE872FU', 2010, 'R7', 2, 'Yamaha'),
+    ('GE872TR', 2019, 'Panda', 1, 'Fiat'),
+    ('GE872GZ', 2018, 'Scala', 1, 'Skoda'),
+    ('GE872CX', 2016, 'A4', 1, 'Audi'),
+    ('GE872BN', 2016, 'Focus', 1, 'Ford'),
+    ('GE872MN', 2013, 'Xsara', 1, 'Citroen'),
+    ('GE872FF', 2020, 'Octavia', 1, 'Skoda'),
+    ('GE872SM', 2021, 'Mustang', 1, 'Ford'),
+    ('GE872TV', 2001, 'Santa Fe', 1, 'Hyundai');
 
 -- Clienti
 INSERT INTO public.clienti
@@ -98,26 +98,26 @@ VALUES('Rossi', 'Mario', 'RSSRRT81P15H294T', '3353678026 '),
 
 -- Tipo servizi
 INSERT INTO public.tipo_servizi
-(tariffa, nome)
+(tariffa, nomeTipo)
 VALUES (20, 'Tagliando'),
     (35, 'Riparazione meccanica'),
     (40, 'Riparazione elettronica');
 
 -- Servizi
 INSERT INTO public.servizi
-(tempo_stimato, descrizione, data_servizio, ora, idofficina, idcliente, idtipo, idveicolo)
-VALUES(1, 'Kilometraggio corrente: 140.000km', '12/08/2022', '15:00', 1, 1, 1, 1),
-    (1, 'Kilometraggio corrente: 50.000km', '12/08/2022', '13:00', 1, 5, 1, 1),
-    (2, 'Rumore strano alla partenza', '10/08/2022', '9:00', 1, 2, 2, 2),
-    (1, 'Sostituzione radiatore', '11/08/2022', '8:00', 1, 4, 2, 4),
-    (3, 'Cambio marmitta', '11/08/2022', '9:00', 1, 13, 2, 5),
-    (1, 'Cambio filtro olio', '12/08/2022', '8:00', 2, 10, 2, 17),
-    (2, 'Sostituzione iniettori', '12/08/2022', '9:00', 1, 7, 2, 23),
-    (5, 'Sostituzione trasmissione', '13/08/2022', '10:00', 1, 8, 2, 12),
-    (2, 'Pulizia filtri del gas', '13/08/2022', '8:00', 1, 3, 2, 16),
-    (1, 'Sostituzione fari anteriori', '14/08/2022', '8:00', 1, 12, 3, 10),
-    (1, 'Sostituzione fari posteriori', '14/08/2022', '10:00', 1, 11, 3, 8),
-    (2, 'Controllo centralina elettrica', '16/08/2022', '8:00', 2, 6, 3, 7);
+(tempo_stimato, descrizione, data_servizio, ora, idofficina, idcliente, nomeTipo, targa)
+VALUES(1, 'Kilometraggio corrente: 140.000km', '12/08/2022', '15:00', 1, 1, 'Tagliando', 'BR243CD'),
+    (1, 'Kilometraggio corrente: 50.000km', '12/08/2022', '13:00', 1, 5, 'Tagliando', 'BR243CD'),
+    (2, 'Rumore strano alla partenza', '10/08/2022', '9:00', 1, 2, 'Riparazione meccanica', 'GD243DW'),
+    (1, 'Sostituzione radiatore', '11/08/2022', '8:00', 1, 4, 'Riparazione meccanica', 'DC223AD'),
+    (3, 'Cambio marmitta', '11/08/2022', '9:00', 1, 13, 'Riparazione meccanica', 'ER142GT'),
+    (1, 'Cambio filtro olio', '12/08/2022', '8:00', 2, 10, 'Riparazione meccanica', 'GE872OP'),
+    (2, 'Sostituzione iniettori', '12/08/2022', '9:00', 1, 7, 'Riparazione meccanica', 'GE872FF'),
+    (5, 'Sostituzione trasmissione', '13/08/2022', '10:00', 1, 8, 'Riparazione meccanica', 'GE872FK'),
+    (2, 'Pulizia filtri del gas', '13/08/2022', '8:00', 1, 3, 'Riparazione meccanica', 'GE872CX'),
+    (1, 'Sostituzione fari anteriori', '14/08/2022', '8:00', 1, 12, 'Riparazione elettronica', 'DE789KE'),
+    (1, 'Sostituzione fari posteriori', '14/08/2022', '10:00', 1, 11, 'Riparazione elettronica', 'EN89756'),
+    (2, 'Controllo centralina elettrica', '16/08/2022', '8:00', 2, 6, 'Riparazione elettronica', 'FP126BV');
 
 -- Assegnazioni
 INSERT INTO public.assegnazioni
