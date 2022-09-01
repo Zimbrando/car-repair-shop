@@ -65,6 +65,17 @@ class Components(QObject):
 
         self.refresh()
 
+    @pyqtSlot(int, int)
+    def assignComponentTo(self, idcomponente: int, idservizio: int):
+        query = QSqlQuery()
+        query.prepare("""UPDATE public.componenti
+                        SET idservizio=:idservice
+                        WHERE idcomponente=:idcomponent
+                    """)
+        query.bindValue(":idservice", idservizio)
+        query.bindValue(":idcomponent", idcomponente)
+        query.exec()
+
     @pyqtSlot()
     def refresh(self):
         if self._workshop < 0:
