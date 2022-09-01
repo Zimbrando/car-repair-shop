@@ -23,13 +23,13 @@ TableViewStyle {
         implicitWidth: 20
         implicitHeight: 20
         radius: 10
-        color: appPalette.light
+        color: appPalette.placeHolderText
     }
     scrollBarBackground: Rectangle {
         implicitWidth: 20
         implicitHeight: 20
         opacity: 0.7
-        color: appPalette.midLight
+        color: appPalette.light
     }
 
     frame: Rectangle{
