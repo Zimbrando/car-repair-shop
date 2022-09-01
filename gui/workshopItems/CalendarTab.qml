@@ -199,7 +199,7 @@ Item{
                             }
                             radius: width/2
                             color:{
-                                if(model.completato){
+                                if(model && model.completato){
                                     if (model.eseguito) {
                                         return appPalette.okStatus
                                     } else {
@@ -241,9 +241,9 @@ Item{
 
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
-                            color: !model.ora ?  "red" : appPalette.text
+                            color: model && !model.ora ?  "red" : appPalette.text
                             elide: Text.ElideRight
-                            text: model.tempo_stimato ? model.tempo_stimato + "h" : ""
+                            text: model && model.tempo_stimato ? model.tempo_stimato + "h" : ""
                             font.pointSize: 15
                             background:Rectangle{
                                 width: parent.width 
@@ -276,7 +276,7 @@ Item{
                                 padding: 6
 
                                 closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent | Popup.CloseOnReleaseOutsideParent
-                                text: model.ora ? model.ora.getHours()+":"+model.ora.getMinutes() : "Not available"
+                                text: model && model.ora ? model.ora.getHours()+":"+model.ora.getMinutes() : "Not available"
                                 delay: 1000
                                 visible: toolTipTrigger.containsMouse
                                 contentItem: Text {
@@ -314,9 +314,9 @@ Item{
 
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
-                            color: !model.ora ?  "red" : appPalette.text
+                            color: model && !model.ora?  "red" : appPalette.text
                             elide: Text.ElideRight
-                            text: model.ora ? model.ora.getHours()+":"+(model.ora.getMinutes() === 0 ? "00" : model.ora.getMinutes()) : ""
+                            text: model && model.ora ? model.ora.getHours()+":"+(model.ora.getMinutes() === 0 ? "00" : model.ora.getMinutes()) : ""
                             font.pointSize: 15
                             background:Rectangle{
                                 width: parent.width 
@@ -349,7 +349,7 @@ Item{
                                 padding: 6
 
                                 closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent | Popup.CloseOnReleaseOutsideParent
-                                text: model.ora ? model.ora.getHours()+":"+model.ora.getMinutes() : "Not available"
+                                text: model && model.ora ? model.ora.getHours()+":"+model.ora.getMinutes() : "Not available"
                                 delay: 1000
                                 visible: toolTipTrigger.containsMouse
                                 contentItem: Text {

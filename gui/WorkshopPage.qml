@@ -34,6 +34,7 @@ Item{
         actionHandler{
             onClicked:{
                 stackRef.pop()
+                mainRoot.selectedWSAddress = ""
             }
         }
     }
@@ -92,15 +93,6 @@ Item{
                 workShopIndex: root.workShopIndex
             }
             
-        }
-
-        QC1.Tab {
-            id: statsPage
-            title: "Statistics"
-            StatsTab{
-                workShopAddress: root.workShopAddress
-                workShopIndex: root.workShopIndex
-            }
         }
 
         style: TabViewStyle{

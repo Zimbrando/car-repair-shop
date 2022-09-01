@@ -93,7 +93,7 @@ Item{
                     }
                     radius: width/2
                     color:{
-                        if(model.completato){
+                        if(model && model.completato){
                             if (model.eseguito) {
                                 return appPalette.okStatus
                             } else {
@@ -125,9 +125,9 @@ Item{
 
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
-                    color: !model.data_servizio ?  "red" : appPalette.text
+                    color: model && !model.data_servizio ?  "red" : appPalette.text
                     elide: Text.ElideRight
-                    text: model.data_servizio ? model.data_servizio.toLocaleDateString() : ""
+                    text: model && model.data_servizio  ? model.data_servizio.toLocaleDateString() : ""
                     font.pointSize: 15
                     background:Rectangle{
                         width: parent.width 

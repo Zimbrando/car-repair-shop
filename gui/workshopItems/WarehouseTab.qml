@@ -79,12 +79,13 @@ Item{
             role: "seriale"
             movable: false
             resizable: false
+            //visible: !data.group
             width: warehouseTable.width / warehouseTable.columnCount 
         }
 
         QC1.TableViewColumn {
             title: "Name"
-            role: "nome"
+            role:  "nome" 
             movable: false
             resizable: false
             width: warehouseTable.width / warehouseTable.columnCount 
@@ -92,7 +93,7 @@ Item{
 
         QC1.TableViewColumn {
             title: "Brand"
-            role: "marca"
+            role: "marca" 
             movable: false
             resizable: false
             width: warehouseTable.width / warehouseTable.columnCount 
@@ -100,7 +101,7 @@ Item{
 
         QC1.TableViewColumn {
             title: "Price"
-            role: "prezzo"
+            role:  "prezzo" 
             movable: false
             resizable: false
             width: warehouseTable.width / warehouseTable.columnCount 
@@ -108,9 +109,10 @@ Item{
 
         QC1.TableViewColumn {
             title: "Quantity"
-            role: "quantita"
+            role:  "quantita" 
             movable: false
             resizable: false
+            //visible: data.group
             width: warehouseTable.width / warehouseTable.columnCount 
         }
     }

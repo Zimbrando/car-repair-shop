@@ -8,6 +8,7 @@ import QtGraphicalEffects 1.15
 import WorkshopsModel 1.0
 
 import "./images"
+import "./shared"
 
 Item{
     id: root
@@ -29,7 +30,7 @@ Item{
     /////////////////////////APPLICATION TITLE/////////////////////////
     Label{
         id: mainTitle
-        width: root.width * .35
+        width: root.width * .4
         height: root.height *.05
         anchors{
             top: parent.top
@@ -101,6 +102,7 @@ Item{
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 property var carsAvailability: Math.random() * 5
+                property var modelRef: model 
                 property var aIndex: model.idofficina
 
                 state: "unselected"
@@ -190,26 +192,25 @@ Item{
                     }
                 }
 
-                RowLayout{
+                Row{
                     id: carsAligner
-                    width: parent.width * .25
-                    height: parent.height *.1
+                    width: model.max_veicoli * 35//parent.width * .95
+                    height: parent.height *.2
                     anchors{
                         bottom: parent.bottom
-                        right: parent.right
-                        rightMargin: 20
-                        bottomMargin: 20
+                        horizontalCenter: parent.horizontalCenter
+                        bottomMargin: 5
                     }
+                    
                     spacing: 0
                     Repeater{
                         id: carsRepeater
-                        model: 5
-                        
+                        model: workShopDelegate.modelRef.max_veicoli
                         delegate: Item{
                             id: carDelegate
                             property var aIndex: index
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
+                            width: height
+                            height: carsAligner.height
                             Image{
                                 id: carImage
                                 width: 30
@@ -222,7 +223,7 @@ Item{
                                 ColorOverlay {
                                     anchors.fill: carImage
                                     source: carImage
-                                    color: carDelegate.aIndex + 1 <=  workShopDelegate.carsAvailability ? appPalette.limeGreen : appPalette.placeHolderText
+                                    color: /*carDelegate.aIndex + 1 <=  workShopDelegate.carsAvailability ? appPalette.limeGreen :*/ appPalette.placeHolderText
                                 }
                             }
                         }
@@ -256,5 +257,25 @@ Item{
         }
     }
 
-    
+    /////////////////////////ABOUT PAGE/////////////////////////
+
+    ThemedButton{
+        id: openAbout
+        width: height
+        height: parent.height *.07
+        anchors{
+
+            bottom: parent.bottom
+            right: parent.right
+            bottomMargin: 10
+            rightMargin: anchors.bottomMargin
+        }  
+        buttonText: "i"
+        actionHandler{
+            onClicked:{
+                mainStack.push(aboutPage)
+            }
+        }
+    }
+
 }
