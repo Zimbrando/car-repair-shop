@@ -8,6 +8,7 @@ from model.componentsmodel import Components, ClassesModel
 from model.employeesmodel import Employees, EmployeesFree
 from model.servicesmodel import Services, ServicesTypeModel, ServicesSlot
 from model.clientsmodel import Clients
+from model.outcomesmodel import Outcomes
 from config import Config
 
 import sys
@@ -63,6 +64,8 @@ if __name__ == '__main__':
     qmlRegisterType(ServicesSlot, 'ServicesSlot', 1, 0, 'ServicesSlot')
     #Clients
     qmlRegisterType(Clients, 'Clients', 1, 0, 'Clients')
+    #Outcomes
+    qmlRegisterType(Outcomes, 'Outcomes', 1, 0, 'Outcomes')
 
     engine = QQmlApplicationEngine()
     engine.quit.connect(app.quit)

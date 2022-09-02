@@ -9,7 +9,8 @@ import Services 1.0
 import "../shared"
 
 Item{
-    id: root
+    id: calendarRoot
+    property alias dataAlias: data
     property int workShopIndex: undefined
 
     RowLayout{

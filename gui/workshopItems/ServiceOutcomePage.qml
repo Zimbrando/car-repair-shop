@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls.Styles 1.4
 import QtQml.Models 2.15
 
-import Clients 1.0
+import Outcomes 1.0
 
 import "../shared"
 
@@ -197,6 +197,7 @@ Item{
                             Layout.fillWidth: true
                             Layout.fillHeight: true
                             text: "Amount to pay"
+                            opacity: outComeStatusCheckBox.checked ? 1 : 0.2
                             verticalAlignment: Qt.AlignBottom
                             horizontalAlignment: Qt.AlignLeft
                             font{
@@ -209,9 +210,10 @@ Item{
                             id: amount
                             Layout.preferredWidth: parent.width * .30
                             Layout.fillHeight: true
-
-                            placeholderText: "hh:mm"
-                            inputMask: "9999,99;0"
+                            enabled: outComeStatusCheckBox.checked
+                            opacity: outComeStatusCheckBox.checked ? 1 : 0.2  
+                            placeholderText: ""
+                            text: data.price
                             style: TextFieldTheme{}
                             font{
                                 pointSize: 16
@@ -270,8 +272,10 @@ Item{
             selectedColor: appPalette.limeGreen
             actionHandler{
                 onClicked:{
-                    //data.addClient(nameField.text, surnameField.text, taxCodeField.text, outComeStatusField.text, emailField.text)
-                    stackRef.pop()
+                    if (data.addOutcome(descriptionField.text, calendarItem.selectedDate,  amount.text, outComeStatusCheckBox.checked)) {
+                        stackRef.pop()
+                        calendarRoot.dataAlias.refresh()
+                    }
                 }
             }
         }
@@ -322,5 +326,11 @@ Item{
             }
         
         }
+    }
+
+    Outcomes {
+        id: data
+
+        service: selectedServiceId
     }
 }
