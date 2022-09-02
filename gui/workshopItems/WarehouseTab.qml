@@ -31,6 +31,31 @@ Item{
         style: TextFieldTheme{}
     }
 
+    Item{
+        id: groupOptionsItem
+        height: parent.height *.05
+        width: parent.width * .5
+        anchors{
+            top: parent.top
+            left: nameFilter.right
+            topMargin: parent.height *.05
+            leftMargin: anchors.topMargin
+        }
+       
+        CheckBox {
+            id: groupOptionsCheckBox
+            anchors.fill: parent
+            checked: false
+            text: "<font color='"+appPalette.text+"'>Group components</font>"
+            font{
+                pointSize: 15
+            }
+
+        }
+        
+    }
+
+
     Rectangle{
         id: emtpyList
         color: appPalette.dark
@@ -120,7 +145,7 @@ Item{
     Components {
         id: data
         workshop: root.workShopIndex
-        group: true
+        group: groupOptionsCheckBox.checked
         filter: nameFilter.text
     }
 }
