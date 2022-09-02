@@ -79,7 +79,7 @@ Item{
             role: "seriale"
             movable: false
             resizable: false
-            //visible: !data.group
+            visible: !data.group
             width: warehouseTable.width / warehouseTable.columnCount 
         }
 
@@ -100,7 +100,7 @@ Item{
         }
 
         QC1.TableViewColumn {
-            title: "Price"
+            title: "Price €"
             role:  "prezzo" 
             movable: false
             resizable: false
@@ -112,7 +112,7 @@ Item{
             role:  "quantita" 
             movable: false
             resizable: false
-            //visible: data.group
+            visible: data.group
             width: warehouseTable.width / warehouseTable.columnCount 
         }
     }
@@ -120,7 +120,7 @@ Item{
     Components {
         id: data
         workshop: root.workShopIndex
-        group: false
+        group: true
         filter: nameFilter.text
     }
 }

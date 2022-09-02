@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls.Styles 1.4
 import QtQml.Models 2.15
 
-import Clients 1.0
+import Components 1.0
 
 import "../shared"
 
@@ -17,6 +17,7 @@ Item{
     property var preselectedDate: undefined
     property int selectedServiceId: undefined
     property var carPartsSelected: []
+    property int workshopIndex
 
     ThemedButton{
         id: backAction
@@ -110,7 +111,7 @@ Item{
             ListView{
                 id: carPartsView
                 anchors.fill: parent
-                model: []//carParts.model
+                model: data.model
                 ScrollBar.vertical: ScrollBar {
                     active: true
                     policy: ScrollBar.AsNeeded
@@ -119,7 +120,7 @@ Item{
                     id: carPartDelegate
                     width: carPartsView.width 
                     height: carPartsView.height *.1 
-                    property var aIndex: index //model.idcomponente
+                    property var aIndex: model.idcomponente
                     property var checked: carPartCheckBox.checked
                     onCheckedChanged:{
                         if(checked){
@@ -172,7 +173,7 @@ Item{
                             verticalCenter: parent.verticalCenter
                         }
                         Layout.alignment: Qt.AlignCenter
-                        text: modelData //model.seriale + " " + model.nome
+                        text: model.seriale + " " + model.nome + " " + model.marca + " " + model.prezzo + "€"
                         color: appPalette.text
                         horizontalAlignment: Qt.AlignLeft
                         verticalAlignment: Qt.AlignVCenter
@@ -204,10 +205,23 @@ Item{
             textColor: appPalette.text
             selectedColor:  appPalette.limeGreen //slotData.full ? appPalette.errorStatus : appPalette.limeGreen
             actionHandler{
-                onClicked: {     
-                    stackRef.pop()
+                onClicked: {
+                    let check = true
+                    root.carPartsSelected.forEach(id => {
+                        if (check)
+                            check = data.assignComponentTo(id, selectedServiceId)
+                    });
+                    if (check)
+                        stackRef.pop()
+                    else data.refresh()
                 }
             }
         }
+    }
+
+    Components {
+        id: data
+        workshop: workshopIndex
+        group: false
     }
 }

@@ -65,7 +65,7 @@ class Components(QObject):
 
         self.refresh()
 
-    @pyqtSlot(int, int)
+    @pyqtSlot(int, int, result=bool)
     def assignComponentTo(self, idcomponente: int, idservizio: int):
         query = QSqlQuery()
         query.prepare("""UPDATE public.componenti
@@ -74,20 +74,20 @@ class Components(QObject):
                     """)
         query.bindValue(":idservice", idservizio)
         query.bindValue(":idcomponent", idcomponente)
-        query.exec()
+        return query.exec()
 
     @pyqtSlot()
     def refresh(self):
         if self._workshop < 0:
             if self._group:
-                self._model.setQuery("""SELECT CC.nome, CC.marca, CC.prezzo, COUNT(C.seriale) as quantita 
+                self._model.setQuery("""SELECT NULL as idcomponente, NULL as seriale, CC.nome, CC.marca, CC.prezzo, COUNT(C.seriale) as quantita 
                                         FROM public.componenti AS C
                                         JOIN public.classe_componenti AS CC ON C.codiceean = CC.codiceean
                                         WHERE idservizio IS NULL AND (LOWER(CC.marca) LIKE '""" + self._filter + """%' OR LOWER(CC.nome) LIKE '""" + self._filter + """%')
                                         GROUP BY CC.codiceean       
                                     """)
             else:
-                self._model.setQuery("""SELECT C.seriale, CC.nome, CC.marca, CC.prezzo 
+                self._model.setQuery("""SELECT C.idcomponente, C.seriale, CC.nome, CC.marca, CC.prezzo 
                                         FROM public.componenti AS C
                                         JOIN public.classe_componenti AS CC ON C.codiceean = CC.codiceean
                                         WHERE idservizio IS NULL AND (LOWER(CC.marca) LIKE '""" + self._filter + """%' OR LOWER(CC.nome) LIKE '""" + self._filter + """%')
@@ -96,7 +96,7 @@ class Components(QObject):
 
         query = QSqlQuery()      
         if self._group:
-            query.prepare("""SELECT CC.nome, CC.marca, CC.prezzo, COUNT(C.seriale) as quantita 
+            query.prepare("""SELECT NULL as idcomponente, NULL as seriale, CC.nome, CC.marca, CC.prezzo, COUNT(C.seriale) as quantita 
                             FROM public.componenti AS C
                             JOIN public.classe_componenti AS CC ON C.codiceean = CC.codiceean
                             WHERE idservizio IS NULL AND idofficina = :workshop AND (LOWER(CC.marca) LIKE '""" + self._filter + """%' OR LOWER(CC.nome) LIKE '""" + self._filter + """%')
@@ -104,7 +104,7 @@ class Components(QObject):
                         """)
             query.bindValue(":workshop", self._workshop)
         else:
-            query.prepare("""SELECT C.seriale, CC.nome, CC.marca, CC.prezzo 
+            query.prepare("""SELECT C.idcomponente, C.seriale, CC.nome, CC.marca, CC.prezzo 
                             FROM public.componenti AS C
                             JOIN public.classe_componenti AS CC ON C.codiceean = CC.codiceean
                             WHERE idservizio IS NULL AND idofficina = :workshop AND (LOWER(CC.marca) LIKE '""" + self._filter + """%' OR LOWER(CC.nome) LIKE '""" + self._filter + """%')
@@ -116,7 +116,7 @@ class Components(QObject):
 
 class ComponentsModel(BaseModel):
     def __init__(self, parent:QObject=None) -> None:
-        super(ComponentsModel, self).__init__(["seriale", "nome", "marca", "prezzo", "quantita"])
+        super(ComponentsModel, self).__init__(["idcomponente", "seriale", "nome", "marca", "prezzo", "quantita"])
 
 
 class ClassesModel(BaseModel):

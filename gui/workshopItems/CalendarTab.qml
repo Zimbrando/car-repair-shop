@@ -539,6 +539,7 @@ Item{
             id: carPartsPageCojntent
             stackReference: stackRef
             selectedServiceId: reservationsTable.selectedRowId
+            workshopIndex: workShopIndex
         }
 
     }
