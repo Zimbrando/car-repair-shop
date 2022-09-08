@@ -2,8 +2,7 @@
 [![MIT License][license-shield]][license-url] ![pyQt][pyQt]
 
   <h2>car-repair-shop</h2>
-  <p> Project made using PyQt for the database course in ![@unibo](https://github.com/unibo) </p>
-
+  <p> Project made using PyQt for the database course in unibo </p> 
 <!-- GETTING STARTED -->
 ## Getting Started
 
