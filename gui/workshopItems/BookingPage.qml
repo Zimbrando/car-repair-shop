@@ -19,6 +19,7 @@ Item{
     id: root
 
     property var stackReference
+    property var servicesData
     property var preselectedDate: undefined
     property var employeesSelected:[]
     property var employeesSelectedLabels:[]
@@ -700,6 +701,7 @@ Item{
                     if (data.addService(parseInt(estimatedTIme.text), descriptionField.text, Date.fromLocaleString(Qt.locale(), textDate.text, "dd-MM-yyyy"), 
                         Date.fromLocaleTimeString(Qt.locale(), timePicker.text, "hh:mm"), nameSelector.idClient, typeSelector.typeName, vehiclesSelector.plate, employeesSelected))
                         stackRef.pop()
+                        servicesData.refresh()
                 }
             }
         }

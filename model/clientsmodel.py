@@ -42,7 +42,7 @@ class Clients(QObject):
                         VALUES(:surname, :name, :taxcode, :cellnum, :email)
                     """)
 
-        if not name or not surname or not taxcode:
+        if not name or not surname or not taxcode or not cellnum or not email:
             return False
 
         query.bindValue(":surname", surname)

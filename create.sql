@@ -15,8 +15,8 @@ CREATE TABLE DIPENDENTI (
      cognome VARCHAR(20) NOT NULL,
      nome VARCHAR(20) NOT NULL,
      codice_fiscale VARCHAR(16) NOT NULL,
-     telefono VARCHAR(10),
-     email VARCHAR(30),
+     telefono VARCHAR(10) NOT NULL,
+     email VARCHAR(30) NOT NULL,
      CONSTRAINT ID_Dipendente_ID PRIMARY KEY (idDipendente)
 );
 
@@ -42,8 +42,8 @@ CREATE TABLE CLIENTI (
      cognome VARCHAR(20) NOT NULL,
      nome VARCHAR(20) NOT NULL,
      codice_fiscale VARCHAR(16) NOT NULL,
-     telefono VARCHAR(10),
-     email VARCHAR(30),
+     telefono VARCHAR(10) NOT NULL,
+     email VARCHAR(30) NOT NULL,
      nome_azienda VARCHAR(20),
      CONSTRAINT ID_Cliente_ID PRIMARY KEY (idCliente)
 );

@@ -58,43 +58,43 @@ VALUES('BR243CD', 2001, '206', 1, 'Peugeot'),
 
 -- Clienti
 INSERT INTO public.clienti
-(cognome, nome, codice_fiscale, telefono)
-VALUES('Sternini', 'Marco', 'STRMRC67M42H753K', '3420476702'),
-    ('Saccomandi', 'Chiara', 'SCCCHR67M42H753K', '3339234291'),
-    ('Rossi', 'Lorenzo', 'RSSLNZ77D06D720H', '3453929921'),
-    ('Babini', 'Anna', 'BBNNNA99R24L049K', '3705874112'),
-    ('Montanari', 'Francesca', 'MNTFNC82C07L424Q', '3665884785'),
-    ('Ferretti', 'Irene', 'FRRRNI90A05F704T', '3387415233'),
-    ('Lorenzini', 'Sara', 'LRNSRA95D30A944I', '3284756122'),
-    ('Fabbri', 'Maria', 'FBBMRA84P17L378S', '3397512899'),
-    ('Siviglia', 'Alessia', 'SVGLSS98E14B519R', '3485874058'),
-    ('Storti', 'Adriano', 'STRDRN96T07H501L', '3258974221'),
-    ('Baglio', 'Giuseppe', 'BGLGPP00B21D612J', '3357984562'),
-    ('Poretti', 'Leonardo', 'PRTLRD87H11G702Y', '3561253479'),
-    ('Miccoli', 'Antonio', 'MCCNTN64B04G478E', '3571456287'),
-    ('Buonadonna','Roberto','BNDRRT02R15G273K','3314587988');
+(cognome, nome, codice_fiscale, telefono, email)
+VALUES('Sternini', 'Marco', 'STRMRC67M42H753K', '3420476702', 'marco@email.it'),
+    ('Saccomandi', 'Chiara', 'SCCCHR67M42H753K', '3339234291', 'chiara@email.it'),
+    ('Rossi', 'Lorenzo', 'RSSLNZ77D06D720H', '3453929921', 'lorenzo@email.it'),
+    ('Babini', 'Anna', 'BBNNNA99R24L049K', '3705874112', 'anna@email.it'),
+    ('Montanari', 'Francesca', 'MNTFNC82C07L424Q', '3665884785', 'francesca@email.it'),
+    ('Ferretti', 'Irene', 'FRRRNI90A05F704T', '3387415233', 'irene@email.it'),
+    ('Lorenzini', 'Sara', 'LRNSRA95D30A944I', '3284756122', 'sara@email.it'),
+    ('Fabbri', 'Maria', 'FBBMRA84P17L378S', '3397512899', 'maria@email.it'),
+    ('Siviglia', 'Alessia', 'SVGLSS98E14B519R', '3485874058', 'alessia@email.it'),
+    ('Storti', 'Adriano', 'STRDRN96T07H501L', '3258974221', 'adriano@email.it'),
+    ('Baglio', 'Giuseppe', 'BGLGPP00B21D612J', '3357984562', 'giuseppe@email.it'),
+    ('Poretti', 'Leonardo', 'PRTLRD87H11G702Y', '3561253479', 'leonardo@email.it'),
+    ('Miccoli', 'Antonio', 'MCCNTN64B04G478E', '3571456287', 'antonio@email.it'),
+    ('Buonadonna','Roberto','BNDRRT02R15G273K','3314587988', 'roberto@email.it');
 
 INSERT INTO public.clienti
-(cognome, nome, codice_fiscale, email, nome_azienda)
-VALUES('Nardi', 'Massimo', 'NRDMSM34T02E798D', 'nmassim@gmail.com', 'Resoft s.r.l'),
-    ('Vuksan', 'Tiziano', 'VKSTZN58H02C001D', 'tvuksan@hotmail.it', 'Astim s.r.l'),
-    ('Maiorca', 'Sofia', 'MRCSFO05B03G337B', 'msofia@live.it','Benassi s.r.l');
+(cognome, nome, codice_fiscale, email, nome_azienda, telefono)
+VALUES('Nardi', 'Massimo', 'NRDMSM34T02E798D', 'nmassim@gmail.com', 'Resoft s.r.l', '3124325430'),
+    ('Vuksan', 'Tiziano', 'VKSTZN58H02C001D', 'tvuksan@hotmail.it', 'Astim s.r.l', '3248321329'),
+    ('Maiorca', 'Sofia', 'MRCSFO05B03G337B', 'msofia@live.it','Benassi s.r.l', '3331928328');
 
 
 -- Dipendenti
 INSERT INTO public.dipendenti
-(cognome, nome, codice_fiscale, telefono)
-VALUES('Rossi', 'Mario', 'RSSRRT81P15H294T', '3353678026 '),
-    ('Verdi', 'Gennaro', 'VRDGNR03E04L219H', '3941686851'),
-    ('Sintoni', 'Samuele', 'SNTSML75T03A390Q', '3703529927'),
-    ('Pierantoni', 'Veronica', 'PRNVNC04M60A089N', '3389974396'),
-    ('Gardini', 'Enrico', 'GRDNRC77L68F839H', '3752480360'),
-    ('Fornari', 'Riccardo', 'FRNRCR89P44B180N', '3484569141'),
-    ('Doe', 'John', 'DOEJHN85D25Z114U', '3917407356'),
-    ('Verrati', 'Lucia', 'VRRLCU73E30A271M', '3124354234'),
-    ('Bezzi', 'Filippo', 'BZZFPP98T23F052J', '3608125794'),
-    ('Chiari', 'Federico', 'CHRFRC00T01B963H', '3542519616'),
-    ('Bianchi', 'Alice', 'BNCLCA01T06D086O', '3536229669'); 
+(cognome, nome, codice_fiscale, telefono, email)
+VALUES('Rossi', 'Mario', 'RSSRRT81P15H294T', '3353678026', 'mario@cars.it'),
+    ('Verdi', 'Gennaro', 'VRDGNR03E04L219H', '3941686851', 'gennaro@cars.it'),
+    ('Sintoni', 'Samuele', 'SNTSML75T03A390Q', '3703529927', 'samuele@cars.it'),
+    ('Pierantoni', 'Veronica', 'PRNVNC04M60A089N', '3389974396', 'veronica@cars.it'),
+    ('Gardini', 'Enrico', 'GRDNRC77L68F839H', '3752480360', 'enrico@cars.it'),
+    ('Fornari', 'Riccardo', 'FRNRCR89P44B180N', '3484569141', 'riccardo@cars.it'),
+    ('Doe', 'John', 'DOEJHN85D25Z114U', '3917407356', 'john@cars.it'),
+    ('Verrati', 'Lucia', 'VRRLCU73E30A271M', '3124354234', 'lucia@cars.it'),
+    ('Bezzi', 'Filippo', 'BZZFPP98T23F052J', '3608125794', 'filippo@cars.it'),
+    ('Chiari', 'Federico', 'CHRFRC00T01B963H', '3542519616', 'federico@cars.it'),
+    ('Bianchi', 'Alice', 'BNCLCA01T06D086O', '3536229669', 'alice@cars.it'); 
 
 -- Tipo servizi
 INSERT INTO public.tipo_servizi

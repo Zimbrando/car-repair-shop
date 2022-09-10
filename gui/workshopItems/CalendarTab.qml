@@ -509,6 +509,7 @@ Item{
             id: bookingPageContent
             stackReference: stackRef
             preselectedDate: reservationsCalendar.selectedDate
+            servicesData: dataAlias
         }
 
     }
