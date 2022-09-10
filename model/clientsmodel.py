@@ -34,13 +34,16 @@ class Clients(QObject):
                             WHERE LOWER(nome) LIKE '""" + self._filter + """%' OR LOWER(cognome) LIKE '""" + self._filter + """%'                       
                         """)
 
-    @pyqtSlot(str, str, str, str, str)
+    @pyqtSlot(str, str, str, str, str, result=bool)
     def addClient(self, name: str, surname: str, taxcode: str, cellnum: str, email: str):
         query = QSqlQuery()
         query.prepare("""INSERT INTO public.clienti
                         (cognome, nome, codice_fiscale, telefono, email)
                         VALUES(:surname, :name, :taxcode, :cellnum, :email)
                     """)
+
+        if not name or not surname or not taxcode or not cellnum or not email:
+            return False
 
         query.bindValue(":surname", surname)
         query.bindValue(":name", name)
@@ -59,6 +62,9 @@ class Clients(QObject):
                         VALUES(:surname, :name, :taxcode, :cellnum, :email, :company)
                     """)
                     
+        if not name or not surname or not taxcode:
+            return False
+        
         query.bindValue(":surname", surname)
         query.bindValue(":name", name)
         query.bindValue(":taxcode", taxcode)

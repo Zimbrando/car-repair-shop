@@ -9,7 +9,8 @@ import Services 1.0
 import "../shared"
 
 Item{
-    id: root
+    id: calendarRoot
+    property alias dataAlias: data
     property int workShopIndex: undefined
 
     RowLayout{
@@ -19,6 +20,7 @@ Item{
         anchors{
             centerIn: parent
         }
+
         Item{
             Layout.preferredWidth: parent.width *.30
             Layout.fillHeight: true
@@ -53,6 +55,7 @@ Item{
                 }
             }
         }
+
         Rectangle{
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -90,10 +93,32 @@ Item{
 
             }
 
+             Rectangle{
+                id: emtpyList
+                color: appPalette.dark
+                visible: reservationsTable.rowCount === 0
+                anchors.fill: reservationsTable
+                radius: 10 
+                Label{
+                    id: emtpyListLabel
+                    width: contentWidth
+                    height: contentHeight
+                    text: "No bookings"
+                    verticalAlignment: Qt.AlignVCenter
+                    horizontalAlignment: Qt.AlignHCenter
+                    anchors{
+                        centerIn: parent
+                    }
+                    font{
+                        pointSize: 20
+                    }
+                    color: appPalette.placeHolderText
+                }
+            }
+
             QC1.TableView {
                 id: reservationsTable
                 property int selectedRowId: -1
-                //property int selectedRowIndex: undefined
                 height: parent.height - selectedDateLabel.height - parent.height *.05
                 width: parent.width *.98
                 anchors{
@@ -108,15 +133,9 @@ Item{
                 sortIndicatorVisible: false
 
                 onDoubleClicked:{
-                        //console.log(row)
-                        //if(rowPressed){
-                           //TODO rowindex is available
-                           //bind selectedRowId property with serviceId - something like this:
-                           //reservationsTable.selectedRowId = model[rowIndex]
-                           stackRef.push(serviceOutcomePage)
-                        //}else{
-
-                       // }
+                    selectedRowId = data.getIdByIndex(row)
+                    if(!data.getStatusByIndex(row))
+                        serviceOptions.open()
                 }
 
 
@@ -147,7 +166,7 @@ Item{
                                 name: "selected" 
                                 PropertyChanges {
                                     target: rowBackground
-                                    color: appPalette.light
+                                    color: appPalette.limeGreen
                                 }
                             }
                         ]
@@ -174,7 +193,7 @@ Item{
                             }
                             radius: width/2
                             color:{
-                                if(model.completato){
+                                if(model && model.completato){
                                     if (model.eseguito) {
                                         return appPalette.okStatus
                                     } else {
@@ -216,9 +235,9 @@ Item{
 
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
-                            color: !model.ora ?  "red" : appPalette.text
+                            color: model && !model.ora ?  "red" : appPalette.text
                             elide: Text.ElideRight
-                            text: model.tempo_stimato ? model.tempo_stimato + "h" : ""
+                            text: model && model.tempo_stimato ? model.tempo_stimato + "h" : ""
                             font.pointSize: 15
                             background:Rectangle{
                                 width: parent.width 
@@ -251,7 +270,7 @@ Item{
                                 padding: 6
 
                                 closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent | Popup.CloseOnReleaseOutsideParent
-                                text: model.ora ? model.ora.getHours()+":"+model.ora.getMinutes() : "Not available"
+                                text: model && model.ora ? model.ora.getHours()+":"+model.ora.getMinutes() : "Not available"
                                 delay: 1000
                                 visible: toolTipTrigger.containsMouse
                                 contentItem: Text {
@@ -289,9 +308,9 @@ Item{
 
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
-                            color: !model.ora ?  "red" : appPalette.text
+                            color: model && !model.ora?  "red" : appPalette.text
                             elide: Text.ElideRight
-                            text: model.ora ? model.ora.getHours()+":"+(model.ora.getMinutes() === 0 ? "00" : model.ora.getMinutes()) : ""
+                            text: model && model.ora ? model.ora.getHours()+":"+(model.ora.getMinutes() === 0 ? "00" : model.ora.getMinutes()) : ""
                             font.pointSize: 15
                             background:Rectangle{
                                 width: parent.width 
@@ -324,7 +343,7 @@ Item{
                                 padding: 6
 
                                 closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent | Popup.CloseOnReleaseOutsideParent
-                                text: model.ora ? model.ora.getHours()+":"+model.ora.getMinutes() : "Not available"
+                                text: model && model.ora ? model.ora.getHours()+":"+model.ora.getMinutes() : "Not available"
                                 delay: 1000
                                 visible: toolTipTrigger.containsMouse
                                 contentItem: Text {
@@ -399,12 +418,98 @@ Item{
 
     }
 
+    Rectangle{
+        id: pageFrame
+        color: serviceOptions.opened ? appPalette.window : "transparent"
+        opacity: 0.7
+        anchors.fill: parent
+        border{
+            color: appPalette.midLight
+        }
+        radius: 10 
+    }
+
+    Popup {
+        id: serviceOptions
+        width: parent.width * .3
+        height: parent.height *.3
+        x: (parent.width - width)/2
+        y: (parent.height - height)/2
+        padding: 0
+        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+
+        background: Rectangle{
+            anchors.fill: parent
+            color: appPalette.dark
+            border{
+                width: 2
+                color: appPalette.light
+            }
+            radius: 10
+        }
+
+        enter: Transition {
+            NumberAnimation { property: "opacity"; from: 0.0; to: 1.0; duration: 100}
+            NumberAnimation { property: "scale"; from: 0.9; to: 1.0; duration: 150}
+        }
+
+        exit: Transition {
+            NumberAnimation { property: "opacity"; from: 1.0; to: 0.0; duration: 100}
+            NumberAnimation { property: "scale"; from: 1.0; to: 0.9; duration: 150}
+        }
+
+        contentItem: Item{
+            anchors.fill: parent
+            clip: true
+            RowLayout{
+                id: buttonsAligner
+                width: parent.width *.8
+                height: parent.height *.4
+                anchors{
+                    centerIn: parent
+                }
+                spacing: 10
+                ThemedButton{
+                    id: registerOutcome
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    buttonText: "Outcome"
+                    textColor: appPalette.text
+                    selectedColor: appPalette.limeGreen
+                    unselectedColor: appPalette.midLight
+                    actionHandler{
+                        onClicked:{
+                            stackRef.push(serviceOutcomePage)
+                            serviceOptions.close()
+                        }
+                    }
+                }
+                ThemedButton{
+                    id: registerComponents
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    buttonText: "Components"
+                    textColor: appPalette.text
+                    selectedColor: appPalette.limeGreen
+                    unselectedColor: appPalette.midLight
+                    actionHandler{
+                        onClicked:{
+                            stackRef.push(carPartsPage)
+                            serviceOptions.close()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     Component{
         id: bookingPage
         BookingPage{
             id: bookingPageContent
             stackReference: stackRef
             preselectedDate: reservationsCalendar.selectedDate
+            servicesData: dataAlias
         }
 
     }
@@ -426,6 +531,17 @@ Item{
             id: serviceOutcomeContent
             stackReference: stackRef
             selectedServiceId: reservationsTable.selectedRowId
+        }
+
+    }
+
+    Component{
+        id: carPartsPage
+        CarPartsPage{
+            id: carPartsPageCojntent
+            stackReference: stackRef
+            selectedServiceId: reservationsTable.selectedRowId
+            workshopIndex: workShopIndex
         }
 
     }

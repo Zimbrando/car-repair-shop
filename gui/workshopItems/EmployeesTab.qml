@@ -24,8 +24,34 @@ Item{
             topMargin: parent.height *.05
             leftMargin: anchors.topMargin
         }
-        placeholderText: "Find employee"
+        font{   
+            pointSize: 16
+        }
+        placeholderText: "Find employee by name or surname"
         style: TextFieldTheme{}
+    }
+
+    Rectangle{
+        id: emtpyList
+        color: appPalette.dark
+        visible: employeesTable.rowCount === 0
+        anchors.fill: employeesTable
+        radius: 10 
+        Label{
+            id: emtpyListLabel
+            width: contentWidth
+            height: contentHeight
+            text: "No employees"
+            verticalAlignment: Qt.AlignVCenter
+            horizontalAlignment: Qt.AlignHCenter
+            anchors{
+                centerIn: parent
+            }
+            font{
+                pointSize: 20
+            }
+            color: appPalette.placeHolderText
+        }
     }
 
     QC1.TableView {

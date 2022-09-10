@@ -22,7 +22,7 @@ ApplicationWindow {
     width: 1920
 
 
-    title: "CAR REPAIR SHOP"
+    title: mainRoot.selectedWSAddress == "" ? "CAR REPAIR SHOP" : "CAR REPAIR SHOP - " + mainRoot.selectedWSAddress
 
 
     GuiPalette{
@@ -36,6 +36,7 @@ ApplicationWindow {
 
         //TODO remove this
         property int selectedWorkShop: -1
+        property string selectedWSAddress: ""
 
         anchors{
             fill: parent
@@ -100,8 +101,18 @@ ApplicationWindow {
             id: workshopDetails 
             WorkshopPage{ 
                 workShopIndex: mainRoot.selectedWorkShop
+                workShopAddress: mainRoot.selectedWSAddress
                 stackRef: mainStack
                 appPalette: mainWindow.appPalette
+            }
+        }
+
+        /////////////////////////ABOUT PAGE/////////////////////////
+
+        Component{
+            id: aboutPage 
+            AboutPage{ 
+
             }
         }
 

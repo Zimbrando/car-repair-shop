@@ -24,8 +24,34 @@ Item{
             topMargin: parent.height *.05
             leftMargin: anchors.topMargin
         }
-        placeholderText: "Find service"
+        font{   
+            pointSize: 16
+        }
+        placeholderText: "Find service by description"
         style: TextFieldTheme{}
+    }
+
+    Rectangle{
+        id: emtpyList
+        color: appPalette.dark
+        visible: servicesTable.rowCount === 0
+        anchors.fill: servicesTable
+        radius: 10 
+        Label{
+            id: emtpyListLabel
+            width: contentWidth
+            height: contentHeight
+            text: "No services"
+            verticalAlignment: Qt.AlignVCenter
+            horizontalAlignment: Qt.AlignHCenter
+            anchors{
+                centerIn: parent
+            }
+            font{
+                pointSize: 20
+            }
+            color: appPalette.placeHolderText
+        }
     }
 
     QC1.TableView {
@@ -67,7 +93,7 @@ Item{
                     }
                     radius: width/2
                     color:{
-                        if(model.completato){
+                        if(model && model.completato){
                             if (model.eseguito) {
                                 return appPalette.okStatus
                             } else {
@@ -99,9 +125,9 @@ Item{
 
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
-                    color: !model.data_servizio ?  "red" : appPalette.text
+                    color: model && !model.data_servizio ?  "red" : appPalette.text
                     elide: Text.ElideRight
-                    text: model.data_servizio ? model.data_servizio.toLocaleDateString() : ""
+                    text: model && model.data_servizio  ? model.data_servizio.toLocaleDateString() : ""
                     font.pointSize: 15
                     background:Rectangle{
                         width: parent.width 

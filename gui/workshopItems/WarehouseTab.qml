@@ -24,9 +24,61 @@ Item{
             topMargin: parent.height *.05
             leftMargin: anchors.topMargin
         }
-        placeholderText: "Find component"
+        font{   
+            pointSize: 16
+        }
+        placeholderText: "Find component by name or brand"
         style: TextFieldTheme{}
     }
+
+    Item{
+        id: groupOptionsItem
+        height: parent.height *.05
+        width: parent.width * .5
+        anchors{
+            top: parent.top
+            left: nameFilter.right
+            topMargin: parent.height *.05
+            leftMargin: anchors.topMargin
+        }
+       
+        CheckBox {
+            id: groupOptionsCheckBox
+            anchors.fill: parent
+            checked: false
+            text: "<font color='"+appPalette.text+"'>Group components</font>"
+            font{
+                pointSize: 15
+            }
+
+        }
+        
+    }
+
+
+    Rectangle{
+        id: emtpyList
+        color: appPalette.dark
+        visible: warehouseTable.rowCount === 0
+        anchors.fill: warehouseTable
+        radius: 10 
+        Label{
+            id: emtpyListLabel
+            width: contentWidth
+            height: contentHeight
+            text: "No components"
+            verticalAlignment: Qt.AlignVCenter
+            horizontalAlignment: Qt.AlignHCenter
+            anchors{
+                centerIn: parent
+            }
+            font{
+                pointSize: 20
+            }
+            color: appPalette.placeHolderText
+        }
+    }
+
 
     QC1.TableView {
         id: warehouseTable
@@ -52,12 +104,13 @@ Item{
             role: "seriale"
             movable: false
             resizable: false
+            visible: !data.group
             width: warehouseTable.width / warehouseTable.columnCount 
         }
 
         QC1.TableViewColumn {
             title: "Name"
-            role: "nome"
+            role:  "nome" 
             movable: false
             resizable: false
             width: warehouseTable.width / warehouseTable.columnCount 
@@ -65,15 +118,15 @@ Item{
 
         QC1.TableViewColumn {
             title: "Brand"
-            role: "marca"
+            role: "marca" 
             movable: false
             resizable: false
             width: warehouseTable.width / warehouseTable.columnCount 
         }
 
         QC1.TableViewColumn {
-            title: "Price"
-            role: "prezzo"
+            title: "Price €"
+            role:  "prezzo" 
             movable: false
             resizable: false
             width: warehouseTable.width / warehouseTable.columnCount 
@@ -81,9 +134,10 @@ Item{
 
         QC1.TableViewColumn {
             title: "Quantity"
-            role: "quantita"
+            role:  "quantita" 
             movable: false
             resizable: false
+            visible: data.group
             width: warehouseTable.width / warehouseTable.columnCount 
         }
     }
@@ -91,7 +145,7 @@ Item{
     Components {
         id: data
         workshop: root.workShopIndex
-        group: false
+        group: groupOptionsCheckBox.checked
         filter: nameFilter.text
     }
 }

@@ -17,6 +17,7 @@ Item{
     property var stackRef: undefined
     property var appPalette: undefined
     property int workShopIndex: undefined
+    property string workShopAddress: ""
 
     ThemedButton{
         id: backAction
@@ -33,6 +34,7 @@ Item{
         actionHandler{
             onClicked:{
                 stackRef.pop()
+                mainRoot.selectedWSAddress = ""
             }
         }
     }
@@ -91,15 +93,6 @@ Item{
                 workShopIndex: root.workShopIndex
             }
             
-        }
-
-        QC1.Tab {
-            id: statsPage
-            title: "Statistics"
-            StatsTab{
-
-
-            }
         }
 
         style: TabViewStyle{

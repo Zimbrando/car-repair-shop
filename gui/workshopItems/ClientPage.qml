@@ -317,8 +317,8 @@ Item{
             selectedColor: appPalette.limeGreen
             actionHandler{
                 onClicked:{
-                    data.addClient(nameField.text, surnameField.text, taxCodeField.text, phoneNumberField.text, emailField.text)
-                    stackRef.pop()
+                    if (data.addClient(nameField.text, surnameField.text, taxCodeField.text, phoneNumberField.text, emailField.text))
+                        stackRef.pop()
                 }
             }
         }

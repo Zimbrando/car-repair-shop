@@ -52,14 +52,24 @@ class Services(QObject):
         self._date = date
         self.dateChanged.emit(date)
 
-    @pyqtSlot(int, str, QDateTime, QDateTime, int, int, int, list, result=bool)
-    def addService(self, tempo: int, descrizione: str, data :QDateTime, ora: QDateTime, idcliente: int, idtipo: int, idveicolo: int, dipendenti :list):
+    @pyqtSlot(int,result=int)
+    def getIdByIndex(self, index: int):
+        self.model.query().seek(index)
+        return self.model.query().value("idServizio")
+
+    @pyqtSlot(int,result=bool)
+    def getStatusByIndex(self, index: int):
+        self.model.query().seek(index)
+        return self.model.query().value("completato")
+
+    @pyqtSlot(int, str, QDateTime, QDateTime, int, str, str, list, result=bool)
+    def addService(self, tempo: int, descrizione: str, data :QDateTime, ora: QDateTime, idcliente: int, nomeTipo: str, targa: str, dipendenti :list):
         query = QSqlQuery()
         if not dipendenti: 
             return False
 
         query.prepare("""INSERT INTO public.servizi
-                        (tempo_stimato, descrizione, data_servizio, ora, idofficina, idcliente, idtipo, idveicolo)
+                        (tempo_stimato, descrizione, data_servizio, ora, idofficina, idcliente, nomeTipo, targa)
                         VALUES(:time, :desc, :date, :hour, :idworkshop, :idclient, :idtype, :idvehicle)
                         RETURNING idservizio
                     """)
@@ -69,8 +79,8 @@ class Services(QObject):
         query.bindValue(":hour", ora.time().toString("hh:mm"))
         query.bindValue(":idworkshop", self._workshop)
         query.bindValue(":idclient", idcliente)
-        query.bindValue(":idtype", idtipo)
-        query.bindValue(":idvehicle", idveicolo)
+        query.bindValue(":idtype", nomeTipo)
+        query.bindValue(":idvehicle", targa)
 
         if query.exec():
             query.next()
@@ -94,26 +104,26 @@ class Services(QObject):
     def refresh(self):
         query = QSqlQuery()
         if self._date.isValid():
-            query.prepare("""SELECT S.idservizio, S.tempo_stimato, S.descrizione, S.data_servizio, S.ora, TS.nome as tipo_servizio, V.modello, M.nome as marca,
+            query.prepare("""SELECT S.idservizio, S.tempo_stimato, S.descrizione, S.data_servizio, S.ora, TS.nomeTipo as tipo_servizio, V.modello, M.nomeMarchio as marca,
                                     V.anno, C.cognome, C.nome as nome_cliente, coalesce (E.idesito is not null, False) as completato, E.eseguito
                             FROM public.servizi as S
-                            JOIN tipo_servizi TS on S.idtipo = TS.idtipo 
-                            JOIN veicoli V on S.idveicolo = V.idveicolo 
+                            JOIN tipo_servizi TS on S.nomeTipo = TS.nomeTipo 
+                            JOIN veicoli V on S.targa = V.targa 
                             JOIN clienti C on S.idcliente = C.idcliente
-                            JOIN marchi M on V.idmarchio = M.idmarchio
+                            JOIN marchi M on V.nomeMarchio = M.nomeMarchio
                             LEFT JOIN esiti E on S.idservizio = E.idservizio 
                             WHERE idofficina = :workshop AND S.data_servizio = :date AND LOWER(S.descrizione) LIKE '%""" + self._filter + """%'
                             """)
             query.bindValue(":workshop", self._workshop)
             query.bindValue(":date", self._date)
         else:
-            query.prepare("""SELECT S.idservizio, S.tempo_stimato, S.descrizione, S.data_servizio, S.ora, TS.nome as tipo_servizio, V.modello, M.nome as marca,
+            query.prepare("""SELECT S.idservizio, S.tempo_stimato, S.descrizione, S.data_servizio, S.ora, TS.nomeTipo as tipo_servizio, V.modello, M.nomeMarchio as marca,
                                     V.anno, C.cognome, C.nome as nome_cliente, coalesce (E.idesito is not null, False) as completato, E.eseguito
                             FROM public.servizi as S
-                            JOIN tipo_servizi TS on S.idtipo = TS.idtipo 
-                            JOIN veicoli V on S.idveicolo = V.idveicolo 
+                            JOIN tipo_servizi TS on S.nomeTipo = TS.nomeTipo 
+                            JOIN veicoli V on S.targa = V.targa 
                             JOIN clienti C on S.idcliente = C.idcliente
-                            JOIN marchi M on V.idmarchio = M.idmarchio
+                            JOIN marchi M on V.nomeMarchio = M.nomeMarchio
                             LEFT JOIN esiti E on S.idservizio = E.idservizio 
                             WHERE idofficina = :workshop AND LOWER(S.descrizione) LIKE '%""" + self._filter + """%'
                             """)
@@ -217,21 +227,21 @@ class ServicesModel(BaseModel):
     def __init__(self, parent:QObject=None) -> None:
         super(ServicesModel, self).__init__(["idservizio", "tempo_stimato", "descrizione", "data_servizio", "ora", "tipo_servizio",
                                             "modello", "marca", "anno", "cognome", "nome_cliente", "completato", "eseguito"])
-        super().setQuery("""SELECT S.idservizio, S.tempo_stimato, S.descrizione, S.data_servizio, S.ora, TS.nome as tipo_servizio, V.modello, M.nome as marca,
+        super().setQuery("""SELECT S.idservizio, S.tempo_stimato, S.descrizione, S.data_servizio, S.ora, TS.nomeTipo as tipo_servizio, V.modello, M.nomeMarchio as marca,
                                 V.anno, C.cognome, C.nome as nome_cliente, coalesce (E.idesito is not null, False) as completato, E.eseguito
                             FROM public.servizi as S
-                            JOIN tipo_servizi TS on S.idtipo = TS.idtipo 
-                            JOIN veicoli V on S.idveicolo = V.idveicolo 
+                            JOIN tipo_servizi TS on S.nomeTipo = TS.nomeTipo 
+                            JOIN veicoli V on S.targa = V.targa 
                             JOIN clienti C on S.idcliente = C.idcliente
-                            JOIN marchi M on V.idmarchio = M.idmarchio
+                            JOIN marchi M on V.nomeMarchio = M.nomeMarchio
                             LEFT JOIN esiti E on S.idservizio = E.idservizio
                         """)
 
 class ServicesTypeModel(BaseModel):
 
     def __init__(self, parent:QObject=None) -> None:
-        super(ServicesTypeModel, self).__init__(["idtipo", "nome"])
-        super().setQuery("""SELECT idtipo, nome
+        super(ServicesTypeModel, self).__init__(["nomeTipo", "tariffa"])
+        super().setQuery("""SELECT nomeTipo, tariffa
                             FROM public.tipo_servizi
                         """)
 

@@ -3,10 +3,12 @@ import QtQuick.Controls 2.0
 import QtQuick.Controls 1.4 as QC1
 import QtQuick.Layouts 1.15
 import QtQuick.Controls.Styles 1.4
-
+import QtGraphicalEffects 1.15
 
 import WorkshopsModel 1.0
 
+import "./images"
+import "./shared"
 
 Item{
     id: root
@@ -21,19 +23,19 @@ Item{
     //        topMargin: -5
     //        horizontalCenter: parent.horizontalCenter
     //    }
-//
-    //    color: appPalette.light
+//selectedWSAddress
     //}
 
 
     /////////////////////////APPLICATION TITLE/////////////////////////
     Label{
         id: mainTitle
-        width: root.width * .35
+        width: root.width * .4
         height: root.height *.05
         anchors{
             top: parent.top
-            left: parent.left
+            //left: parent.left
+            horizontalCenter: parent.horizontalCenter
         }
         horizontalAlignment: Qt.AlignHCenter
         verticalAlignment: Qt.AlignVCenter
@@ -54,6 +56,30 @@ Item{
 
     /////////////////////////WORKSHOPS LIST/////////////////////////
 
+    Rectangle{
+        id: emtpyList
+        color: appPalette.dark
+        visible: workShopsRepeater.count === 0
+        anchors.fill: workShopsView
+        radius: 10 
+        Label{
+            id: emtpyListLabel
+            width: contentWidth
+            height: contentHeight
+            text: "No workshops"
+            verticalAlignment: Qt.AlignVCenter
+            horizontalAlignment: Qt.AlignHCenter
+            anchors{
+                centerIn: parent
+            }
+            font{
+                pointSize: 20
+            }
+            color: appPalette.placeHolderText
+        }
+    }
+    
+    
     ColumnLayout{
         id: workShopsView
 
@@ -75,6 +101,8 @@ Item{
                 id: workShopDelegate
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                property var carsAvailability: Math.random() * 5
+                property var modelRef: model 
                 property var aIndex: model.idofficina
 
                 state: "unselected"
@@ -163,6 +191,47 @@ Item{
                         }
                     }
                 }
+
+                Row{
+                    id: carsAligner
+                    width: model.max_veicoli * 35//parent.width * .95
+                    height: parent.height *.2
+                    anchors{
+                        bottom: parent.bottom
+                        horizontalCenter: parent.horizontalCenter
+                        bottomMargin: 5
+                    }
+                    
+                    spacing: 0
+                    Repeater{
+                        id: carsRepeater
+                        model: workShopDelegate.modelRef.max_veicoli
+                        delegate: Item{
+                            id: carDelegate
+                            property var aIndex: index
+                            width: height
+                            height: carsAligner.height
+                            Image{
+                                id: carImage
+                                width: 30
+                                height: 30
+                                anchors{
+                                    centerIn: parent 
+                                }
+                                fillMode: Image.PreserveAspectFit
+                                source: "./images/car-side-solid.svg"
+                                ColorOverlay {
+                                    anchors.fill: carImage
+                                    source: carImage
+                                    color: /*carDelegate.aIndex + 1 <=  workShopDelegate.carsAvailability ? appPalette.limeGreen :*/ appPalette.placeHolderText
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+
                 MouseArea{
                     id: clickHandler
                     cursorShape: Qt.PointingHandCursor
@@ -179,6 +248,7 @@ Item{
                     }
                     onClicked:{
                         mainRoot.selectedWorkShop = workShopDelegate.aIndex
+                        mainRoot.selectedWSAddress = model.citta+", "+model.via
                         mainStack.push(workshopDetails)
                     }
 
@@ -187,5 +257,25 @@ Item{
         }
     }
 
-    
+    /////////////////////////ABOUT PAGE/////////////////////////
+
+    ThemedButton{
+        id: openAbout
+        width: height
+        height: parent.height *.07
+        anchors{
+
+            bottom: parent.bottom
+            right: parent.right
+            bottomMargin: 10
+            rightMargin: anchors.bottomMargin
+        }  
+        buttonText: "i"
+        actionHandler{
+            onClicked:{
+                mainStack.push(aboutPage)
+            }
+        }
+    }
+
 }

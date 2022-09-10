@@ -19,6 +19,7 @@ Item{
     id: root
 
     property var stackReference
+    property var servicesData
     property var preselectedDate: undefined
     property var employeesSelected:[]
     property var employeesSelectedLabels:[]
@@ -136,52 +137,6 @@ Item{
                             }
                             textRole: "cognome"
                         }
-
-                        // QC1.TextField {
-                        //    // id: nameSelector
-                        //     Layout.fillWidth: true
-                        //     Layout.fillHeight: true
-                        //     placeholderText: "Type a name"
-                        //     style: TextFieldTheme{}
-                        //     onActiveFocusChanged :{
-                        //         if(activeFocus){
-                        //              names.visible = true
-                        //             names.open()   
-                        //         }
-                        //     }
-                        //     font{
-                        //         pointSize: 16
-                        //     }
-                        //     // menu: names
-                        //     // Menu {
-                        //     //     id: names
-                        //     //     title: "Select name"
-                        //     //     x: 0
-                        //     //     y: (nameSelector.height)
-                        //     //     width: nameSelector.width 
-                        //     //     delegate: Label{
-                        //     //         height: 20
-                        //     //         text: itemDelegate.label 
-                        //     //         background:Rectangle{
-                        //     //             anchors.fill: parent
-                        //     //             color: appPalette.dark
-                        //     //         }
-                        //     //     }
-                        //     //     Instantiator {
-                        //     //         model: ["marco","tiziano","ciao"]
-                        //     //         MenuItem {
-                        //     //             text: modelData
-                        //     //             onTriggered: {
-                        //     //                 nameSelector.text = text
-                        //     //                 names.visible = false
-                        //     //             }
-                        //     //         }
-                        //     //         onObjectAdded: names.insertItem(index, object)
-                        //     //         onObjectRemoved: names.removeItem(object)
-                        //     //     }
-
-                        //     // }
-                        // }
                     }
                 }
 
@@ -304,24 +259,17 @@ Item{
                 }
                 
                 Item{
-                    id: employeeItem
+                    id: estimatedTimeItem
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    
                     ColumnLayout{
-                        id: employeeColumn
-                        width: parent.width *.7
-                        height: parent.height
-                        anchors{
-                            left: parent.left
-                        }
+                        anchors.fill: parent
                         spacing: 10
-                        
                         Label{
-                            id: employeeLabel
+                            id: estimatedTimeLabel
                             Layout.fillWidth: true
                             Layout.fillHeight: true
-                            text: "Employees list"
+                            text: "Estimated time"
                             verticalAlignment: Qt.AlignBottom
                             horizontalAlignment: Qt.AlignLeft
                             font{
@@ -330,50 +278,17 @@ Item{
                             }
                             color: appPalette.text
                         }
-                        Label {
-                            id: employeeField
-                            Layout.fillWidth: true
-                            Layout.preferredHeight: parent.height *.4
-                            horizontalAlignment: Qt.horizontalCenter
-                            text: employeesSelectedLabels.toString()
-                            wrapMode : Text.Wrap 
-                            color: appPalette.text
+                        QC1.TextField {
+                            id: estimatedTIme
+                            Layout.preferredWidth: parent.width * .30
+                            Layout.fillHeight: true
+                            placeholderText: "hh"
+                            style: TextFieldTheme{}
                             font{
-                                pointSize: 14
-                            }
-                            padding: 10
-                            background: Rectangle{
-                                anchors.fill: parent
-                                border{
-                                    color: appPalette.midLight
-                                    width: 1
-                                }
-                                color: appPalette.dark
-                                radius: 10
-                            }
-                        }
-                        
-                    }
-                    ThemedButton {
-                        id: chooseEmployees
-                        width: parent.width *.2
-                        height: employeeField.height * 0.8
-                        anchors{
-                            left: employeeColumn.right
-                            bottom: employeeColumn.bottom
-                            leftMargin: parent.width *.05
-                        }
-                        selectedColor: appPalette.limeGreen
-                        textColor: appPalette.text
-                        buttonText: "Choose"
-                        actionHandler{
-                            onClicked:{
-                                employeesPicker.open()
+                                pointSize: 16
                             }
                         }
                     }
-
-                    
                 }
 
                 Item{
@@ -469,11 +384,11 @@ Item{
                             Vehicles {id: vehiclesData}
                             textRole: "targa"
 
-                            property int idVehicle: {
+                            property string plate: {
                                 if (currentIndex < 0 || currentIndex > vehiclesSelector.count) 
                                     return -1
                                 
-                                return delegateModel.items.get(currentIndex).model.idveicolo
+                                return delegateModel.items.get(currentIndex).model.targa
                             }
                         }
                         // QC1.TextField {
@@ -514,30 +429,39 @@ Item{
                             Layout.fillWidth: true
                             Layout.preferredHeight: parent.height *.4
                             model: ServicesTypeModel {}
-                            textRole: "nome"
+                            textRole: "nomeTipo"
 
-                            property int idType: {
+                            property string typeName: {
                                 if (currentIndex < 0 || currentIndex > typeSelector.count) 
                                         return -1
                                     
-                                    return delegateModel.items.get(currentIndex).model.idtipo
+                                    return delegateModel.items.get(currentIndex).model.nomeTipo
                                 }
                         }
                     }
                 }
 
+                
+
                 Item{
-                    id: estimatedTimeItem
+                    id: employeeItem
                     Layout.fillWidth: true
                     Layout.fillHeight: true
+                    
                     ColumnLayout{
-                        anchors.fill: parent
+                        id: employeeColumn
+                        width: parent.width *.7
+                        height: parent.height
+                        anchors{
+                            left: parent.left
+                        }
                         spacing: 10
+                        
                         Label{
-                            id: estimatedTimeLabel
+                            id: employeeLabel
                             Layout.fillWidth: true
                             Layout.fillHeight: true
-                            text: "Estimated time"
+                            text: "Employees list"
                             verticalAlignment: Qt.AlignBottom
                             horizontalAlignment: Qt.AlignLeft
                             font{
@@ -546,21 +470,56 @@ Item{
                             }
                             color: appPalette.text
                         }
-                        QC1.TextField {
-                            id: estimatedTIme
-                            Layout.preferredWidth: parent.width * .30
-                            Layout.fillHeight: true
-                            placeholderText: "hh"
-                            style: TextFieldTheme{}
+                        Label {
+                            id: employeeField
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: parent.height *.4
+                            horizontalAlignment: Qt.horizontalCenter
+                            text: employeesSelectedLabels.toString()
+                            wrapMode : Text.Wrap 
+                            color: appPalette.text
                             font{
-                                pointSize: 16
+                                pointSize: 14
+                            }
+                            padding: 10
+                            background: Rectangle{
+                                anchors.fill: parent
+                                border{
+                                    color: appPalette.midLight
+                                    width: 1
+                                }
+                                color: appPalette.dark
+                                radius: 10
+                            }
+                        }
+                        
+                    }
+                    ThemedButton {
+                        id: chooseEmployees
+                        width: parent.width *.2
+                        height: employeeField.height * 0.8
+                        anchors{
+                            left: employeeColumn.right
+                            bottom: employeeColumn.bottom
+                            leftMargin: parent.width *.05
+                        }
+                        selectedColor: appPalette.limeGreen
+                        textColor: appPalette.text
+                        buttonText: "Choose"
+                        actionHandler{
+                            onClicked:{
+                                employeesPicker.open()
                             }
                         }
                     }
+
+                    
                 }
+
 
             }
         }
+
         Popup {
             id: calendarPicker
             width: parent.width * .5
@@ -571,12 +530,12 @@ Item{
             closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
             enter: Transition {
                 NumberAnimation { property: "opacity"; from: 0.0; to: 1.0; duration: 100}
-                NumberAnimation { property: "scale"; from: 0.0; to: 1.0; duration: 100}
+                NumberAnimation { property: "scale"; from: 0.9; to: 1.0; duration: 150}
             }
 
             exit: Transition {
                 NumberAnimation { property: "opacity"; from: 1.0; to: 0.0; duration: 100}
-                NumberAnimation { property: "scale"; from: 1.0; to: 0.0; duration: 100}
+                NumberAnimation { property: "scale"; from: 1.0; to: 0.9; duration: 150}
             }
             QC1.Calendar{
                 id:calendarItem
@@ -603,21 +562,33 @@ Item{
             y: (parent.height - height)/2
             padding: 0
             closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+
+            background: Rectangle{
+                anchors.fill: parent
+                color: appPalette.dark
+                border{
+                    width: 2
+                    color: appPalette.light
+                }
+                radius: 10
+            }
+            
             enter: Transition {
-                NumberAnimation { property: "opacity"; from: 0.0; to: 1.0; duration: 100}
-                NumberAnimation { property: "scale"; from: 0.7; to: 1.0; duration: 100}
+            NumberAnimation { property: "opacity"; from: 0.0; to: 1.0; duration: 100}
+            NumberAnimation { property: "scale"; from: 0.9; to: 1.0; duration: 150}
             }
 
             exit: Transition {
                 NumberAnimation { property: "opacity"; from: 1.0; to: 0.0; duration: 100}
-                NumberAnimation { property: "scale"; from: 1.0; to: 0.7; duration: 100}
+                NumberAnimation { property: "scale"; from: 1.0; to: 0.9; duration: 150}
             }
+
             contentItem: Item{
                 anchors.fill: parent
-                Rectangle{
-                    anchors.fill: parent
-                    color: appPalette.dark
-                }
+                // Rectangle{
+                    // anchors.fill: parent
+                    // color: appPalette.dark
+                // }
                 clip: true
                 ListView{
                     id: employeesView
@@ -728,8 +699,9 @@ Item{
                     if (slotData.full)
                         return
                     if (data.addService(parseInt(estimatedTIme.text), descriptionField.text, Date.fromLocaleString(Qt.locale(), textDate.text, "dd-MM-yyyy"), 
-                        Date.fromLocaleTimeString(Qt.locale(), timePicker.text, "hh:mm"), nameSelector.idClient, typeSelector.idType, vehiclesSelector.idVehicle, employeesSelected))
+                        Date.fromLocaleTimeString(Qt.locale(), timePicker.text, "hh:mm"), nameSelector.idClient, typeSelector.typeName, vehiclesSelector.plate, employeesSelected))
                         stackRef.pop()
+                        servicesData.refresh()
                 }
             }
         }
@@ -748,7 +720,6 @@ Item{
 
     Services {
         id: data
-
         workshop: workShopIndex 
     }
 
