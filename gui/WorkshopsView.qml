@@ -14,18 +14,6 @@ Item{
     id: root
     property var appPalette: undefined
 
-    //Rectangle{
-    //    id: titleBar
-    //    width: parent.width * 1.1
-    //    height: parent.height *.06
-    //    anchors{
-    //        top: parent.top
-    //        topMargin: -5
-    //        horizontalCenter: parent.horizontalCenter
-    //    }
-//selectedWSAddress
-    //}
-
 
     /////////////////////////APPLICATION TITLE/////////////////////////
     Label{

@@ -160,23 +160,4 @@ Item{
             }
         }
     }
-
-    //PageIndicator {
-    //    id: indicator
-    //
-    //    count: view.count
-    //    currentIndex: view.currentIndex
-    //
-    //    anchors.bottom: view.bottom
-    //    anchors.horizontalCenter: parent.horizontalCenter
-    //
-    //    delegate: Component{
-    //        Rectangle{
-    //            color: "white"
-    //            width: 100
-    //            height: width
-    //            radius: height/2
-    //        }
-    //    }
-    //}
 } 
