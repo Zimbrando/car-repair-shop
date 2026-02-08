@@ -1,6 +1,9 @@
 -- TABLEs Section
 -- _____________ 
 
+ALTER DATABASE car_repair_shop
+SET DateStyle = 'DMY';
+
 DROP TABLE IF EXISTS LAVORI CASCADE;
 CREATE TABLE LAVORI (
      idDipendente INT NOT NULL,
@@ -247,3 +250,5 @@ CREATE INDEX REF_Veico_March_IND
      on VEICOLI (nomeMarchio);
 
 
+ALTER DATABASE car_repair_shop
+SET DateStyle = 'DMY';
